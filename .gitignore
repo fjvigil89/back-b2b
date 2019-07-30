@@ -1,0 +1,9 @@
+.nyc_output/
+.idea/
+.vscode/
+build/
+dist/
+node_modules/
+*.log
+*.zip
+yarn.lock
