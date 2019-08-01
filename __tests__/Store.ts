@@ -38,7 +38,7 @@ describe("ALL STORE TEST ROUTE", () => {
         .end((err, res) => {
             const KEYS = [ "folio", "cod_local", "bandera", "direccion", "latitud", "longitud", "date_b2b", "mide",
             "realizada", "fecha_visita", "cadena", "venta_perdida",
-            "descripcion", "osa", "visita_en_progreso", "hasPoll", "id_visita"];
+            "descripcion", "osa", "pendiente", "visita_en_progreso", "hasPoll", "id_visita"];
             chai.expect(res.status).to.eq(200);
             chai.expect(res.body).to.be.a("array");
             for (const store of res.body) {
@@ -74,7 +74,7 @@ describe("ALL STORE TEST ROUTE", () => {
     });
 
     it("SHOULD RETURN DETAIL STORE", (done) => {
-        supertest(app).get(`${URI}/23028003`).set("Authorization", `bearer ${token}`).set("Accept", "application/json")
+        supertest(app).get(`${URI}/41065015`).set("Authorization", `bearer ${token}`).set("Accept", "application/json")
         .end((err, res) => {
             chai.expect(res.status).to.eq(200);
             chai.expect(res.body).to.be.a("object");
