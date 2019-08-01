@@ -19,8 +19,6 @@ build:
     paths:
       - node_modules/
       - dist/
-  tags:
-    - nodejs-app
 
 test:
   stage: test
