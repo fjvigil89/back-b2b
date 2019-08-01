@@ -1,6 +1,4 @@
-import * as cluster from "cluster";
 import * as dotenv from "dotenv";
-import { cpus } from "os";
 import { resolve } from "path";
 import { env } from "process";
 import { config } from "./config/config";
