@@ -1,6 +1,6 @@
 branch-defaults:
   master:
-    environment: null
+    environment: back-b2b-production
     group_suffix: null
 global:
   application_name: back-b2b
