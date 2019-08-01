@@ -16,6 +16,9 @@ printf "[eb-cli]\naws_access_key_id = %s\naws_secret_access_key = %s\n" "$AWS_AC
 touch ~/.aws/config
 printf "[profile eb-cli]\nregion=%s\noutput=json" "$AWS_EB_REGION" >> ~/.aws/config
 
+# Check current directory
+ls
+
 # Checko if eb cli work
 eb list -a
 
