@@ -1,4 +1,8 @@
-cat > ./.ebextensions/node-settings.config <<EOF
+ls -al .ebextensions/
+
+rm .ebextensions/node-settings.config
+
+cat > .ebextensions/node-settings.config <<EOF
 option_settings:
   aws:elasticbeanstalk:application:environment:
     AWS_CREDENTIALS_accessKeyId: $AWS_CREDENTIALS_accessKeyId
