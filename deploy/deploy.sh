@@ -36,4 +36,4 @@ ls -al
 # Checko if eb cli work
 eb list -a
 
-eb create back-b2b-production
+eb deploy back-b2b-production
