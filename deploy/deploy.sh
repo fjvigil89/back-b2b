@@ -30,6 +30,9 @@ printf "[profile eb-cli]\nregion=%s\noutput=json" "$AWS_EB_REGION" >> ~/.aws/con
 
 ./deploy/generateConfig.sh
 
+git add .ebextensions/node-settings.config
+git commit -m "Load env vars"
+
 # Check current directory
 ls -al
 
