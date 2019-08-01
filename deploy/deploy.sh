@@ -30,6 +30,9 @@ printf "[profile eb-cli]\nregion=%s\noutput=json" "$AWS_EB_REGION" >> ~/.aws/con
 
 ./deploy/generateConfig.sh
 
+git config --global user.email "cicd@cademsmart.cl"
+git config --global user.name "Runner gitlab for b2b-back"
+
 git add .ebextensions/node-settings.config
 git commit -m "Load env vars"
 
