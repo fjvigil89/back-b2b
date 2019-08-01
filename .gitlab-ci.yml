@@ -1,0 +1,40 @@
+image: node:8.12.0
+
+before_script:
+  - npm install
+
+stages:
+  - build
+  - test
+  - deploy
+
+variables:
+  TEST: "hi"
+
+build:
+  stage: build
+  script:
+    - npm run build
+  artifacts:
+    paths:
+      - node_modules/
+      - dist/
+  tags:
+    - nodejs-app
+
+test:
+  stage: test
+  script:
+    - npm run test
+
+# Job: Deploy
+# Zips the contents of our built application, uploads to S3
+# Configures a new EB version and switches to that version
+deploy:
+  stage: deploy
+  only:
+    - master
+  allow_failure: false
+  when: manual
+  script:
+    - ./deploy/deploy.sh
