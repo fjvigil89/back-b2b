@@ -1,13 +1,25 @@
-apt install -y python3 python3-setuptools
+apt update
+
+apt install -y build-essential libssl-dev libffi-dev libxml2-dev libxslt1-dev zlib1g-dev
+
+apt install -y python2.7 python-dev libpython-dev
+
+# apt install -y python3 python3.4-dev
 
 # Download install file pip
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 
 # Install pip3
-python3 get-pip.py
+#python3 get-pip.py
+
+python2 get-pip.py
 
 # Check version pip
-pip3 --version
+# pip3 --version
+pip2 --version
+
+# pip3 install awsebcli
+pip2 install awsebcli
 
 # Configure credentias into enviroment
 mkdir ~/.aws/
@@ -17,7 +29,7 @@ touch ~/.aws/config
 printf "[profile eb-cli]\nregion=%s\noutput=json" "$AWS_EB_REGION" >> ~/.aws/config
 
 # Check current directory
-ls
+ls -al
 
 # Checko if eb cli work
 eb list -a
