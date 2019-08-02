@@ -49,6 +49,8 @@ export const config = {
     },
     KM: env.KM,
 };
+// load config?
+console.log(config);
 
 export const AWS_CREDENTIALS = {
     accessKeyId: env.AWS_CREDENTIALS_accessKeyId,

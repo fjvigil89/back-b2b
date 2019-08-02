@@ -5,8 +5,8 @@ rm .ebextensions/node-settings.config
 cat > .ebextensions/node-settings.config <<EOF
 option_settings:
   aws:elasticbeanstalk:application:environment:
-    AWS_CREDENTIALS_accessKeyId: $AWS_CREDENTIALS_accessKeyId
-    AWS_CREDENTIALS_secretAccessKey: $AWS_CREDENTIALS_secretAccessKey
+    AWS_CREDENTIALS_accessKeyId: $AWS_ACCESS_KEY_ID
+    AWS_CREDENTIALS_secretAccessKey: $AWS_SECRET_ACCESS_KEY
     CLIENT: $CLIENT
     ID_ESTUDIO_SUPI: $ID_ESTUDIO_SUPI
     KM: $KM
