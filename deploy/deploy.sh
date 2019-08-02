@@ -29,10 +29,4 @@ git config --global user.name "Runner gitlab for b2b-back"
 git add .ebextensions/node-settings.config
 git commit -m "Load env vars"
 
-# Check current directory
-ls -al
-
-# Checko if eb cli work
-eb list -a
-
-eb create back-b2b-production
+eb deploy back-b2b-production
