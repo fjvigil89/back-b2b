@@ -30,8 +30,8 @@ export class Server {
     }
 
     private ExpressConfiguration(): void {
-        this.app.use(bodyParser.urlencoded({extended: true}));
-        this.app.use(bodyParser.json({ limit: "50mb"} ));
+        this.app.use(bodyParser.urlencoded({ extended: true }));
+        this.app.use(bodyParser.json({ limit: "50mb" }));
         this.app.use(methodOverride());
         this.app.use((req, res, next): void => {
             res.header("Access-Control-Allow-Origin", "*");
@@ -59,7 +59,7 @@ export class Server {
             });
             next();
         });
-        this.app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction): void  => {
+        this.app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction): void => {
             if (err.name === "UnauthorizedError") {
                 res.status(401).json({
                     error: "Please send a valid Token...",
