@@ -1,4 +1,4 @@
-import { getCustomRepository } from "typeorm";
+import { getConnection } from "typeorm";
 import { PollRepository } from "../repository";
 import { uniqBy } from "../utils/service";
 
@@ -26,14 +26,14 @@ interface IGroupList {
 
 export class PollService {
 
-    public async answerPoll(aryResponse: [{ id: number, respuesta: string }]): Promise<void> {
+    public async answerPoll(client: string, aryResponse: [{ id: number, respuesta: string }]): Promise<void> {
         await Promise.all(aryResponse.map((row) => {
-            return getCustomRepository(PollRepository).answerPoll(row.id, row.respuesta);
+            return getConnection(client).getCustomRepository(PollRepository).answerPoll(row.id, row.respuesta);
         }));
     }
 
-    public groupListPoll(folio?: number): Promise<IGroupList[]> {
-        return getCustomRepository(PollRepository).listPoll(folio)
+    public groupListPoll(client: string, folio?: number): Promise<IGroupList[]> {
+        return getConnection(client).getCustomRepository(PollRepository).listPoll(folio)
             .then((list) => {
                 return uniqBy(list, "folio").map((id) => {
                     const storePoll = list.filter((row) => row.folio === id);
@@ -51,10 +51,10 @@ export class PollService {
                     };
                 });
             });
-      }
+    }
 
-    public groupDetailPoll(id: number): Promise<IGroupDetail[]> {
-        return getCustomRepository(PollRepository).findBySalaPoll(id)
+    public groupDetailPoll(client: string, id: number): Promise<IGroupDetail[]> {
+        return getConnection(client).getCustomRepository(PollRepository).findBySalaPoll(id)
             .then((detail) => {
                 return detail.map((row, index) => {
                     if (row.tipo === "radio") {

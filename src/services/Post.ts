@@ -1,5 +1,5 @@
 import * as moment from "moment";
-import { getCustomRepository } from "typeorm";
+import { getConnection, getCustomRepository } from "typeorm";
 import { Post } from "../entity";
 import { IListPost, PostRepository } from "../repository";
 import * as Util from "../utils/service";
@@ -30,37 +30,38 @@ export class PostService {
         this.post = new Post();
     }
 
-    public createPost(content: string, userId: string): Promise<Post> {
+    public createPost(client: string, content: string, userId: string): Promise<Post> {
         this.post.content = content;
         this.post.userId = userId;
         this.post.date = moment(new Date()).format("YYYY-MM-DD HH:mm:ss");
-        return this.post.save()
+        return getConnection(client).getRepository(Post).save(this.post)
             .catch((ex) => {
                 throw new Error();
             });
     }
 
-    public async updatePost(content: string, postId: number): Promise<void> {
-        await Post.update(postId, {
+    public async updatePost(client: string, content: string, postId: number): Promise<void> {
+        await getConnection(client).getRepository(Post).update(postId, {
             content,
             date: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
         });
     }
 
-    public findPostDetailByHashtag(text: string, skip: number, userId: string): Promise<IListPostDetail[]> {
-        return getCustomRepository(PostRepository).findPostDetailByHashtag(text, skip).then((postsByHashtag) => {
-            return this.groupListPosts(postsByHashtag, userId);
-        });
+    public findPostDetailByHashtag(client: string, text: string, skip: number, userId: string): Promise<IListPostDetail[]> {
+        return getConnection(client).getCustomRepository(PostRepository)
+            .findPostDetailByHashtag(text, skip).then((postsByHashtag) => {
+                return this.groupListPosts(postsByHashtag, userId);
+            });
     }
 
-    public listPostDetail(skip: number, userId: string): Promise<IListPostDetail[]> {
-        return getCustomRepository(PostRepository).findPostDetail(null, skip).then((posts) => {
+    public listPostDetail(client: string, skip: number, userId: string): Promise<IListPostDetail[]> {
+        return getConnection(client).getCustomRepository(PostRepository).findPostDetail(null, skip).then((posts) => {
             return this.groupListPosts(posts, userId);
         });
     }
 
-    public findPostDetail(postId: number, userId: string): Promise<IListPostDetail> {
-        return getCustomRepository(PostRepository).findPostDetail(postId).then((post) => {
+    public findPostDetail(client: string, postId: number, userId: string): Promise<IListPostDetail> {
+        return getConnection(client).getCustomRepository(PostRepository).findPostDetail(postId).then((post) => {
             return this.groupDetailPost(post, userId);
         });
     }

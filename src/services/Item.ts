@@ -1,5 +1,5 @@
 import * as moment from "moment";
-import { getCustomRepository } from "typeorm";
+import { getConnection } from "typeorm";
 import { Item } from "../entity";
 import { ItemRepository } from "../repository/ItemRepository";
 import * as Util from "../utils/service";
@@ -21,8 +21,14 @@ export interface IItemsAction {
 
 export class ItemService {
 
-    public async listItems(storeId: string, retail: string, folio: number, date: string): Promise<Item[]> {
-        const detail = await B2B_SERVICE.detailItems(storeId, retail, date);
+    public async listItems(
+        client: string,
+        storeId: string,
+        retail: string,
+        folio: number,
+        date: string,
+    ): Promise<Item[]> {
+        const detail = await B2B_SERVICE.detailItems(client, storeId, retail, date);
         const detailItems: Item[] = [];
         await Promise.all(detail.map(async (item) => {
             const detailMaster = await MASTER_SERVICE.detailItem(item.ean);
@@ -38,7 +44,7 @@ export class ItemService {
                 newItem.accion = "Ajustar";
             } else {
                 const dateStaticStock = moment(date).subtract(7, "days").format("YYYY-MM-DD");
-                const staticStock = await B2B_SERVICE.staticStock(storeId, item.itemId, dateStaticStock);
+                const staticStock = await B2B_SERVICE.staticStock(client, storeId, item.itemId, dateStaticStock);
                 if (staticStock) {
                     newItem.accion = "Ajustar";
                 } else {
@@ -72,40 +78,43 @@ export class ItemService {
         return Util.sumBy(items, "ventaPerdida");
     }
 
-    public async detailItemsAction(folio: number, category: string, action: string): Promise<IItemsAction> {
-        return getCustomRepository(ItemRepository).findByAction(folio, category, action).then((Items) => {
-            if (action === "Chequear pedidos") {
-                return {
-                    data: Items.map((item) => {
-                        return {
-                            cadem: item.cadem,
-                            descripcion: item.description,
-                            ean: item.ean,
-                            stock_transito: item.stock_pedido_tienda,
-                            sventa: Number(item.dias_sin_venta),
-                            venta_perdida: item.venta_perdida,
-                            gestionado: Number(item.gestionado),
-                        };
-                    }),
-                    flag: true,
-                };
-            } else {
-                return {
-                    data: Items.map((item) => {
-                        return {
-                            cadem: item.cadem,
-                            descripcion: item.description,
-                            ean: item.ean,
-                            stock: item.stock,
-                            sventa: Number(item.dias_sin_venta),
-                            venta_perdida: item.venta_perdida,
-                            gestionado: Number(item.gestionado),
-                        };
-                    }),
-                    flag: false,
-                };
-            }
-        });
+    public async detailItemsAction(
+        client: string, folio: number, category: string, action: string): Promise<IItemsAction> {
+        return getConnection(client)
+            .getCustomRepository(ItemRepository)
+            .findByAction(folio, category, action).then((Items) => {
+                if (action === "Chequear pedidos") {
+                    return {
+                        data: Items.map((item) => {
+                            return {
+                                cadem: item.cadem,
+                                descripcion: item.description,
+                                ean: item.ean,
+                                stock_transito: item.stock_pedido_tienda,
+                                sventa: Number(item.dias_sin_venta),
+                                venta_perdida: item.venta_perdida,
+                                gestionado: Number(item.gestionado),
+                            };
+                        }),
+                        flag: true,
+                    };
+                } else {
+                    return {
+                        data: Items.map((item) => {
+                            return {
+                                cadem: item.cadem,
+                                descripcion: item.description,
+                                ean: item.ean,
+                                stock: item.stock,
+                                sventa: Number(item.dias_sin_venta),
+                                venta_perdida: item.venta_perdida,
+                                gestionado: Number(item.gestionado),
+                            };
+                        }),
+                        flag: false,
+                    };
+                }
+            });
     }
 
 }

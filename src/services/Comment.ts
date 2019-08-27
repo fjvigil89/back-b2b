@@ -1,5 +1,5 @@
 import * as moment from "moment";
-import { getCustomRepository } from "typeorm";
+import { getConnection } from "typeorm";
 import { CommentRepository, IListComment } from "../repository";
 import * as Util from "../utils/service";
 
@@ -31,8 +31,8 @@ interface IListCommentDetail {
 
 export class CommentService {
 
-    public listGroupCommentDetail(id: number, userId: string): Promise<IListCommentDetail[]> {
-        return getCustomRepository(CommentRepository).findCommentDetail(id)
+    public listGroupCommentDetail(client: string, id: number, userId: string): Promise<IListCommentDetail[]> {
+        return getConnection(client).getCustomRepository(CommentRepository).findCommentDetail(id)
             .then((comments) => {
                 const commentsId: number[] = Util.uniqBy(comments, "id");
                 return commentsId.map((commentId) => {
@@ -42,8 +42,8 @@ export class CommentService {
             });
     }
 
-    public detailComment(id: number, userId: string) {
-        return getCustomRepository(CommentRepository).findCommentDetail(null, id)
+    public detailComment(client: string, id: number, userId: string) {
+        return getConnection(client).getCustomRepository(CommentRepository).findCommentDetail(null, id)
             .then((comment) => {
                 return this.groupDetailComment(comment, userId);
             });

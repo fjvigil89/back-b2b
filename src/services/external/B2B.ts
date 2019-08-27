@@ -18,8 +18,8 @@ export interface ILastStoreByDate {
     retail: string;
 }
 
-export async function lastStoreByDate(): Promise<ILastStoreByDate[]> {
-    return B2B.then((conn) => conn.query(`
+export async function lastStoreByDate(client: string): Promise<ILastStoreByDate[]> {
+    return B2B[client].then((conn) => conn.query(`
     SELECT
         a.cod_local as codLocal
         , a.retail
@@ -44,28 +44,29 @@ export async function lastStoreByDate(): Promise<ILastStoreByDate[]> {
     `));
 }
 
-export async function clearLastDays(date): Promise<void> {
-    return B2B.then((conn) => conn.query(`DELETE FROM movimiento_last_days WHERE fecha = '${date}'`));
+export async function clearLastDays(client: string, date): Promise<void> {
+    return B2B[client].then((conn) => conn.query(`DELETE FROM movimiento_last_days WHERE fecha = '${date}'`));
 }
 
-export async function clearItems(): Promise<void> {
-    return B2B.then((conn) => conn.query(`DELETE FROM movimiento_last_days WHERE venta_unidades != 0`));
+export async function clearItems(client: string): Promise<void> {
+    return B2B[client].then((conn) => conn.query(`DELETE FROM movimiento_last_days WHERE venta_unidades != 0`));
 }
 
-export async function loadLastDays(date: string, retail: string): Promise<void> {
-    return B2B.then((conn) => conn.query(`INSERT INTO movimiento_last_days
+export async function loadLastDays(client: string, date: string, retail: string): Promise<void> {
+    return B2B[client].then((conn) => conn.query(`INSERT INTO movimiento_last_days
     SELECT * from movimiento WHERE fecha = "${date}" AND itemValido = 1 AND retail = "${retail}"`));
 }
 
-export async function detailItems(StoreId: any, retail: string, date: string): Promise<IDetailItem[]> {
-    return B2B.then((conn) => conn.query(`SELECT stock, ean, IFNULL(stock_pedido_tienda, 0) as stockPedidoTienda,
-    IFNULL(dias_sin_venta_consecutiva, 0) as diasSinVenta, cod_item as itemId, promedio_ventas as promedioVentas,
-    venta_unidades AS ventaUnidades FROM movimiento_last_days WHERE cod_local = "${StoreId}" AND
-    fecha = "${date}" AND retail = "${retail}"`));
+export async function detailItems(client: string, StoreId: any, retail: string, date: string): Promise<IDetailItem[]> {
+    return B2B[client].then((conn) =>
+        conn.query(`SELECT stock, ean, IFNULL(stock_pedido_tienda, 0) as stockPedidoTienda,
+        IFNULL(dias_sin_venta_consecutiva, 0) as diasSinVenta, cod_item as itemId, promedio_ventas as promedioVentas,
+        venta_unidades AS ventaUnidades FROM movimiento_last_days WHERE cod_local = "${StoreId}" AND
+        fecha = "${date}" AND retail = "${retail}"`));
 }
 
-export function checkLastDate(StoreId: string): Promise<string | null> {
-    return B2B.then((conn) => conn.query(`
+export function checkLastDate(client: string, StoreId: string): Promise<string | null> {
+    return B2B[client].then((conn) => conn.query(`
         SELECT fecha
         FROM movimiento
         WHERE
@@ -73,11 +74,11 @@ export function checkLastDate(StoreId: string): Promise<string | null> {
         ORDER BY fecha DESC
         LIMIT 1
     `)
-    .then((result) => moment(result[0].fecha).format("YYYY-MM-DD")));
+        .then((result) => moment(result[0].fecha).format("YYYY-MM-DD")));
 }
 
-export function staticStock(storeId: string, itemId: number, dateFrom: string): Promise<boolean> {
-    return B2B.then((conn) => conn.query(`
+export function staticStock(client: string, storeId: string, itemId: number, dateFrom: string): Promise<boolean> {
+    return B2B[client].then((conn) => conn.query(`
             SELECT
                 stock
             FROM movimiento
@@ -89,22 +90,35 @@ export function staticStock(storeId: string, itemId: number, dateFrom: string): 
         .then((result) => new Set(result.map((row) => row.stock)).size === 1 ? true : false);
 }
 
-export function getGeneralPending(): Promise<string> {
-    return B2B.then((conn) => conn.query("SELECT * FROM `general` WHERE sincronizacion_app = 1 LIMIT 1")
-        .then((result) => {
-            if (result.length) {
-                return result[0].retail;
-            } else {
-                return null;
-            }
-        }));
+export function getGeneralPending(client: string): Promise<string> {
+    return B2B[client].then((conn) =>
+        conn.query("SELECT * FROM `general` WHERE sincronizacion_app = 1 AND sync_started IS FALSE LIMIT 1")
+            .then((result) => {
+                if (result.length) {
+                    return result[0].retail;
+                } else {
+                    return null;
+                }
+            }));
 }
 
-export async function resetGeneralPending(retail: string): Promise<void> {
-    await B2B.then((conn) => conn.query("UPDATE `general` SET sincronizacion_app = 0 WHERE retail = " + `"${retail}"`));
+export async function startSyncGeneral(client: string, retail: string): Promise<void> {
+    await B2B[client].then((conn) =>
+        conn.query("UPDATE `general` SET sync_started = TRUE WHERE retail = " + `"${retail}"`));
+}
+
+export async function stopSyncGeneral(client: string, retail: string): Promise<void> {
+    await B2B[client].then((conn) =>
+        conn.query("UPDATE `general` SET sync_started = FALSE WHERE retail = " + `"${retail}"`));
+}
+
+export async function resetGeneralPending(client: string, retail: string): Promise<void> {
+    await B2B[client].then((conn) =>
+        conn.query("UPDATE `general` SET sincronizacion_app = 0 WHERE retail = " + `"${retail}"`));
 }
 
 export function summary(
+    client: string,
     init: string,
     finish: string,
     rangeDate: string,
@@ -122,7 +136,7 @@ export function summary(
     stock: number;
     sum_venta_perdida: number;
 }>> {
-    return B2B.then((conn) => conn.query(`
+    return B2B[client].then((conn) => conn.query(`
         SELECT
             "${rangeDate}" as range_date
             , "${rangePosition}" as range_position
@@ -142,12 +156,13 @@ export function summary(
         WHERE
             fecha BETWEEN "${init}"
             AND "${finish}"
+            AND caso = 1
         GROUP BY retail, cod_item, cod_local
     `));
 }
 
-export function getDataMovimiento(fecha: string, retail: string): Promise<void> {
-    return B2B.then((conn) => conn.query(`
+export function getDataMovimiento(client: string, fecha: string, retail: string): Promise<void> {
+    return B2B[client].then((conn) => conn.query(`
         SELECT *
         FROM movimiento
         WHERE

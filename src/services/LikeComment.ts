@@ -1,15 +1,15 @@
-import { getCustomRepository } from "typeorm";
+import { getConnection } from "typeorm";
 import { LikeComment } from "../entity";
 import { LikeCommentRepository } from "../repository";
 
 export class LikeCommentService {
 
-    public removeLike(like: LikeComment): Promise<void> {
-        return getCustomRepository(LikeCommentRepository).removeLike(like);
+    public removeLike(client: string, like: LikeComment): Promise<void> {
+        return getConnection(client).getCustomRepository(LikeCommentRepository).removeLike(like);
     }
 
-    public findByComment(id: number): Promise<LikeComment[]> {
-        return getCustomRepository(LikeCommentRepository).findByComment(id);
+    public findByComment(client: string, id: number): Promise<LikeComment[]> {
+        return getConnection(client).getCustomRepository(LikeCommentRepository).findByComment(id);
     }
 
 }

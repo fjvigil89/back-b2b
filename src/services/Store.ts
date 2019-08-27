@@ -1,5 +1,5 @@
 import * as moment from "moment";
-import { getCustomRepository } from "typeorm";
+import { getConnection } from "typeorm";
 import { Store } from "../entity";
 import { CasesRepository, IItemCase, ItemRepository, StoreRepository } from "../repository";
 import * as Util from "../utils/service";
@@ -25,11 +25,11 @@ export class StoreService {
         this.today = moment().format("YYYY-MM-DD");
     }
 
-    public async groupStore(folio: number): Promise<IDetailStore | null> {
-        const [ detailItems, detailStore, gestionado ] = await Promise.all([
-            getCustomRepository(ItemRepository).findByStoreId(folio),
-            getCustomRepository(StoreRepository).findByStoreId(folio),
-            getCustomRepository(CasesRepository).totalCasesByDate(folio, this.today),
+    public async groupStore(client: string, folio: number): Promise<IDetailStore | null> {
+        const [detailItems, detailStore, gestionado] = await Promise.all([
+            getConnection(client).getCustomRepository(ItemRepository).findByStoreId(folio),
+            getConnection(client).getCustomRepository(StoreRepository).findByStoreId(folio),
+            getConnection(client).getCustomRepository(CasesRepository).totalCasesByDate(folio, this.today),
         ]);
         if (detailStore) {
             const groupDetail = {
@@ -44,9 +44,9 @@ export class StoreService {
         }
     }
 
-    public async listStoreUser(user: string): Promise<Store[]> {
-        const ListStore = await getCustomRepository(StoreRepository).listStoreUser(user);
-        return ListStore.length ? getCustomRepository(StoreRepository).dataStore(ListStore, user)
+    public async listStoreUser(client: string, user: string): Promise<Store[]> {
+        const ListStore = await getConnection(client).getCustomRepository(StoreRepository).listStoreUser(user);
+        return ListStore.length ? getConnection(client).getCustomRepository(StoreRepository).dataStore(ListStore, user)
             .then((List) => {
                 return List.map((store) => {
                     store.latitud = parseFloat(store.latitud);

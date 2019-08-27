@@ -7,16 +7,16 @@ interface IFilterDataDownload {
 
 export class DownloadService {
 
-    public async getDataDownload(filtros: IFilterDataDownload): Promise<void> {
-      const {
-        fecha,
-        retail,
-      } = filtros;
+  public async getDataDownload(client: string, filtros: IFilterDataDownload): Promise<void> {
+    const {
+      fecha,
+      retail,
+    } = filtros;
 
-      const data = await B2B_SERVICE.getDataMovimiento(fecha, retail);
+    const data = await B2B_SERVICE.getDataMovimiento(client, fecha, retail);
 
-      console.log(data);
+    console.log(data);
 
-      return data;
-    }
+    return data;
+  }
 }

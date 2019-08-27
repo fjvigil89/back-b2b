@@ -1,5 +1,5 @@
 import * as moment from "moment";
-import { getCustomRepository } from "typeorm";
+import { getConnection } from "typeorm";
 import { Check } from "../entity";
 import { CheckRepository, StoreRepository } from "../repository";
 
@@ -11,14 +11,14 @@ export class CheckService {
         this.check = new Check();
     }
 
-    public async createCheck(folio: number, userId: string, type: string): Promise<void> {
-        const store = await getCustomRepository(StoreRepository).findByStoreId(folio);
+    public async createCheck(client: string, folio: number, userId: string, type: string): Promise<void> {
+        const store = await getConnection(client).getCustomRepository(StoreRepository).findByStoreId(folio);
         if (store) {
-            const prevCheck = await getCustomRepository(CheckRepository).findLastCheck(userId);
+            const prevCheck = await getConnection(client).getCustomRepository(CheckRepository).findLastCheck(userId);
             if (prevCheck) {
                 if (type === "in") {
                     if (prevCheck.dateCheckOut) {
-                        await this.newCheck(userId, folio);
+                        await this.newCheck(client, userId, folio);
                     } else {
                         throw new Error("Ya existe una visita en progreso");
                     }
@@ -32,7 +32,7 @@ export class CheckService {
                 }
             } else {
                 if (type === "in") {
-                    await this.newCheck(userId, folio);
+                    await this.newCheck(client, userId, folio);
                 } else {
                     throw new Error("No existe ninguna visita en progreso");
                 }
@@ -42,11 +42,11 @@ export class CheckService {
         }
     }
 
-    private async newCheck(userId: string, folio: number): Promise<void> {
+    private async newCheck(client: string, userId: string, folio: number): Promise<void> {
         this.check.userId = userId;
         this.check.folio = folio;
         this.check.dateCheckIn = moment(new Date()).format("YYYY-MM-DD HH:mm:ss");
-        await this.check.save();
+        await getConnection(client).getRepository(Check).save(this.check);
     }
 
 }
