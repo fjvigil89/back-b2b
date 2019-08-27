@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import * as moment from "moment";
+import { getConnection } from "typeorm";
 import { Comment, Reply } from "../entity";
 import { HashtagService, ImageService, ReplyService } from "../services";
 import { Controller } from "./Controller";
-import { any } from "joi";
 
 export class ReplyController extends Controller {
 
@@ -19,18 +19,19 @@ export class ReplyController extends Controller {
     }
 
     public async create(): Promise<Response> {
-        const { body, user } = this.req; //  as { body: { content: string, comment_id: number }, user: { userId } };
+        const { body, user } = this.req;
         const reply = new Reply();
         reply.content = body.content;
         reply.commentId = body.comment_id;
         reply.userId = user.userId;
         reply.date = moment(new Date()).format("YYYY-MM-DD HH:mm:ss");
         if (this.req.file) {
-            reply.image = await this.imageService.saveOneImage(this.req.file);
+            reply.image = await this.imageService.saveOneImage(user.client, this.req.file);
         }
         const { postId } = await Comment.findOne(reply.commentId);
-        await this.hashtagService.associatePostHashtag(postId, reply.content, false);
-        return reply.save()
+        await this.hashtagService.associatePostHashtag(user.client, postId, reply.content, false);
+
+        return getConnection(user.client).getRepository(Reply).save(reply)
             .then((newReply) => {
                 newReply.date = moment(newReply.date).toISOString();
                 return this.res.status(200).json({ reply: newReply }).send();
@@ -42,7 +43,8 @@ export class ReplyController extends Controller {
 
     public async list(): Promise<Response> {
         const { id } = this.req.params as { id: number };
-        const replies = await this.replyService.findByComment(id);
+        const { client } = this.req.user;
+        const replies = await this.replyService.findByComment(client, id);
         return this.res.status(200).json({ replies }).send();
     }
 
@@ -58,7 +60,8 @@ export class ReplyController extends Controller {
 
     public async update(): Promise<Response> {
         const { reply_id, content } = this.req.body as { reply_id: number, content: string };
-        return this.replyService.updateReply(content, reply_id)
+        const { client } = this.req.user;
+        return this.replyService.updateReply(client, content, reply_id)
             .then(() => {
                 return this.res.status(200).send();
             })

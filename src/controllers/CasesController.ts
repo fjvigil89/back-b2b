@@ -37,12 +37,13 @@ export class CasesController extends Controller {
     public async create(): Promise<Response> {
         try {
             const newCase = this.req.body as ICaseRequest;
+            const { client } = this.req.user;
             const createdCase = Case.create({
                 ...newCase,
                 dateAction: moment().format("YYYY-MM-DD"),
                 userId: this.req.user.userId,
             });
-            const caseId = await this.caseService.create(createdCase);
+            const caseId = await this.caseService.create(client, createdCase);
             return this.res.status(200).send({ success: true, caseId });
         } catch (ex) {
             console.error(ex);
@@ -51,7 +52,8 @@ export class CasesController extends Controller {
     }
 
     public async createFeedback(): Promise<Response> {
-        const {casesFeedback, images} = this.req.body; //  as ICaseFeedback[];
+        const { casesFeedback, images } = this.req.body; //  as ICaseFeedback[];
+        const { client } = this.req.user;
         try {
             const createFeedback = [];
             for (const feedback of casesFeedback) {
@@ -62,7 +64,7 @@ export class CasesController extends Controller {
                     ...feedback,
                     date: moment().format("YYYY-MM-DD"),
                 });
-                createFeedback.push(this.caseFeedbackService.create(createdCaseFeedback));
+                createFeedback.push(this.caseFeedbackService.create(client, createdCaseFeedback));
             }
 
             await Promise.all(createFeedback);
@@ -71,7 +73,7 @@ export class CasesController extends Controller {
                 // Save image
                 const content = images.base64;
                 const name = images.name;
-                const resultUpload = await this.imageservice.base64UploadToS3(content, name);
+                const resultUpload = await this.imageservice.base64UploadToS3(client, content, name);
             }
 
             return this.res.status(200).send({ success: true, message: "Case feedback almacenado con exito" });

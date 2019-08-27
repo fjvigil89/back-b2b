@@ -1,5 +1,6 @@
-import { Express, Request, Response } from "express";
+import { Request, Response } from "express";
 import * as moment from "moment";
+import { getConnection } from "typeorm";
 import { Comment } from "../entity";
 import { CommentService, HashtagService, ImageService } from "../services";
 import { Controller } from "./Controller";
@@ -21,17 +22,18 @@ export class CommentController extends Controller {
 
     public async create(): Promise<Response> {
         const { body, user, file } = this.req as {
-            body: { content: string, post_id: number }, user: { userId: string }, file?: Express.Multer.File,
+            body: { content: string, post_id: number }, user: { userId: string, client: string }, file?: Express.Multer.File,
         };
         this.comment.content = body.content;
         this.comment.postId = Number(body.post_id);
         this.comment.userId = user.userId;
         this.comment.date = moment(new Date()).format("YYYY-MM-DD HH:mm:ss");
         if (file) {
-            this.comment.image = await this.imageService.saveOneImage(file);
+            this.comment.image = await this.imageService.saveOneImage(this.req.user.client, file);
         }
-        await this.hashtagService.associatePostHashtag(this.comment.postId, this.comment.content, false);
-        return this.comment.save()
+        await this.hashtagService.associatePostHashtag(user.client, this.comment.postId, this.comment.content, false);
+
+        return getConnection(user.client).getRepository(Comment).save(this.comment)
             .then(() => {
                 this.comment.date = moment(this.comment.date).toISOString();
                 return this.res.status(200).json({ comment: this.comment }).send();
@@ -43,13 +45,14 @@ export class CommentController extends Controller {
 
     public async list(): Promise<Response> {
         const { id } = this.req.params as { id: number, user: { userId: string } };
-        const ListGroupComments = await this.commentService.listGroupCommentDetail(id, this.req.user.userId);
+        const ListGroupComments = await this.commentService.listGroupCommentDetail(this.req.user.client, id, this.req.user.userId);
         return this.res.status(200).json({ comments: ListGroupComments }).send();
     }
 
     public async find(): Promise<Response> {
         const { id } = this.req.params as { id: number };
-        const ListGroupComments = await this.commentService.detailComment(id, this.req.user.userId);
+        const { client } = this.req.user;
+        const ListGroupComments = await this.commentService.detailComment(client, id, this.req.user.userId);
         if (ListGroupComments) {
             return this.res.status(200).json({ comment: ListGroupComments }).send();
         } else {
@@ -59,7 +62,8 @@ export class CommentController extends Controller {
 
     public async update(): Promise<Response> {
         const { comment_id, content } = this.req.body as { comment_id: number, content: string };
-        return Comment.update(comment_id, {
+        const { client } = this.req.user;
+        return getConnection(client).getRepository(Comment).update(comment_id, {
             content,
             date: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
         })

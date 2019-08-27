@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { getConnection } from "typeorm";
 import { LikeReply } from "../entity";
 import { LikeReplyService } from "../services";
 import { Controller } from "./Controller";
@@ -13,12 +14,12 @@ export class LikeReplyController extends Controller {
     }
 
     public async create(): Promise<Response> {
-        const { body, user } = this.req as { body: { reply_id: number }, user: { userId: string } };
+        const { body, user } = this.req as { body: { reply_id: number }, user: { userId: string, client: string } };
         const like = new LikeReply();
         like.replyId = body.reply_id;
         like.userId = user.userId;
         await this.likeReplyService.removeLike(like);
-        return like.save()
+        return getConnection(user.client).getRepository(LikeReply).save(like)
             .then((newLike) => {
                 return this.res.status(200).json({ like: newLike }).send();
             })

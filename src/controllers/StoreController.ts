@@ -12,9 +12,9 @@ export class StoreController extends Controller {
     }
 
     public async list(): Promise<Response> {
-        const { userId } = this.req.user as { userId: string };
+        const { userId, client } = this.req.user as { userId: string, client: string };
         try {
-            const Stores = await this.storeService.listStoreUser(userId);
+            const Stores = await this.storeService.listStoreUser(client, userId);
             return this.res.status(200).json(Stores).send();
         } catch (ex) {
             return this.res.status(500).send();
@@ -23,14 +23,16 @@ export class StoreController extends Controller {
 
     public async find(): Promise<Response> {
         const folio: string = this.req.params.folio;
+        const { client } = this.req.user;
         try {
-            const Stores = await this.storeService.groupStore(Number(folio));
+            const Stores = await this.storeService.groupStore(client, Number(folio));
             if (Stores) {
-                return this.res.status(200).json(Stores).send();
+                return this.res.status(200).send(Stores);
             } else {
                 return this.res.status(404).send();
             }
         } catch (ex) {
+            console.error(ex);
             return this.res.status(500).send();
         }
     }

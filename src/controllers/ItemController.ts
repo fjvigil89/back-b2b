@@ -14,9 +14,10 @@ export class ItemController extends Controller {
 
     public async list(): Promise<Response> {
         const { folio, category, action } = this.req.params as { folio: string, category: string, action: string };
+        const { client } = this.req.user;
         try {
-            const detail = await this.itemService.detailItemsAction(Number(folio), category, action);
-            return this.res.status(200).json({ detail }).send();
+            const detail = await this.itemService.detailItemsAction(client, Number(folio), category, action);
+            return this.res.status(200).send({ detail });
         } catch (ex) {
             return this.res.status(500).send();
         }

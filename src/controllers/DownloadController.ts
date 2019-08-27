@@ -11,18 +11,19 @@ export class DownloadController extends Controller {
   }
 
   public async getDataReport(): Promise<Response> {
-    const { body/* , user */ } = this.req as {
+    const { body, user } = this.req as {
       body: {
         fecha: string;
         retail: string;
-      }, /* ,
+      },
       user: {
-        userId: string
-      } */
+        userId: string,
+        client: string,
+      },
     };
 
     // Obtene datos
-    const datos = await this.downloadService.getDataDownload(body);
+    const datos = await this.downloadService.getDataDownload(user.client, body);
 
     // Comprimir o entregar
     return this.res.status(200).json({ datos }).send();

@@ -17,15 +17,15 @@ export class PostController extends Controller {
     }
 
     public async create(): Promise<Response> {
-        const { body, user } = this.req as { body: { content: string }, user: { userId: string } };
+        const { body, user } = this.req;
         let post: Post;
         try {
-            post = await this.postService.createPost(body.content, user.userId);
-            await this.hashtagService.associatePostHashtag(post.id, post.content);
+            post = await this.postService.createPost(user.client, body.content, user.userId);
+            await this.hashtagService.associatePostHashtag(user.client, post.id, post.content);
             if (Array.isArray(this.req.files)) {
-                await this.imageService.saveImages(this.req.files, post.id);
+                await this.imageService.saveImages(this.req.user.client, this.req.files, post.id);
             }
-            const postGroup = await this.postService.findPostDetail(post.id, user.userId);
+            const postGroup = await this.postService.findPostDetail(user.client, post.id, user.userId);
             return this.res.status(200).json({ post: postGroup }).send();
         } catch (ex) {
             return this.res.status(500).json({ message: "Hubo un error al crear el post" }).send();
@@ -34,13 +34,15 @@ export class PostController extends Controller {
 
     public async list(): Promise<Response> {
         const { skip } = this.req.params as { skip: string };
-        const postsGroup = await this.postService.listPostDetail(Number(skip), this.req.user.userId);
+        const { client } = this.req.user;
+        const postsGroup = await this.postService.listPostDetail(client, Number(skip), this.req.user.userId);
         return this.res.status(200).json({ posts: postsGroup }).send();
     }
 
     public async find(): Promise<Response> {
         const { id } = this.req.params as { id: number };
-        const post = await this.postService.findPostDetail(id, this.req.user.userId);
+        const { client } = this.req.user;
+        const post = await this.postService.findPostDetail(client, id, this.req.user.userId);
         if (post) {
             return this.res.status(200).json({ post }).send();
         } else {
@@ -50,17 +52,19 @@ export class PostController extends Controller {
 
     public async listByHashtag(): Promise<Response> {
         const { text, skip } = this.req.params as { text: string, skip: string };
-        const postsByHashtag = await this.postService.findPostDetailByHashtag(text, Number(skip), this.req.user.userId);
+        const { client } = this.req.user;
+        const postsByHashtag = await this.postService.findPostDetailByHashtag(client, text, Number(skip), this.req.user.userId);
         return this.res.status(200).json({ posts: postsByHashtag }).send();
     }
 
     public async update(): Promise<Response> {
         const { post_id, content } = this.req.body as { post_id: number, content: string };
+        const { client } = this.req.user;
         try {
-            await this.postService.updatePost(content, post_id);
-            await this.hashtagService.associatePostHashtag(post_id, content);
+            await this.postService.updatePost(client, content, post_id);
+            await this.hashtagService.associatePostHashtag(client, post_id, content);
             if (Array.isArray(this.req.files)) {
-                await this.imageService.saveImages(this.req.files, post_id);
+                await this.imageService.saveImages(client, this.req.files, post_id);
             }
             return this.res.status(200).send();
         } catch (ex) {

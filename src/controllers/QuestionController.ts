@@ -12,10 +12,12 @@ export class QuestionController extends Controller {
     }
 
     public async list(): Promise<Response> {
+        const { client } = this.req.user;
         try {
-            const questions = await this.questionService.getQuestions();
-            return this.res.status(200).json({ questions }).send();
+            const questions = await this.questionService.getQuestions(client);
+            return this.res.status(200).json({ questions });
         } catch (ex) {
+            console.error(ex);
             return this.res.status(500).send();
         }
     }

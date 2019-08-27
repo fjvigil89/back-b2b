@@ -13,10 +13,11 @@ export class ImageController extends Controller {
 
     public async create(): Promise<Response> {
         const { context, id } = this.req.body as { context: string, id: string };
+        const { client } = this.req.user;
         try {
             let url: string;
             if (this.req.file) {
-                url = await this.imageService.saveOneImage(this.req.file, `${context}/${id}`);
+                url = await this.imageService.saveOneImage(client, this.req.file, `${context}/${id}`);
             }
             return this.res.status(200).json({ url }).send();
         } catch (ex) {

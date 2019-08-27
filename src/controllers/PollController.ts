@@ -13,25 +13,30 @@ export class PollController extends Controller {
 
     public async detailPoll(): Promise<Response> {
         const { id } = this.req.params as { id: number };
-        const detail = await this.pollService.groupDetailPoll(id);
+        const { client } = this.req.user;
+        const detail = await this.pollService.groupDetailPoll(client, id);
         return this.res.status(200).send(detail);
     }
 
     public async find(): Promise<Response> {
         const { id } = this.req.params as { id: number };
-        const [pollStore] = await this.pollService.groupListPoll(id);
+        const { client } = this.req.user;
+        console.log("find");
+        const [pollStore] = await this.pollService.groupListPoll(client, id);
         return this.res.status(200).send(pollStore);
     }
 
     public async list(): Promise<Response> {
-        const List = await this.pollService.groupListPoll();
+        const { client } = this.req.user;
+        const List = await this.pollService.groupListPoll(client);
         return this.res.status(200).send(List);
     }
 
     public async answer(): Promise<Response> {
         try {
-            const { body } = this.req as { body: [{ id: number, respuesta: string }]};
-            await this.pollService.answerPoll(body);
+            const { body } = this.req as { body: [{ id: number, respuesta: string }] };
+            const { client } = this.req.user;
+            await this.pollService.answerPoll(client, body);
             return this.res.status(200).send();
         } catch (ex) {
             return this.res.status(500).send();
