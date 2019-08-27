@@ -22,9 +22,9 @@ import {
 import { config } from "./config";
 
 interface IROUTER {
-  path: string;
-  middleware: any[];
-  handler: express.Router;
+    path: string;
+    middleware: any[];
+    handler: express.Router;
 }
 
 const Cases = new CasesRouter();
@@ -51,66 +51,66 @@ export const ROUTER: IROUTER[] = [{
     path: "/auth",
 }, {
     handler: Store.router,
-    middleware: [ jwt({ secret: config.SECRET }) ],
+    middleware: [jwt({ secret: config.SECRET })],
     path: "/store",
 }, {
     handler: Item.router,
-    middleware: [ jwt({ secret: config.SECRET }) ],
+    middleware: [jwt({ secret: config.SECRET })],
     path: "/item",
 }, {
     handler: Post.router,
-    middleware: [ jwt({ secret: config.SECRET }) ],
+    middleware: [jwt({ secret: config.SECRET })],
     path: "/post",
 }, {
     handler: Comment.router,
-    middleware: [ jwt({ secret: config.SECRET }) ],
+    middleware: [jwt({ secret: config.SECRET })],
     path: "/comment",
 }, {
     handler: Reply.router,
-    middleware: [ jwt({ secret: config.SECRET }) ],
+    middleware: [jwt({ secret: config.SECRET })],
     path: "/reply",
 }, {
     handler: LikePost.router,
-    middleware: [ jwt({ secret: config.SECRET }) ],
+    middleware: [jwt({ secret: config.SECRET })],
     path: "/likePost",
 }, {
     handler: LikeComment.router,
-    middleware: [ jwt({ secret: config.SECRET }) ],
+    middleware: [jwt({ secret: config.SECRET })],
     path: "/likeComment",
 }, {
     handler: LikeReply.router,
-    middleware: [ jwt({ secret: config.SECRET }) ],
+    middleware: [jwt({ secret: config.SECRET })],
     path: "/likeReply",
 }, {
     handler: Poll.router,
-    middleware: [ jwt({ secret: config.SECRET }) ],
+    middleware: [jwt({ secret: config.SECRET })],
     path: "/encuesta",
 }, {
     handler: Hashtag.router,
-    middleware: [ jwt({ secret: config.SECRET }) ],
+    middleware: [jwt({ secret: config.SECRET })],
     path: "/hashtag",
 }, {
     handler: Check.router,
-    middleware: [ jwt({ secret: config.SECRET }) ],
+    middleware: [jwt({ secret: config.SECRET })],
     path: "/check",
 }, {
     handler: Summary.router,
-    middleware: [ jwt({ secret: config.SECRET }) ],
+    middleware: [jwt({ secret: config.SECRET })],
     path: "/summary",
 }, {
     handler: Cases.router,
-    middleware: [ jwt({ secret: config.SECRET }) ],
+    middleware: [jwt({ secret: config.SECRET })],
     path: "/cases",
 }, {
     handler: Image.router,
-    middleware: [ jwt({ secret: config.SECRET }) ],
+    middleware: [jwt({ secret: config.SECRET })],
     path: "/image",
 }, {
     handler: Download.router,
-    middleware: [ jwt({ secret: config.SECRET }) ],
+    middleware: [jwt({ secret: config.SECRET })],
     path: "/download",
 }, {
     handler: Question.router,
-    middleware: [ jwt({ secret: config.SECRET }) ],
+    middleware: [jwt({ secret: config.SECRET })],
     path: "/question",
 }];
