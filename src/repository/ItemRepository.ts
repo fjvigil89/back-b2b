@@ -43,8 +43,8 @@ export class ItemRepository extends Repository<Item> {
         group by a.ean`);
     }
 
-    public bulkCreate(Items: Item[]): Promise<any> {
-        return getConnection().createQueryBuilder().insert().into(Item).values(Items).execute();
+    public bulkCreate(client: string, Items: Item[]): Promise<any> {
+        return getConnection(client).createQueryBuilder().insert().into(Item).values(Items).execute();
     }
 
     public findItem(ean: string, folio: number, ventaPerdida: number): Promise<Item> {

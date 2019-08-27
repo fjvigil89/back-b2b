@@ -1,5 +1,5 @@
 import * as moment from "moment";
-import { EntityRepository, getConnection, Repository } from "typeorm";
+import { EntityRepository, Repository } from "typeorm";
 import { Check } from "../entity";
 
 @EntityRepository(Check)
@@ -20,8 +20,8 @@ export class CheckRepository extends Repository<Check> {
         await this.update({
             dateCheckOut: null,
         }, {
-            dateCheckOut: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
-        });
+                dateCheckOut: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
+            });
     }
 
 }

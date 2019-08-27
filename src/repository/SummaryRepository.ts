@@ -1,7 +1,7 @@
-import { EntityRepository, getConnection, Repository } from "typeorm";
+import { EntityRepository, Repository } from "typeorm";
 import { Summary } from "../entity";
 
-export type IRange =  "day" | "week" | "month";
+export type IRange = "day" | "week" | "month";
 
 @EntityRepository(Summary)
 export class SummaryRepository extends Repository<Summary> {

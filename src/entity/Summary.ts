@@ -3,8 +3,8 @@ import { BaseEntity, Column, Entity, getConnection, PrimaryColumn } from "typeor
 @Entity("summary")
 export class Summary extends BaseEntity {
 
-    public static bulkCreate(mov: Summary[]): Promise<any> {
-        return getConnection().createQueryBuilder().insert().into(Summary).values(mov).execute();
+    public static bulkCreate(client: string, mov: Summary[]): Promise<any> {
+        return getConnection(client).createQueryBuilder().insert().into(Summary).values(mov).execute();
     }
 
     @PrimaryColumn("integer")
