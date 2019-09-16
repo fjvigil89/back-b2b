@@ -19,7 +19,7 @@ export class UserController extends Controller {
             token = await this.userService.validUser(userId, password);
             return this.res.status(200).json({
                 ...token,
-                endpoint: "http://192.168.0.126:1344",
+                endpoint: "http://back-b2b-production.sditrmidsj.us-west-2.elasticbeanstalk.com",
                 km: Number(config.KM),
             }).send();
         } catch (err) {
