@@ -20,10 +20,10 @@ build:
       - node_modules/
       - dist/
 
-test:
-  stage: test
-  script:
-    - npm run test
+#test:
+#  stage: test
+#  script:
+#    - npm run test
 
 # Job: Deploy
 # Zips the contents of our built application, uploads to S3
