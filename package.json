@@ -62,7 +62,6 @@
     "path": "^0.12.7",
     "request": "^2.88.0",
     "sharp": "^0.23.0",
-    "ts-node": "^8.3.0",
     "typeorm": "^0.2.18",
     "typescript": "^3.5.3"
   },
@@ -72,6 +71,7 @@
     "mocha": "^6.2.0",
     "nodemon": "^1.19.1",
     "supertest": "^4.0.2",
+    "ts-node": "^8.4.1",
     "tslint": "^5.18.0",
     "typescript-eslint-parser": "^22.0.0"
   }
