@@ -5,21 +5,21 @@ import * as Util from "../utils/service";
 
 export class SummaryService {
 
-    public async summaryList(userId: string, range: IRange): Promise<any> {
+    public async summaryList(userId: string, range: string): Promise<any> {
 
         const customRepository = getCustomRepository(SummaryRepository);
-        const [ summary, storeClose, storeOpen, totalCurrent, newsItems,
-            invalidVariation, vPerdida, invalidTotal, updatesDate ] = await Promise.all([
-            customRepository.summaryByRange(userId, range),
-            customRepository.storeVariationClose(userId, range),
-            customRepository.storeVariationOpen(userId, range),
-            customRepository.totalCurrent(userId, range),
-            customRepository.newItemsVariation(userId, range),
-            customRepository.invalidVariation(userId, range),
-            customRepository.groupActions(userId, range),
-            customRepository.totalInvalidItems(userId, range),
-            getCustomRepository(StoreRepository).updateDates(),
-        ]);
+        const [summary, storeClose, storeOpen, totalCurrent, newsItems,
+            invalidVariation, vPerdida, invalidTotal, updatesDate] = await Promise.all([
+                customRepository.summaryByRange(userId, range),
+                customRepository.storeVariationClose(userId, range),
+                customRepository.storeVariationOpen(userId, range),
+                customRepository.totalCurrent(userId, range),
+                customRepository.newItemsVariation(userId, range),
+                customRepository.invalidVariation(userId, range),
+                customRepository.groupActions(userId, range),
+                customRepository.totalInvalidItems(userId, range),
+                getCustomRepository(StoreRepository).updateDates(),
+            ]);
         const banderas = summary.map((row) => {
             const totalOpen = storeOpen.find((store) => store.bandera === row.bandera);
             const updateDate = updatesDate.find((bandera) => bandera.nombre === row.bandera);
@@ -74,22 +74,22 @@ export class SummaryService {
 
     }
 
-    private getPeriod(range: IRange): { actual: string, anterior: string } {
+    private getPeriod(range: string): { actual: string, anterior: string } {
         moment.locale("es");
         switch (range) {
-            case "day" : {
+            case "day": {
                 return {
                     actual: moment().subtract(1, "days").format("YYYY-MM-DD"),
                     anterior: moment().subtract(1, "days").subtract(1, "week").format("YYYY-MM-DD"),
                 };
             }
-            case "week" : {
+            case "week": {
                 return {
                     actual: moment().subtract(1, "days").startOf("week").format("YYYY-MM-DD"),
                     anterior: moment().subtract(1, "days").subtract(1, "week").startOf("week").format("YYYY-MM-DD"),
                 };
             }
-            case "month" : {
+            case "month": {
                 return {
                     actual: moment().subtract(1, "days").startOf("month").format("YYYY-MM-DD"),
                     anterior: moment().subtract(1, "days").subtract(1, "month").startOf("month").format("YYYY-MM-DD"),

@@ -42,14 +42,14 @@ export class ReplyController extends Controller {
     }
 
     public async list(): Promise<Response> {
-        const { id } = this.req.params as { id: number };
+        const id = Number(this.req.params.id);
         const { client } = this.req.user;
         const replies = await this.replyService.findByComment(client, id);
         return this.res.status(200).json({ replies }).send();
     }
 
     public async find(): Promise<Response> {
-        const { id } = this.req.params as { id: number };
+        const id = Number(this.req.params.id);
         const reply = await Reply.findOne(id);
         if (reply) {
             return this.res.status(200).json({ reply }).send();
@@ -71,7 +71,7 @@ export class ReplyController extends Controller {
     }
 
     public async remove(): Promise<Response> {
-        const { id } = this.req.params as { id: number };
+        const id = Number(this.req.params.id);
         await Reply.delete(id);
         return this.res.status(200).send();
     }

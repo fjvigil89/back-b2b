@@ -21,9 +21,7 @@ export class CommentController extends Controller {
     }
 
     public async create(): Promise<Response> {
-        const { body, user, file } = this.req as {
-            body: { content: string, post_id: number }, user: { userId: string, client: string }, file?: Express.Multer.File,
-        };
+        const { body, user, file } = this.req;
         this.comment.content = body.content;
         this.comment.postId = Number(body.post_id);
         this.comment.userId = user.userId;
@@ -44,15 +42,16 @@ export class CommentController extends Controller {
     }
 
     public async list(): Promise<Response> {
-        const { id } = this.req.params as { id: number, user: { userId: string } };
-        const ListGroupComments = await this.commentService.listGroupCommentDetail(this.req.user.client, id, this.req.user.userId);
+        const id = Number(this.req.params.id);
+        const { client, userId } = this.req.user;
+        const ListGroupComments = await this.commentService.listGroupCommentDetail(client, id, userId);
         return this.res.status(200).json({ comments: ListGroupComments }).send();
     }
 
     public async find(): Promise<Response> {
-        const { id } = this.req.params as { id: number };
-        const { client } = this.req.user;
-        const ListGroupComments = await this.commentService.detailComment(client, id, this.req.user.userId);
+        const id = Number(this.req.params.id);
+        const { client, userId } = this.req.user;
+        const ListGroupComments = await this.commentService.detailComment(client, id, userId);
         if (ListGroupComments) {
             return this.res.status(200).json({ comment: ListGroupComments }).send();
         } else {
@@ -61,7 +60,7 @@ export class CommentController extends Controller {
     }
 
     public async update(): Promise<Response> {
-        const { comment_id, content } = this.req.body as { comment_id: number, content: string };
+        const { comment_id, content } = this.req.body;
         const { client } = this.req.user;
         return getConnection(client).getRepository(Comment).update(comment_id, {
             content,
@@ -76,7 +75,7 @@ export class CommentController extends Controller {
     }
 
     public async remove(): Promise<Response> {
-        const { id } = this.req.params as { id: number };
+        const id = Number(this.req.params.id);
         await Comment.delete(id);
         return this.res.status(200).send();
     }

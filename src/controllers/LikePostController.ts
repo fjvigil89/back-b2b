@@ -30,14 +30,14 @@ export class LikePostController extends Controller {
     }
 
     public async list(): Promise<Response> {
-        const { id } = this.req.params as { id: number };
+        const id = Number(this.req.params.id);
         const { client } = this.req.user;
         const likes = await this.likePostService.findByPost(client, id);
         return this.res.status(200).json({ likes }).send();
     }
 
     public async remove(): Promise<Response> {
-        const { id } = this.req.params as { id: number };
+        const id = Number(this.req.params.id);
         const { client } = this.req.user;
         const like = new LikePost();
         like.postId = id;

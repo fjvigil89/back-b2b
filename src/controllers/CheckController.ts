@@ -12,7 +12,7 @@ export class CheckController extends Controller {
     }
 
     public async create(): Promise<Response> {
-        const { folio, type } = this.req.body as { folio: number, type: string };
+        const { folio, type } = this.req.body;
         const { userId, client } = this.req.user;
         console.log("cliet: ", client);
         try {

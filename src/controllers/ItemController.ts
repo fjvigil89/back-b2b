@@ -24,8 +24,8 @@ export class ItemController extends Controller {
     }
 
     public async listSupi(): Promise<Response> {
-        const { id_visita } = this.req.params;
-        const Items = await tomaVisita(id_visita);
+        const idVisita = Number(this.req.params.id_visita);
+        const Items = await tomaVisita(idVisita);
         return this.res.status(200).json({ Items }).send();
     }
 

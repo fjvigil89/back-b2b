@@ -12,7 +12,7 @@ export class ImageController extends Controller {
     }
 
     public async create(): Promise<Response> {
-        const { context, id } = this.req.body as { context: string, id: string };
+        const { context, id } = this.req.body;
         const { client } = this.req.user;
         try {
             let url: string;

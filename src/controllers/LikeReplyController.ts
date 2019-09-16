@@ -29,15 +29,15 @@ export class LikeReplyController extends Controller {
     }
 
     public async list(): Promise<Response> {
-        const { id } = this.req.params as { id: number };
+        const id = Number(this.req.params.id);
         const likes = await this.likeReplyService.findByReply(id);
         return this.res.status(200).json({ likes }).send();
     }
 
     public async remove(): Promise<Response> {
-        const { id } = this.req.params as { id: number };
+        const { id } = this.req.params;
         const like = new LikeReply();
-        like.replyId = id;
+        like.replyId = Number(id);
         like.userId = this.req.user.userId;
         return this.likeReplyService.removeLike(like)
             .then(() => {

@@ -11,16 +11,7 @@ export class DownloadController extends Controller {
   }
 
   public async getDataReport(): Promise<Response> {
-    const { body, user } = this.req as {
-      body: {
-        fecha: string;
-        retail: string;
-      },
-      user: {
-        userId: string,
-        client: string,
-      },
-    };
+    const { body, user } = this.req;
 
     // Obtene datos
     const datos = await this.downloadService.getDataDownload(user.client, body);

@@ -6,7 +6,7 @@ export type IRange = "day" | "week" | "month";
 @EntityRepository(Summary)
 export class SummaryRepository extends Repository<Summary> {
 
-    public summaryByRange(userId: string, range: IRange): Promise<Array<{
+    public summaryByRange(userId: string, range: string): Promise<Array<{
         ventas_totales_actual: number;
         venta_perdida_actual: number;
         ventas_totales_anterior: number;
@@ -50,7 +50,7 @@ export class SummaryRepository extends Repository<Summary> {
         ) as summary`);
     }
 
-    public totalCurrent(userId: string, range: IRange): Promise<{
+    public totalCurrent(userId: string, range: string): Promise<{
         total_ventas: number,
         venta_perdida: number,
         venta_unidades: number,
@@ -73,7 +73,7 @@ export class SummaryRepository extends Repository<Summary> {
             });
     }
 
-    public storeVariationClose(userId: string, range: IRange): Promise<Array<{ total: number, bandera: string }>> {
+    public storeVariationClose(userId: string, range: string): Promise<Array<{ total: number, bandera: string }>> {
         return this.query(`
             SELECT SUM(ventas_totales) as total, bandera FROM summary WHERE folio in (
                 SELECT b.folio as "SALA CERRADA" from (
@@ -99,7 +99,7 @@ export class SummaryRepository extends Repository<Summary> {
         `);
     }
 
-    public storeVariationOpen(userId: string, range: IRange): Promise<Array<{ total: number, bandera: string }>> {
+    public storeVariationOpen(userId: string, range: string): Promise<Array<{ total: number, bandera: string }>> {
         return this.query(`
             SELECT SUM(ventas_totales) as total, bandera FROM summary WHERE folio in (
                 SELECT a.folio as "SALA NUEVA" from (
@@ -123,7 +123,7 @@ export class SummaryRepository extends Repository<Summary> {
         `);
     }
 
-    public newItemsVariation(userId: string, range: IRange): Promise<Array<{ bandera: string, venta_total: number }>> {
+    public newItemsVariation(userId: string, range: string): Promise<Array<{ bandera: string, venta_total: number }>> {
         return this.query(`
             SELECT a.bandera, SUM(a.ventas_totales) as venta_total
                 FROM summary a
@@ -143,7 +143,7 @@ export class SummaryRepository extends Repository<Summary> {
         `);
     }
 
-    public invalidVariation(userId: string, range: IRange): Promise<Array<{ bandera: string, venta_total: number }>> {
+    public invalidVariation(userId: string, range: string): Promise<Array<{ bandera: string, venta_total: number }>> {
         return this.query(`
             SELECT a.bandera, SUM(a.ventas_totales) as venta_total
             FROM summary a
@@ -163,7 +163,7 @@ export class SummaryRepository extends Repository<Summary> {
         `);
     }
 
-    public groupActions(userId: string, range: IRange): Promise<Array<{
+    public groupActions(userId: string, range: string): Promise<Array<{
         bandera: string,
         venta_perdida: number,
         accion: string,
@@ -183,7 +183,7 @@ export class SummaryRepository extends Repository<Summary> {
         `);
     }
 
-    public totalInvalidItems(userId: string, range: IRange): Promise<Array<{ bandera: string, total: number }>> {
+    public totalInvalidItems(userId: string, range: string): Promise<Array<{ bandera: string, total: number }>> {
         return this.query(`
             SELECT a.bandera, count(*) as total
             FROM summary a

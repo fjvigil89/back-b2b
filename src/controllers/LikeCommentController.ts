@@ -14,7 +14,7 @@ export class LikeCommentController extends Controller {
     }
 
     public async create(): Promise<Response> {
-        const { body, user } = this.req as { body: { comment_id: number }, user: { userId: string, client: string } };
+        const { body, user } = this.req;
         const like = new LikeComment();
         like.commentId = body.comment_id;
         like.userId = user.userId;
@@ -34,14 +34,14 @@ export class LikeCommentController extends Controller {
     }
 
     public async list(): Promise<Response> {
-        const { id } = this.req.params as { id: number };
+        const id = Number(this.req.params.id);
         const { client } = this.req.user;
         const likes = await this.likeCommentService.findByComment(client, id);
         return this.res.status(200).json({ likes }).send();
     }
 
     public async remove(): Promise<Response> {
-        const { id } = this.req.params as { id: number };
+        const id = Number(this.req.params.id);
         const { client } = this.req.user;
         const like = new LikeComment();
         like.commentId = id;
