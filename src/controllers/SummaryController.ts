@@ -12,11 +12,13 @@ export class SummaryController extends Controller {
     }
 
     public async index(): Promise<Response> {
+        const { client, userId } = this.req.user;
         const { range } = this.req.params;
         try {
-            const summary = await this.summaryService.summaryList(this.req.user.userId, range);
+            const summary = await this.summaryService.summaryList(client, userId, range);
             return this.res.status(200).json(summary).send();
         } catch (ex) {
+            console.error(ex);
             return this.res.status(500).send();
         }
     }

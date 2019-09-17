@@ -1,13 +1,12 @@
 import * as moment from "moment";
-import { getCustomRepository } from "typeorm";
-import { IRange, StoreRepository, SummaryRepository } from "../repository";
+import { getConnection } from "typeorm";
+import { StoreRepository, SummaryRepository } from "../repository";
 import * as Util from "../utils/service";
 
 export class SummaryService {
 
-    public async summaryList(userId: string, range: string): Promise<any> {
-
-        const customRepository = getCustomRepository(SummaryRepository);
+    public async summaryList(client: string, userId: string, range: string): Promise<any> {
+        const customRepository = getConnection(client).getCustomRepository(SummaryRepository);
         const [summary, storeClose, storeOpen, totalCurrent, newsItems,
             invalidVariation, vPerdida, invalidTotal, updatesDate] = await Promise.all([
                 customRepository.summaryByRange(userId, range),
@@ -18,8 +17,9 @@ export class SummaryService {
                 customRepository.invalidVariation(userId, range),
                 customRepository.groupActions(userId, range),
                 customRepository.totalInvalidItems(userId, range),
-                getCustomRepository(StoreRepository).updateDates(),
+                getConnection(client).getCustomRepository(StoreRepository).updateDates(),
             ]);
+
         const banderas = summary.map((row) => {
             const totalOpen = storeOpen.find((store) => store.bandera === row.bandera);
             const updateDate = updatesDate.find((bandera) => bandera.nombre === row.bandera);
@@ -55,7 +55,7 @@ export class SummaryService {
                 },
                 ventas_perdidas: {
                     causas: {
-                        chequear_pedidos: Number(acciones["Chequear pedidos"].venta_perdida) || 0,
+                        chequear_pedidos: acciones["Chequear pedidos"] ? Number(acciones["Chequear pedidos"].venta_perdida) : 0,
                         desajuste_stock: acciones.Ajustar ? Number(acciones.Ajustar.venta_perdida) : 0,
                         productos_descatalogados: totalInvalid ? Number(totalInvalid.total) : 0,
                         reposicion: acciones.Reponer ? Number(acciones.Reponer.venta_perdida) : 0,
