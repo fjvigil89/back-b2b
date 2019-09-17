@@ -18,7 +18,7 @@ export class LikeReplyController extends Controller {
         const like = new LikeReply();
         like.replyId = body.reply_id;
         like.userId = user.userId;
-        await this.likeReplyService.removeLike(like);
+        await this.likeReplyService.removeLike(user.client, like);
         return getConnection(user.client).getRepository(LikeReply).save(like)
             .then((newLike) => {
                 return this.res.status(200).json({ like: newLike }).send();
@@ -30,16 +30,18 @@ export class LikeReplyController extends Controller {
 
     public async list(): Promise<Response> {
         const id = Number(this.req.params.id);
-        const likes = await this.likeReplyService.findByReply(id);
+        const { client } = this.req.user;
+        const likes = await this.likeReplyService.findByReply(client, id);
         return this.res.status(200).json({ likes }).send();
     }
 
     public async remove(): Promise<Response> {
         const { id } = this.req.params;
+        const { client } = this.req.user;
         const like = new LikeReply();
         like.replyId = Number(id);
         like.userId = this.req.user.userId;
-        return this.likeReplyService.removeLike(like)
+        return this.likeReplyService.removeLike(client, like)
             .then(() => {
                 return this.res.status(200).send();
             })
