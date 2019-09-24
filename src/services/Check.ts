@@ -25,7 +25,7 @@ export class CheckService {
                 } else if (type === "out") {
                     if (prevCheck.dateCheckIn && prevCheck.dateCheckOut == null) {
                         prevCheck.dateCheckOut = moment(new Date()).format("YYYY-MM-DD HH:mm:ss");
-                        await prevCheck.save();
+                        await getConnection(client).getRepository(Check).save(prevCheck);
                     } else {
                         throw new Error("No existe ninguna visita en progreso");
                     }
