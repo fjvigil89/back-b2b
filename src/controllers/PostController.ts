@@ -36,7 +36,7 @@ export class PostController extends Controller {
         const { skip } = this.req.params as { skip: string };
         const { client } = this.req.user;
         const postsGroup = await this.postService.listPostDetail(client, Number(skip), this.req.user.userId);
-        return this.res.status(200).json({ posts: postsGroup }).send();
+        return this.res.status(200).send({ posts: postsGroup });
     }
 
     public async find(): Promise<Response> {
