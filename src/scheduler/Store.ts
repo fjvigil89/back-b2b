@@ -1,7 +1,7 @@
 import { CronJob } from "cron";
 import * as moment from "moment";
 import { getConnection } from "typeorm";
-import { Connection, B2B } from "../config/database";
+import { Connection } from "../config/database";
 import { Store, Summary } from "../entity";
 import { ItemRepository, StoreRepository } from "../repository";
 import { ItemService } from "../services";
@@ -13,16 +13,15 @@ import * as SUPI_SERVICE from "../services/external/SUPI";
 import * as Util from "../utils/service";
 
 // CronJobs
-export const StoreSchedulerICB = new CronJob("30 */1 * * * *", async () => {
+export const StoreSchedulerICB = new CronJob("40 */1 * * * *", async () => {
     await syncStoreB2B("icb");
 }, null, null, "America/Santiago");
 
-export const StoreSchedulerPERNOD = new CronJob("00 */1 * * * *", async () => {
+export const StoreSchedulerPERNOD = new CronJob("10 */1 * * * *", async () => {
     await syncStoreB2B("pernod");
 }, null, null, "America/Santiago");
 
 const itemService = new ItemService();
-let folios: string[] = [];
 
 export async function syncStoreB2B(client: string): Promise<void> {
     await Connection;
@@ -30,10 +29,10 @@ export async function syncStoreB2B(client: string): Promise<void> {
     if (retail) {
         console.log("SINCRONIZANDO", retail);
         await B2B_SERVICE.startSyncGeneral(client, retail);
-        folios = await getConnection(client).getCustomRepository(StoreRepository).listStore();
+        const folios: string[] = await getConnection(client).getCustomRepository(StoreRepository).listStore();
         const ListStore = await B2B_SERVICE.lastStoreByDate(client);
         for (const chunk of Util.chunk(ListStore, 100)) {
-            await Promise.all(chunk.map((store) => storeProcess(client, store)));
+            await Promise.all(chunk.map((store) => storeProcess(client, store, folios)));
         }
         await summaryProcess(client);
         await B2B_SERVICE.resetGeneralPending(client, retail);
@@ -41,7 +40,7 @@ export async function syncStoreB2B(client: string): Promise<void> {
     }
 }
 
-async function storeProcess(client: string, store: B2B_SERVICE.ILastStoreByDate): Promise<void> {
+async function storeProcess(client: string, store: B2B_SERVICE.ILastStoreByDate, folios: string[]): Promise<void> {
     const StoreMaster = await MASTER_SERVICE.findStore(store.codLocal, store.retail);
     if (StoreMaster.folio && folios.some((folio) => StoreMaster.folio === Number(folio))) {
         if (!store.fecha_sin_venta) {
