@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import * as moment from "moment";
+import { getConnection } from "typeorm";
 import { Case, CaseFeedback } from "../entity";
 import { CaseFeedbackService, CasesService, ImageService } from "../services";
 import { Controller } from "./Controller";
@@ -38,7 +39,7 @@ export class CasesController extends Controller {
         try {
             const newCase = this.req.body as ICaseRequest;
             const { client } = this.req.user;
-            const createdCase = Case.create({
+            const createdCase = getConnection(client).getRepository(Case).create({
                 ...newCase,
                 dateAction: moment().format("YYYY-MM-DD"),
                 userId: this.req.user.userId,
@@ -60,10 +61,12 @@ export class CasesController extends Controller {
                 if (images.base64 && feedback.questionId === 0) {
                     feedback.answer = images.name;
                 }
-                const createdCaseFeedback = CaseFeedback.create({
+
+                const createdCaseFeedback = getConnection(client).getRepository(CaseFeedback).create({
                     ...feedback,
                     date: moment().format("YYYY-MM-DD"),
                 });
+
                 createFeedback.push(this.caseFeedbackService.create(client, createdCaseFeedback));
             }
 

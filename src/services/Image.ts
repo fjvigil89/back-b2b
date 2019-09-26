@@ -30,7 +30,7 @@ export class ImageService {
     }
 
     private getUrl(client: string) {
-        this.URL_BASE = `https://s3-sa-east-1.amazonaws.com/cadem-files/IMAGES_B2B_APP/${client.toLocaleUpperCase()}/`;
+        this.URL_BASE = `https://s3-sa-east-1.amazonaws.com/cadem-files/IMAGES_B2B_APP/${client.toUpperCase()}/`;
     }
 
     public saveOneImage(client: string, file: IMulterFile, customPath?: string): Promise<string> {
@@ -57,7 +57,7 @@ export class ImageService {
                 ACL: "public-read",
                 Body: buff,
                 Bucket: "cadem-files",
-                Key: `IMAGES_B2B_APP/${client}/${filename}`,
+                Key: `IMAGES_B2B_APP/${client.toUpperCase()}/${filename}`,
             }).promise().then(() => {
                 return `${this.getUrl(client)}${filename}`;
             });
@@ -72,7 +72,7 @@ export class ImageService {
                 ACL: "public-read",
                 Body: localImage,
                 Bucket: "cadem-files",
-                Key: `IMAGES_B2B_APP/${client}/${path}`,
+                Key: `IMAGES_B2B_APP/${client.toUpperCase()}/${path}`,
             }).promise().then(() => {
                 return `${this.getUrl(client)}${path}`;
             });

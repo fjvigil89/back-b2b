@@ -15,6 +15,7 @@ export class CheckService {
         const store = await getConnection(client).getCustomRepository(StoreRepository).findByStoreId(folio);
         if (store) {
             const prevCheck = await getConnection(client).getCustomRepository(CheckRepository).findLastCheck(userId);
+            console.log('prevCheck: ', prevCheck);
             if (prevCheck) {
                 if (type === "in") {
                     if (prevCheck.dateCheckOut) {

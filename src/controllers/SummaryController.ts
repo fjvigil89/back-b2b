@@ -16,7 +16,7 @@ export class SummaryController extends Controller {
         const { range } = this.req.params;
         try {
             const summary = await this.summaryService.summaryList(client, userId, range);
-            return this.res.status(200).json(summary).send();
+            return this.res.status(200).send(summary);
         } catch (ex) {
             console.error(ex);
             return this.res.status(500).send();

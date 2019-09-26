@@ -4,7 +4,7 @@ import { CasesRepository, QuestionRepository } from "../repository";
 
 export class CaseFeedbackService {
 
-    public async create(client: string, newCaseFeedback: CaseFeedback): Promise<number> {
+    public async create(client: string, newCaseFeedback: any): Promise<number> {
         const { folio, ean, date, questionId } = newCaseFeedback;
         const [question, existCase] = await Promise.all([
             getConnection(client).getCustomRepository(QuestionRepository).findQuestion(questionId),
