@@ -29,10 +29,6 @@ export class ImageService {
         this.S3 = new AWS.S3();
     }
 
-    private getUrl(client: string) {
-        this.URL_BASE = `https://s3-sa-east-1.amazonaws.com/cadem-files/IMAGES_B2B_APP/${client.toUpperCase()}/`;
-    }
-
     public saveOneImage(client: string, file: IMulterFile, customPath?: string): Promise<string> {
         if (customPath) {
             file.filename = `${customPath}${file.filename}`;
@@ -63,6 +59,12 @@ export class ImageService {
             });
         });
     }
+
+    private getUrl(client: string) {
+        this.URL_BASE = `https://s3-sa-east-1.amazonaws.com/cadem-files/IMAGES_B2B_APP/${client.toUpperCase()}/`;
+        return this.URL_BASE;
+    }
+
 
     private uploadToS3(client: string, file: IMulterFile): Promise<string> {
         return sharp(file.path).resize(1000).toBuffer().then((buff) => {
