@@ -31,12 +31,12 @@ export class Server {
 
     private ExpressConfiguration(): void {
         this.app.use(bodyParser.urlencoded({ extended: true }));
-        this.app.use(bodyParser.json({ limit: "50mb" }));
+        this.app.use(bodyParser.json({ limit: "250mb" }));
         this.app.use(methodOverride());
         this.app.use((req, res, next): void => {
             res.header("Access-Control-Allow-Origin", "*");
-            res.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, Authorization");
-            res.header("Access-Control-Allow-Methods", "GET,PUT,PATCH,POST,DELETE,OPTIONS");
+            res.header("Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE");
+            res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
             next();
         });
         this.app.use(morgan("combined"));
