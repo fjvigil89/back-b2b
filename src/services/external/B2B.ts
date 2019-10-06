@@ -156,7 +156,6 @@ export function summary(
         WHERE
             fecha BETWEEN "${init}"
             AND "${finish}"
-            AND caso = 1
         GROUP BY retail, cod_item, cod_local
     `));
 }
