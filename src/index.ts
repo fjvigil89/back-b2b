@@ -3,7 +3,14 @@ import { resolve } from "path";
 import { env } from "process";
 import { config } from "./config/config";
 import { Server } from "./config/server";
-import { CheckSchedulerICB, CheckSchedulerPERNOD, StoreSchedulerICB, StoreSchedulerPERNOD } from "./scheduler";
+import {
+    CheckSchedulerANDINA,
+    CheckSchedulerICB,
+    CheckSchedulerPERNOD,
+    StoreSchedulerANDINA,
+    StoreSchedulerICB,
+    StoreSchedulerPERNOD,
+} from "./scheduler";
 
 process.on("unhandledRejection", (reason, promise) => {
     promise.catch((err) => console.log(err));
@@ -20,6 +27,9 @@ if (env.NODE_ENV === "PRODUCTION") {
 if (env.NODE_ENV === "PRODUCTION") {
     StoreSchedulerICB.start();
     StoreSchedulerPERNOD.start();
+    StoreSchedulerANDINA.start();
+
+    CheckSchedulerANDINA.start();
     CheckSchedulerICB.start();
     CheckSchedulerPERNOD.start();
 }

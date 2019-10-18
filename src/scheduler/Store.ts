@@ -21,6 +21,10 @@ export const StoreSchedulerPERNOD = new CronJob("10 */1 * * * *", async () => {
     await syncStoreB2B("pernod");
 }, null, null, "America/Santiago");
 
+export const StoreSchedulerANDINA = new CronJob("25 */1 * * * *", async () => {
+    await syncStoreB2B("andina");
+}, null, null, "America/Santiago");
+
 const itemService = new ItemService();
 
 export async function syncStoreB2B(client: string): Promise<void> {
