@@ -33,7 +33,7 @@ export async function lastStoreByDate(client: string): Promise<ILastStoreByDate[
             , retail
             , MAX(fecha) as actualizacion_b2b
         FROM
-            movimiento
+            movimiento_last_days
         GROUP BY
             cod_local, retail
     ) b ON
