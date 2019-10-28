@@ -9,6 +9,13 @@ interface IdataCadem {
     pendiente: number;
 }
 
+export interface IToma {
+    id_visita: number;
+    ean: string;
+    valor: string;
+    categoria: string;
+}
+
 export async function visitaCadem(folio: number): Promise<IdataCadem> {
     const visitas = await ultimasVisitas(folio);
     const cademResult = { id_visita: null, mide: 0, realizada: 0, fecha_visita: null, pendiente: 0 };
@@ -29,36 +36,36 @@ export async function visitaCadem(folio: number): Promise<IdataCadem> {
 
 function ultimasVisitas(folio: number): Promise<Array<{ id_visita: number, fecha: string, estado: number }>> {
     return SUPI.then((conn) => conn.query(`
-        SELECT TOP 2 a.ID_VISITA as id_visita, a.HORAINICIO as fecha, a.ESTADO as estado
+        SELECT TOP 2 a.ID_VISITA as id_visita
+            , a.HORAINICIO as fecha
+            , a.ESTADO as estado
         FROM VISITA a
         INNER JOIN dbo.ESTUDIOSALA b
-        ON a.ID_ESTUDIOSALA = b.ID_ESTUDIOSALA
+            ON a.ID_ESTUDIOSALA = b.ID_ESTUDIOSALA
         INNER JOIN dbo.SALA c
-        ON b.ID_SALA = c.ID_SALA
+            ON b.ID_SALA = c.ID_SALA
         INNER JOIN ESTUDIO d
-        ON d.ID_ESTUDIO = b.ID_ESTUDIO
-        WHERE c.FOLIOCADEM = ${folio} AND
-        d.ID_ESTUDIO = ${process.env.ID_ESTUDIO_SUPI} AND
-        a.DIA >= '${moment().subtract(30, "day").format("YYYY-MM-DD")}'
+            ON d.ID_ESTUDIO = b.ID_ESTUDIO
+        WHERE c.FOLIOCADEM = ${folio}
+            AND d.ID_ESTUDIO = ${process.env.ID_ESTUDIO_SUPI}
+            AND a.DIA >= '${moment().subtract(30, "day").format("YYYY-MM-DD")}'
         ORDER BY a.DIA DESC`));
 }
 
-export interface IToma {
-    id_visita: number;
-    ean: string;
-    valor: string;
-    categoria: string;
-}
-
 export function tomaVisita(visitaId: number): Promise<IToma[]> {
-    return SUPI.then((conn) => conn.query(`SELECT CONVERT(int, A.VALOR) as valor,
-        b.DESCRIPCION as descripcion, b.EAN as ean, c.DESCRIPCION as categoria
+    return SUPI.then((conn) => conn.query(`
+        SELECT CONVERT(int, A.VALOR) as valor
+            , b.DESCRIPCION as descripcion
+            , b.EAN as ean
+            , c.DESCRIPCION as categoria
         FROM TOMA a
-        INNER JOIN dbo.ITEM b ON
-        a.ID_PRODUCTO = b.ID_ITEM
-        INNER JOIN CODIGOS c ON
-        b.ID_CATEGORIA = c.ID_CODIGO
-        WHERE a.ID_VISITA = ${visitaId} AND a.ID_VARIABLE = 1`));
+        INNER JOIN dbo.ITEM b
+            ON a.ID_PRODUCTO = b.ID_ITEM
+        INNER JOIN CODIGOS c
+            ON b.ID_CATEGORIA = c.ID_CODIGO
+        WHERE a.ID_VISITA = ${visitaId}
+            AND a.ID_VARIABLE = 1
+    `));
 }
 
 export function OSA(toma: IToma[]) {
