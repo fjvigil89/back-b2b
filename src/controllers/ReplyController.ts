@@ -28,7 +28,8 @@ export class ReplyController extends Controller {
         if (this.req.file) {
             reply.image = await this.imageService.saveOneImage(user.client, this.req.file);
         }
-        const { postId } = await Comment.findOne(reply.commentId);
+
+        const { postId } = await getConnection(user.client).getRepository(Comment).findOne(reply.commentId);
         await this.hashtagService.associatePostHashtag(user.client, postId, reply.content, false);
 
         return getConnection(user.client).getRepository(Reply).save(reply)
@@ -50,7 +51,9 @@ export class ReplyController extends Controller {
 
     public async find(): Promise<Response> {
         const id = Number(this.req.params.id);
-        const reply = await Reply.findOne(id);
+        const { client } = this.req.user;
+        const reply = await getConnection(client).getRepository(Reply).findOne(id);
+
         if (reply) {
             return this.res.status(200).json({ reply }).send();
         } else {
