@@ -39,12 +39,12 @@ function ultimasVisitas(folio: number): Promise<Array<{ id_visita: number, fecha
         SELECT TOP 2 a.ID_VISITA as id_visita
             , a.HORAINICIO as fecha
             , a.ESTADO as estado
-        FROM VISITA a
-        INNER JOIN dbo.ESTUDIOSALA b
+        FROM VISITA WITH(NOLOCK) a
+        INNER JOIN ESTUDIOSALA WITH(NOLOCK) b
             ON a.ID_ESTUDIOSALA = b.ID_ESTUDIOSALA
-        INNER JOIN dbo.SALA c
+        INNER JOIN SALA WITH(NOLOCK) c
             ON b.ID_SALA = c.ID_SALA
-        INNER JOIN ESTUDIO d
+        INNER JOIN ESTUDIO WITH(NOLOCK) d
             ON d.ID_ESTUDIO = b.ID_ESTUDIO
         WHERE c.FOLIOCADEM = ${folio}
             AND d.ID_ESTUDIO = ${process.env.ID_ESTUDIO_SUPI}
@@ -58,10 +58,10 @@ export function tomaVisita(visitaId: number): Promise<IToma[]> {
             , b.DESCRIPCION as descripcion
             , b.EAN as ean
             , c.DESCRIPCION as categoria
-        FROM TOMA a
-        INNER JOIN dbo.ITEM b
+        FROM TOMA WITH(NOLOCK) a
+        INNER JOIN dbo.ITEM WITH(NOLOCK) b
             ON a.ID_PRODUCTO = b.ID_ITEM
-        INNER JOIN CODIGOS c
+        INNER JOIN CODIGOS WITH(NOLOCK) c
             ON b.ID_CATEGORIA = c.ID_CODIGO
         WHERE a.ID_VISITA = ${visitaId}
             AND a.ID_VARIABLE = 1
