@@ -25,9 +25,9 @@ if (env.NODE_ENV === "PRODUCTION") {
 }
 
 if (env.NODE_ENV === "PRODUCTION") {
-    /* StoreSchedulerICB.start();
+    StoreSchedulerICB.start();
     StoreSchedulerPERNOD.start();
-    StoreSchedulerANDINA.start(); */
+    StoreSchedulerANDINA.start();
 
     CheckSchedulerANDINA.start();
     CheckSchedulerICB.start();
