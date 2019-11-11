@@ -45,7 +45,7 @@ export class StoreRepository extends Repository<Store> {
             SELECT * from ${"`check`"} WHERE user_id = "${userId}" ORDER by date_check_in DESC LIMIT 1
         ) as lastCheck ON
         a.folio = lastCheck.folio
-        WHERE a.folio IN (${folios}) AND a.venta_perdida > 0 AND a.cadena is NOT NULL
+        WHERE a.folio IN (${folios}) AND a.cadena is NOT NULL
         ORDER BY a.venta_perdida DESC`);
     }
 
