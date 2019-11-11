@@ -26,14 +26,14 @@ export async function lastStoreByDate(client: string): Promise<ILastStoreByDate[
         , MAX(a.fecha) as fecha_sin_venta
         , b.actualizacion_b2b
     FROM
-        movimiento_last_days a
+        movimiento a
     LEFT JOIN (
         SELECT
             cod_local
             , retail
             , MAX(fecha) as actualizacion_b2b
         FROM
-            movimiento_last_days
+            movimiento
         GROUP BY
             cod_local, retail
     ) b ON
