@@ -157,6 +157,8 @@ export const SUPI = new ConnectionManager().create({
     port: config.SOURCE_SUPI.PORT_DB,
     synchronize: false,
     type: "mssql",
+    connectionTimeout: 120000,
+    requestTimeout: 120000,
     username: config.SOURCE_SUPI.USER_DB,
 }).connect();
 
