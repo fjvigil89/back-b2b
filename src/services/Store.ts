@@ -27,7 +27,7 @@ export class StoreService {
 
     public async groupStore(client: string, folio: number): Promise<IDetailStore | null> {
         const [detailItems, detailStore, gestionado] = await Promise.all([
-            getConnection(client).getCustomRepository(ItemRepository).findByStoreId(folio),
+            getConnection(client).getCustomRepository(ItemRepository).findByStoreId(folio, this.today),
             getConnection(client).getCustomRepository(StoreRepository).findByStoreId(folio),
             getConnection(client).getCustomRepository(CasesRepository).totalCasesByDate(folio, this.today),
         ]);

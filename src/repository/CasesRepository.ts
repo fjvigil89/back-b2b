@@ -1,3 +1,4 @@
+import * as moment from "moment";
 import { EntityRepository, Repository } from "typeorm";
 import { Case } from "../entity";
 

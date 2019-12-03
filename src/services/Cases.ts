@@ -6,9 +6,10 @@ export class CasesService {
 
     public async create(client: string, newCase: Case): Promise<number> {
         try {
+            const { ean, folio, ventaPerdida, dateAction } = newCase;
             const [item, existCase] = await Promise.all([
-                getConnection(client).getCustomRepository(ItemRepository).findItem(newCase.ean, newCase.folio, newCase.ventaPerdida),
-                getConnection(client).getCustomRepository(CasesRepository).findCase(newCase.folio, newCase.ean, newCase.dateAction),
+                getConnection(client).getCustomRepository(ItemRepository).findItem(ean, folio, ventaPerdida),
+                getConnection(client).getCustomRepository(CasesRepository).findCase(folio, ean, dateAction),
             ]);
 
             if (!item) {
