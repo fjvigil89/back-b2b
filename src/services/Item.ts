@@ -20,6 +20,11 @@ export interface IItemsAction {
 }
 
 export class ItemService {
+    private today: string;
+
+    constructor() {
+        this.today = moment().format("YYYY-MM-DD");
+    }
 
     public async listItems(
         client: string,
@@ -82,7 +87,7 @@ export class ItemService {
         client: string, folio: number, category: string, action: string): Promise<IItemsAction> {
         return getConnection(client)
             .getCustomRepository(ItemRepository)
-            .findByAction(folio, category, action).then((Items) => {
+            .findByAction(folio, category, action, this.today).then((Items) => {
                 if (action === "Chequear pedidos") {
                     return {
                         data: Items.map((item) => {
