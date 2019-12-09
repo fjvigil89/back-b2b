@@ -11,6 +11,7 @@ import {
     LikeCommentRouter,
     LikePostRouter,
     LikeReplyRouter,
+    NotificationRouter,
     PollRouter,
     PostRouter,
     QuestionRouter,
@@ -36,6 +37,7 @@ const Item = new ItemRouter();
 const LikeComment = new LikeCommentRouter();
 const LikePost = new LikePostRouter();
 const LikeReply = new LikeReplyRouter();
+const Notification = new NotificationRouter();
 const Poll = new PollRouter();
 const Post = new PostRouter();
 const Reply = new ReplyRouter();
@@ -113,4 +115,8 @@ export const ROUTER: IROUTER[] = [{
     handler: Question.router,
     middleware: [jwt({ secret: config.SECRET })],
     path: "/question",
+}, {
+    handler: Notification.router,
+    middleware: [jwt({ secret: config.SECRET })],
+    path: "/notification",
 }];

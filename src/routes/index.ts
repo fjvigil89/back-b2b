@@ -8,6 +8,7 @@ import { ItemRouter } from "./Item";
 import { LikeCommentRouter } from "./LikeComment";
 import { LikePostRouter } from "./LikePost";
 import { LikeReplyRouter } from "./LikeReply";
+import { NotificationRouter } from "./Notifications";
 import { PollRouter } from "./Poll";
 import { PostRouter } from "./Post";
 import { QuestionRouter } from "./Question";
@@ -27,6 +28,7 @@ export {
     LikeCommentRouter,
     LikePostRouter,
     LikeReplyRouter,
+    NotificationRouter,
     PollRouter,
     PostRouter,
     ReplyRouter,
