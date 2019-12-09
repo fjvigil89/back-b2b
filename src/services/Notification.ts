@@ -43,13 +43,12 @@ export class NotificationService {
       try {
         const receipts = await expo.getPushNotificationReceiptsAsync(chunk);
 
-        for (const receipt of receipts) {
-          if (receipt.status === "ok") {
+        for (const key of Object.keys(receipts)) {
+          if (receipts[key].status === "ok") {
             continue;
-          } else if (receipt.status === "error") {
-            console.error(`Hubo un error al enviar la notificacion: ${receipt.message}`);
-            if (receipt.details && receipt.details.error) {
-              console.error(`El codigo de erro es: ${receipt.details.error}`);
+          } else if (receipts[key].status === "error") {
+            if (receipts[key].details) {
+              console.error(`El codigo de erro es: ${receipts[key].details}`);
             }
           }
         }
