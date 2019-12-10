@@ -1,7 +1,7 @@
 import * as moment from "moment";
 import { getConnection, getCustomRepository } from "typeorm";
 import { Post } from "../entity";
-import { IListPost, PostRepository } from "../repository";
+import { PostRepository } from "../repository";
 import * as Util from "../utils/service";
 
 export class PostService {

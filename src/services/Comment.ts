@@ -1,6 +1,6 @@
 import * as moment from "moment";
 import { getConnection } from "typeorm";
-import { CommentRepository, IListComment } from "../repository";
+import { CommentRepository } from "../repository";
 import * as Util from "../utils/service";
 
 export class CommentService {

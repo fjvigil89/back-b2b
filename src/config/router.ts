@@ -1,4 +1,5 @@
 import * as jwt from "express-jwt";
+import { IRouter } from "../interfaces/Express";
 import {
     CasesRouter,
     CheckRouter,
@@ -40,7 +41,7 @@ const User = new UserRouter();
 const Image = new ImageRouter();
 const Question = new QuestionRouter();
 
-export const ROUTER: IROUTER[] = [{
+export const ROUTER: IRouter[] = [{
     handler: User.router,
     middleware: [],
     path: "/auth",
