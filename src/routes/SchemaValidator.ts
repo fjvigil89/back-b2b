@@ -14,7 +14,7 @@ export function validator(schema: ObjectSchema) {
         const { error } = schema.validate(params, OPTS);
         if (error) {
             const { message } = error;
-            return res.status(400).json({ message });
+            return res.status(500).json({ message });
         } else {
             return next();
         }

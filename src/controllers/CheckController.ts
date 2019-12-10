@@ -20,7 +20,7 @@ export class CheckController extends Controller {
             return this.res.status(200).send();
         } catch (ex) {
             console.error("/check: ", ex);
-            return this.res.status(400).json({ message: ex.message });
+            return this.res.status(500).json({ message: ex.message });
         }
     }
 

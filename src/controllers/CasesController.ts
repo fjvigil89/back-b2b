@@ -48,7 +48,7 @@ export class CasesController extends Controller {
             return this.res.status(200).send({ success: true, caseId });
         } catch (ex) {
             console.error(ex);
-            return this.res.status(400).send();
+            return this.res.status(500).send();
         }
     }
 
@@ -82,7 +82,7 @@ export class CasesController extends Controller {
             return this.res.status(200).send({ success: true, message: "Case feedback almacenado con exito" });
         } catch (err) {
             console.error("Error when save Case Feedback: ", err);
-            return this.res.status(400).send();
+            return this.res.status(500).send();
         }
     }
 
