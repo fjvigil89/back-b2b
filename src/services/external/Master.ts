@@ -1,16 +1,5 @@
 import { MASTER } from "../../config/database";
 
-export interface IStoreMaster {
-    folio: number;
-    cod_local: string;
-    direccion: string;
-    bandera: string;
-    cadena: string;
-    latitud: string;
-    longitud: string;
-    descripcion: string;
-}
-
 export function findStore(storeId: any, retail: string): Promise<IStoreMaster> {
     return MASTER.then((conn) => conn.query(`
             SELECT a.id as folio

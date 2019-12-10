@@ -1,4 +1,3 @@
-import * as express from "express";
 import * as jwt from "express-jwt";
 import {
     CasesRouter,
@@ -21,12 +20,6 @@ import {
     UserRouter,
 } from "../routes";
 import { config } from "./config";
-
-interface IROUTER {
-    path: string;
-    middleware: any[];
-    handler: express.Router;
-}
 
 const Cases = new CasesRouter();
 const Check = new CheckRouter();

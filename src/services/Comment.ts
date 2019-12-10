@@ -3,32 +3,6 @@ import { getConnection } from "typeorm";
 import { CommentRepository, IListComment } from "../repository";
 import * as Util from "../utils/service";
 
-interface IListReplies {
-    content: string;
-    currentDate: string;
-    date: string;
-    id: number;
-    userId: number;
-    userName: string;
-    totalLikes: number;
-    enableLike: boolean;
-    image: string;
-}
-
-interface IListCommentDetail {
-    content: string;
-    currentDate: Date | string;
-    date: Date | string;
-    id: number;
-    totalReplies: number;
-    userId: string;
-    userName: string;
-    totalLikes: number;
-    replies: IListReplies[];
-    enableLike: boolean;
-    image: string;
-}
-
 export class CommentService {
 
     public listGroupCommentDetail(client: string, id: number, userId: string): Promise<IListCommentDetail[]> {

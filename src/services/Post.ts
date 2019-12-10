@@ -4,24 +4,6 @@ import { Post } from "../entity";
 import { IListPost, PostRepository } from "../repository";
 import * as Util from "../utils/service";
 
-interface IImage {
-    imageId: number;
-    imagePath: string;
-}
-
-interface IListPostDetail {
-    content: string;
-    currentDate: Date | string;
-    date: Date | string;
-    id: number;
-    totalComments: number;
-    totalLikes: number;
-    userId: string;
-    userName: string;
-    enableLike: boolean;
-    images: IImage[];
-}
-
 export class PostService {
 
     private post: Post;

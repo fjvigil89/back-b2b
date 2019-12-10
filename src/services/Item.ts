@@ -7,18 +7,6 @@ import * as B2B_SERVICE from "./external/B2B";
 import * as MASTER_SERVICE from "./external/Master";
 import { IToma } from "./external/SUPI";
 
-export interface IItemsAction {
-    flag: boolean;
-    data: Array<{
-        ean: number,
-        descripcion: string,
-        stock_transito?: number,
-        sventa: number,
-        cadem: number,
-        gestionado: number,
-    }>;
-}
-
 export class ItemService {
     private today: string;
 

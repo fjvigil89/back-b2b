@@ -1,26 +1,9 @@
 import { Request, Response } from "express";
 import * as moment from "moment";
 import { getConnection } from "typeorm";
-import { Case, CaseFeedback } from "../entity";
+import { CaseFeedback } from "../entity";
 import { CaseFeedbackService, CasesService, ImageService } from "../services";
 import { Controller } from "./Controller";
-
-interface ICaseRequest {
-    folio: number;
-    action: string;
-    cause: string;
-    ean: string;
-    ventaPerdida: number;
-    dateB2B: string;
-}
-
-interface ICaseFeedback {
-    caseId: number;
-    questionId: number;
-    folio: number;
-    ean: string;
-    answer: string;
-}
 
 export class CasesController extends Controller {
 
@@ -37,18 +20,16 @@ export class CasesController extends Controller {
 
     public async create(): Promise<Response> {
         try {
-            const newCase = this.req.body as ICaseRequest;
-            const { client } = this.req.user;
-            const createdCase = getConnection(client).getRepository(Case).create({
-                ...newCase,
-                dateAction: moment().format("YYYY-MM-DD"),
-                userId: this.req.user.userId,
-            });
-            const caseId = await this.caseService.create(client, createdCase);
+            const newCase = this.req.body;
+            const { client, userId } = this.req.user;
+            const caseId = await this.caseService.create(client, userId, newCase);
             return this.res.status(200).send({ success: true, caseId });
-        } catch (ex) {
-            console.error(ex);
-            return this.res.status(500).send();
+        } catch (err) {
+            console.error(err);
+            return this.res.status(500).send({
+                success: false,
+                message: "Error al crear caso gestionado",
+            });
         }
     }
 

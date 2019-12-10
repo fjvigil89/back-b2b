@@ -1,25 +1,6 @@
 import { EntityRepository, Repository } from "typeorm";
 import { Comment } from "../entity";
 
-export interface IListComment {
-    userName: string;
-    id: number;
-    content: string;
-    date: string;
-    userId: string;
-    contentReply: string;
-    dateReply: string;
-    replyId: number;
-    replyUserName: string;
-    replyUserId: number;
-    likeCommentId: number;
-    likeReplyId: number;
-    idUserLike: string;
-    idUserLikeReply: string;
-    image: string;
-    imageReply: string;
-}
-
 @EntityRepository(Comment)
 export class CommentRepository extends Repository<Comment> {
 

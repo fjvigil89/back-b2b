@@ -1,21 +1,6 @@
 import * as moment from "moment";
 import { SUPI } from "../../config/database";
 
-interface IdataCadem {
-    id_visita: number;
-    mide: number;
-    realizada: number;
-    fecha_visita: string;
-    pendiente: number;
-}
-
-export interface IToma {
-    id_visita: number;
-    ean: string;
-    valor: string;
-    categoria: string;
-}
-
 export async function visitaCadem(folio: number): Promise<IdataCadem> {
     const visitas = await ultimasVisitas(folio);
     const cademResult = { id_visita: null, mide: 0, realizada: 0, fecha_visita: null, pendiente: 0 };

@@ -1,23 +1,6 @@
 import * as moment from "moment";
 import { B2B } from "../../config/database";
 
-interface IDetailItem {
-    stock: number;
-    ean: number;
-    stockPedidoTienda: number;
-    diasSinVenta: number;
-    itemId: number;
-    promedioVentas: number;
-    ventaUnidades: number;
-}
-
-export interface ILastStoreByDate {
-    fecha_sin_venta: string | null;
-    actualizacion_b2b: string;
-    codLocal: string;
-    retail: string;
-}
-
 export async function lastStoreByDate(client: string): Promise<ILastStoreByDate[]> {
     return B2B[client].then((conn) => conn.query(`
     SELECT

@@ -1,10 +1,5 @@
 import * as B2B_SERVICE from "../services/external/B2B";
 
-interface IFilterDataDownload {
-  fecha: string;
-  retail: string;
-}
-
 export class DownloadService {
 
   public async getDataDownload(client: string, filtros: IFilterDataDownload): Promise<void> {

@@ -5,17 +5,6 @@ import { AWS_CREDENTIALS } from "../config/config";
 import { Image } from "../entity";
 import { ImageRepository } from "../repository";
 
-interface IMulterFile {
-    fieldname: string;
-    originalname: string;
-    encoding: string;
-    mimetype: string;
-    destination: string;
-    filename: string;
-    path: string;
-    size: number;
-}
-
 export class ImageService {
 
     private URL_BASE: string;

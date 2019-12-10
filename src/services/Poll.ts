@@ -2,28 +2,6 @@ import { getConnection } from "typeorm";
 import { PollRepository } from "../repository";
 import { uniqBy } from "../utils/service";
 
-interface IGroupDetail {
-    id: number;
-    step: number;
-    title: string;
-    type: string;
-    config?: Array<{
-        id: number,
-        text: string,
-    }>;
-}
-
-interface IGroupList {
-    description: string;
-    available: number;
-    listPolls: Array<{
-        description: string,
-        idPoll: number,
-        state: string,
-        title: string,
-    }>;
-}
-
 export class PollService {
 
     public async answerPoll(client: string, aryResponse: [{ id: number, respuesta: string }]): Promise<void> {

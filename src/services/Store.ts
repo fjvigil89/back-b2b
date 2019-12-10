@@ -4,19 +4,6 @@ import { Store } from "../entity";
 import { CasesRepository, IItemCase, ItemRepository, StoreRepository } from "../repository";
 import * as Util from "../utils/service";
 
-export interface IDetailStore {
-    cademsmart_porcentaje: number;
-    venta_perdida: number;
-    detail: IDetailItems[];
-}
-
-interface IDetailItems {
-    categoria: string;
-    casos: number;
-    venta_perdida: number;
-    acciones: Array<{ accion: string; monto: number }>;
-}
-
 export class StoreService {
 
     private today: string;

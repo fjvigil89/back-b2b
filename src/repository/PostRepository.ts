@@ -1,19 +1,6 @@
 import { EntityRepository, Repository } from "typeorm";
 import { Post } from "../entity";
 
-export interface IListPost {
-    userName: string;
-    likeId: number;
-    commentId: number;
-    content: string;
-    date: string;
-    id: number;
-    userId: string;
-    idUserLike: string;
-    imageId: number;
-    imagePath: string;
-}
-
 @EntityRepository(Post)
 export class PostRepository extends Repository<Post> {
 

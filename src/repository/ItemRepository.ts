@@ -1,20 +1,6 @@
 import { EntityRepository, getConnection, Repository } from "typeorm";
 import { Item } from "../entity";
 
-export interface IItemCase {
-    ean: number;
-    folio: number;
-    stock: number;
-    description: string;
-    category: string;
-    accion: string;
-    cadem: number;
-    venta_perdida: number;
-    stock_pedido_tienda: number;
-    dias_sin_venta: number;
-    gestionado: number;
-}
-
 @EntityRepository(Item)
 export class ItemRepository extends Repository<Item> {
 
