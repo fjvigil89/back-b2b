@@ -11,31 +11,35 @@ export class CasesService {
             console.log("userId: ", userId);
             console.log("newCase: ", newCase);
             const { ean, folio, ventaPerdida } = newCase;
+            const dateAction = moment().format("YYYY-MM-DD");
             const item = await getConnection(client)
                             .getCustomRepository(ItemRepository)
                             .findItem(ean, folio, ventaPerdida);
+            if (!item) {
+                throw new Error("El item del cual se creo la gestion no existe");
+            }
+
             console.log("item: ", JSON.stringify(item));
             console.log("Create: ", {
                 ...newCase,
                 itemId: item.id,
-                dateAction: moment().format("YYYY-MM-DD"),
+                dateAction,
                 userId,
             });
-            const createdCase = await getConnection(client).getRepository(Case).create({
-                ...newCase,
-                itemId: item.id,
-                dateAction: moment().format("YYYY-MM-DD"),
-                userId,
-            });
-            const { dateAction } = createdCase;
+            const createCase = await getConnection(client)
+                .getRepository(Case)
+                .create({
+                    ...newCase,
+                    itemId: item.id,
+                    dateAction,
+                    userId,
+                });
             const existCase = await getConnection(client)
                                 .getCustomRepository(CasesRepository)
                                 .findCase(folio, ean, dateAction);
-
-            if (!item) {
-                throw new Error("El item del cual se creo la gestion no existe");
-            } else if (!existCase) {
-                const resultCreate = await getConnection(client).getRepository(Case).save(newCase);
+            console.log(existCase);
+            if (!existCase) {
+                const resultCreate = await createCase.save();
                 return resultCreate.id;
             }
         } catch (err) {
