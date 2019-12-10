@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { NotificationService } from "../services/Notification";
 import { Controller } from "./Controller";
 
 export class NotificationController extends Controller {
@@ -8,11 +9,12 @@ export class NotificationController extends Controller {
     }
 
     public async register(): Promise<Response> {
-        const { token, username } = this.req.body as { token: string, username: string };
+        const { userId, client } = this.req.user as { userId: string, client: string };
+        const { token } = this.req.body as { token: string, username: string };
+        const notification = new NotificationService();
         try {
-            console.log(token);
-            console.log(username);
-            return this.res.status(200).send({ message: "success token", status: true });
+            await notification.saveToken(client, userId, token);
+            return this.res.status(200).send({ message: "success save token", status: true });
         } catch (ex) {
             return this.res.status(500).send();
         }

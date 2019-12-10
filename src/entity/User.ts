@@ -12,4 +12,10 @@ export class User extends BaseEntity {
     @Column("varchar")
     public password: string;
 
+    @Column("varchar")
+    public email: string;
+
+    @Column("varchar")
+    public notification: string;
+
 }

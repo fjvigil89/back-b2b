@@ -1,6 +1,12 @@
 import Expo from "expo-server-sdk";
+import { getConnection } from "typeorm";
+import { User } from "../entity";
 
 export class NotificationService {
+
+  public async saveToken(client: string, userId: string, token: string): Promise<any> {
+    return getConnection(client).getRepository(User).update({ id: userId }, { notification: token });
+  }
 
   public async sendNotification(tokens: string[], message: string): Promise<void> {
     const expo = new Expo();
