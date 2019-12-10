@@ -7,9 +7,6 @@ export class CasesService {
 
     public async create(client: string, userId: string, newCase: ICaseRequest): Promise<number> {
         try {
-            console.log("client: ", client);
-            console.log("userId: ", userId);
-            console.log("newCase: ", newCase);
             const { ean, folio, ventaPerdida } = newCase;
             const dateAction = moment().format("YYYY-MM-DD");
             const item = await getConnection(client)
@@ -19,13 +16,6 @@ export class CasesService {
                 throw new Error("El item del cual se creo la gestion no existe");
             }
 
-            console.log("item: ", JSON.stringify(item));
-            console.log("Create: ", {
-                ...newCase,
-                itemId: item.id,
-                dateAction,
-                userId,
-            });
             const createCase = await getConnection(client)
                 .getRepository(Case)
                 .create({
