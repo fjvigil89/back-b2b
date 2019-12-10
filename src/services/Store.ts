@@ -1,7 +1,7 @@
 import * as moment from "moment";
 import { getConnection } from "typeorm";
 import { Store } from "../entity";
-import { CasesRepository, IItemCase, ItemRepository, StoreRepository } from "../repository";
+import { CasesRepository, ItemRepository, StoreRepository } from "../repository";
 import * as Util from "../utils/service";
 
 export class StoreService {

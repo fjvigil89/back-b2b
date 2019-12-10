@@ -5,7 +5,6 @@ import { ItemRepository } from "../repository/ItemRepository";
 import * as Util from "../utils/service";
 import * as B2B_SERVICE from "./external/B2B";
 import * as MASTER_SERVICE from "./external/Master";
-import { IToma } from "./external/SUPI";
 
 export class ItemService {
     private today: string;

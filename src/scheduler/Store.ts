@@ -44,7 +44,7 @@ export async function syncStoreB2B(client: string): Promise<void> {
     }
 }
 
-async function storeProcess(client: string, store: B2B_SERVICE.ILastStoreByDate, folios: string[]): Promise<void> {
+async function storeProcess(client: string, store: ILastStoreByDate, folios: string[]): Promise<void> {
     const StoreMaster = await MASTER_SERVICE.findStore(store.codLocal, store.retail);
     if (StoreMaster.folio && folios.some((folio) => StoreMaster.folio === Number(folio))) {
         if (!store.fecha_sin_venta) {
