@@ -4,6 +4,9 @@ import { BaseEntity, Column, Entity, PrimaryColumn } from "typeorm";
 export class Item extends BaseEntity {
 
     @PrimaryColumn("integer")
+    public id: number;
+
+    @Column("integer")
     public ean: number;
 
     @Column("integer")
@@ -24,19 +27,13 @@ export class Item extends BaseEntity {
     @Column("integer")
     public cadem: number;
 
-    @Column("integer", {
-        name: "venta_perdida",
-    })
+    @Column("integer", { name: "venta_perdida" })
     public ventaPerdida: number;
 
-    @Column("integer", {
-        name: "stock_pedido_tienda",
-    })
+    @Column("integer", { name: "stock_pedido_tienda" })
     public stockPedidoTienda: number;
 
-    @Column("integer", {
-        name: "dias_sin_venta",
-    })
+    @Column("integer", { name: "dias_sin_venta" })
     public diasSinVenta: number;
 
 }

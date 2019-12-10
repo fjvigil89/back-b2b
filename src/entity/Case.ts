@@ -6,24 +6,19 @@ export class Case extends BaseEntity {
     @PrimaryGeneratedColumn()
     public id: number;
 
-    @Column("varchar", {
-        name: "user_id",
-    })
+    @Column("varchar", { name: "user_id" })
     public userId: string;
 
-    @Column("integer", {
-        name: "folio",
-    })
+    @Column("integer", { name: "item_id" })
+    public itemId: number;
+
+    @Column("integer", { name: "folio" })
     public folio: number;
 
-    @Column("varchar", {
-        name: "date_data_b2b",
-    })
+    @Column("varchar", { name: "date_data_b2b" })
     public dateB2B: string;
 
-    @Column("varchar", {
-        name: "date_action",
-    })
+    @Column("varchar", { name: "date_action" })
     public dateAction: string;
 
     @Column("varchar")
@@ -35,9 +30,7 @@ export class Case extends BaseEntity {
     @Column("varchar")
     public ean: string;
 
-    @Column("integer", {
-        name: "venta_perdida",
-    })
+    @Column("integer", { name: "venta_perdida" })
     public ventaPerdida: number;
 
 }

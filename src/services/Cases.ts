@@ -7,16 +7,20 @@ export class CasesService {
 
     public async create(client: string, userId: string, newCase: ICaseRequest): Promise<number> {
         try {
-            const createdCase = getConnection(client).getRepository(Case).create({
+            const { ean, folio, ventaPerdida } = newCase;
+            const item = await getConnection(client)
+                            .getCustomRepository(ItemRepository)
+                            .findItem(ean, folio, ventaPerdida);
+            const createdCase = await getConnection(client).getRepository(Case).create({
                 ...newCase,
+                itemId: item.id,
                 dateAction: moment().format("YYYY-MM-DD"),
                 userId,
             });
-            const { ean, folio, ventaPerdida, dateAction } = createdCase;
-            const [item, existCase] = await Promise.all([
-                getConnection(client).getCustomRepository(ItemRepository).findItem(ean, folio, ventaPerdida),
-                getConnection(client).getCustomRepository(CasesRepository).findCase(folio, ean, dateAction),
-            ]);
+            const { dateAction } = createdCase;
+            const existCase = await getConnection(client)
+                                .getCustomRepository(CasesRepository)
+                                .findCase(folio, ean, dateAction);
 
             if (!item) {
                 throw new Error("El item del cual se creo la gestion no existe");
