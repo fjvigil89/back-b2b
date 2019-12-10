@@ -37,9 +37,10 @@ export class CasesService {
             const existCase = await getConnection(client)
                                 .getCustomRepository(CasesRepository)
                                 .findCase(folio, ean, dateAction);
-            console.log(existCase);
             if (!existCase) {
-                const resultCreate = await createCase.save();
+                const resultCreate = await getConnection(client)
+                    .getRepository(Case)
+                    .save(createCase);
                 return resultCreate.id;
             }
         } catch (err) {
