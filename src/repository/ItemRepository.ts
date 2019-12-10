@@ -32,7 +32,8 @@ export class ItemRepository extends Repository<Item> {
     public findByStoreId(folio: number, today: string): Promise<IItemCase[]> {
         return this.query(`
             SELECT
-                a.*, IF(
+                a.*
+                , IF(
                     b.venta_perdida IS NULL
                     , 0
                     , b.venta_perdida
@@ -42,8 +43,8 @@ export class ItemRepository extends Repository<Item> {
                 AND a.accion = b.cause
                 AND a.ean = b.ean
                 AND b.date_action = '${today}'
-        WHERE a.folio = ${folio}
-        group by a.ean`);
+            WHERE a.folio = ${folio}
+            GROUP BY a.ean`);
     }
 
     public bulkCreate(client: string, Items: Item[]): Promise<any> {

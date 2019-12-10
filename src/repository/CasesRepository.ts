@@ -1,4 +1,3 @@
-import * as moment from "moment";
 import { EntityRepository, Repository } from "typeorm";
 import { Case } from "../entity";
 
@@ -6,9 +5,12 @@ import { Case } from "../entity";
 export class CasesRepository extends Repository<Case> {
 
     public totalCasesByDate(folio: number, fecha: string): Promise<number> {
-        return this.query(`SELECT SUM(venta_perdida) as total FROM cases
-        WHERE folio = ${folio} AND date_action = "${fecha}"
-        GROUP BY folio, date_action
+        return this.query(`
+            SELECT SUM(venta_perdida) AS total
+            FROM cases
+            WHERE folio = ${folio}
+                AND date_action = "${fecha}"
+            GROUP BY folio, date_action
         `).then((result) => {
             if (result.length) {
                 return result[0].total;
@@ -19,9 +21,12 @@ export class CasesRepository extends Repository<Case> {
     }
 
     public totalCasesbyCategory(folio: number, fecha: string): Promise<number> {
-        return this.query(`SELECT SUM(venta_perdida) as total FROM cases
-        WHERE folio = ${folio} AND date_action = "${fecha}"
-        GROUP BY folio, date_action
+        return this.query(`
+            SELECT SUM(venta_perdida) AS total
+            FROM cases
+            WHERE folio = ${folio}
+                AND date_action = "${fecha}"
+            GROUP BY folio, date_action
         `).then((result) => {
             if (result.length) {
                 return result[0].total;

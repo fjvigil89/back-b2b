@@ -20,8 +20,8 @@ export class CheckRepository extends Repository<Check> {
         await this.update({
             dateCheckOut: null,
         }, {
-                dateCheckOut: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
-            });
+            dateCheckOut: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
+        });
     }
 
 }

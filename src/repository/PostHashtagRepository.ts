@@ -9,7 +9,11 @@ export class PostHashtagRepository extends Repository<PostHashtag> {
     }
 
     public removeAssociationByPostHashtag(postId: number, hashtagId: number): Promise<void> {
-        return this.query(`DELETE FROM post_hashtag WHERE post_id = ${postId} AND hashtag_id = ${hashtagId}`);
+        return this.query(`
+            DELETE
+            FROM post_hashtag
+            WHERE post_id = ${postId}
+                AND hashtag_id = ${hashtagId}`);
     }
 
     public findAssociation(postId: number, hashtagId: number): Promise<PostHashtag> {
