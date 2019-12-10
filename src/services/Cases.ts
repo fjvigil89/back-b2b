@@ -7,10 +7,20 @@ export class CasesService {
 
     public async create(client: string, userId: string, newCase: ICaseRequest): Promise<number> {
         try {
+            console.log("client: ", client);
+            console.log("userId: ", userId);
+            console.log("newCase: ", newCase);
             const { ean, folio, ventaPerdida } = newCase;
             const item = await getConnection(client)
                             .getCustomRepository(ItemRepository)
                             .findItem(ean, folio, ventaPerdida);
+            console.log("item: ", JSON.stringify(item));
+            console.log("Create: ", {
+                ...newCase,
+                itemId: item.id,
+                dateAction: moment().format("YYYY-MM-DD"),
+                userId,
+            });
             const createdCase = await getConnection(client).getRepository(Case).create({
                 ...newCase,
                 itemId: item.id,
