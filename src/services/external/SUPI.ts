@@ -32,7 +32,7 @@ function ultimasVisitas(folio: number): Promise<Array<{ id_visita: number, fecha
         INNER JOIN ESTUDIO d WITH(NOLOCK)
             ON d.ID_ESTUDIO = b.ID_ESTUDIO
         WHERE c.FOLIOCADEM = ${folio}
-            AND d.ID_ESTUDIO = ${process.env.ID_ESTUDIO_SUPI}
+            AND d.ID_ESTUDIO = 34
             AND a.DIA >= '${moment().subtract(30, "day").format("YYYY-MM-DD")}'
         ORDER BY a.DIA DESC`));
 }
