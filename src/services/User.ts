@@ -22,6 +22,7 @@ export class UserService {
         console.log({
             userId: user.id,
             name: user.name,
+            email: user.email,
             client: client.toLocaleLowerCase(),
         });
 
@@ -29,6 +30,7 @@ export class UserService {
             token: jwt.sign({
                 userId: user.id,
                 name: user.name,
+                email: user.email,
                 client: client.toLocaleLowerCase(),
             }, config.SECRET),
             user: user.name,
