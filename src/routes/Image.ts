@@ -1,9 +1,10 @@
-import * as multer from "multer";
 import { ImageController } from "../controllers";
 import { Router } from "./Router";
 
+var multer = require('multer');
+
 export class ImageRouter extends Router {
-    private uploader: multer.Instance;
+    private uploader = multer();
     constructor() {
         super(ImageController);
         this.uploader = multer({ dest: `${__dirname}/../../uploads/` });
