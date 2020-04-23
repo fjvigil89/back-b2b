@@ -1,11 +1,12 @@
-import * as multer from "multer";
 import { CommentController } from "../controllers";
 import { createSchema, findSchema, listSchema, updateSchema } from "../schemas/Comment";
 import { Router } from "./Router";
 import { validator } from "./SchemaValidator";
 
+var multer = require('multer');
+
 export class CommentRouter extends Router {
-    private upload: multer.Instance;
+    private upload = multer();
     constructor() {
         super(CommentController);
         this.upload = multer({ dest: `${__dirname}/../../uploads/` });
