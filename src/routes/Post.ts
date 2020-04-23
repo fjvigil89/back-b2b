@@ -1,4 +1,3 @@
-import * as multer from "multer";
 import { PostController } from "../controllers";
 import {
     createSchema,
@@ -10,8 +9,10 @@ import {
 import { Router } from "./Router";
 import { validator } from "./SchemaValidator";
 
+var multer = require('multer');
+
 export class PostRouter extends Router {
-    private uploader: multer.Instance;
+    private uploader = multer();
     constructor() {
         super(PostController);
         this.uploader = multer({ dest: `${__dirname}/../../uploads/` });
