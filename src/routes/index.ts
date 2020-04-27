@@ -16,6 +16,7 @@ import { ReplyRouter } from "./Reply";
 import { StoreRouter } from "./Store";
 import { SummaryRouter } from "./Summary";
 import { UserRouter } from "./User";
+import { VentasRouter } from "./Ventas";
 
 export {
     CasesRouter,
@@ -36,4 +37,5 @@ export {
     SummaryRouter,
     UserRouter,
     QuestionRouter,
+    VentasRouter,
 };

@@ -153,3 +153,72 @@ export function getDataMovimiento(client: string, fecha: string, retail: string)
         LIMIT 20
     `));
 }
+
+export async function getVentaValor(client: string, cod_locales: string[]): Promise<any[]> {
+    return B2B[client].then((conn) =>
+        conn.query(`
+        SELECT
+        a.cod_local,
+        a.retail,
+        SUM(a.venta_valor) AS venta_valor
+    FROM
+        movimiento AS a
+    WHERE
+        a.cod_local IN (${cod_locales})
+        AND a.fecha = (
+            SELECT
+                MAX(b.fecha)
+            FROM
+                movimiento AS b
+            WHERE
+                b.cod_local = a.cod_local
+                AND a.retail = b.retail)
+        GROUP BY
+            a.cod_local,
+            a.retail`));
+}
+
+export async function getMTB(client: string, cod_local: string, retail: string, today: string, initialMonth: string): Promise<any[]> {
+    return B2B[client].then((conn) =>
+        conn.query(`
+    SELECT
+        SUM(a.venta_valor) AS venta_valor
+    FROM
+        movimiento AS a
+    WHERE
+        a.cod_local = "${cod_local}" AND
+        a.retail = "${retail}" AND 
+        a.fecha BETWEEN "${initialMonth}" AND "${today}"
+        GROUP BY
+            a.cod_local,
+            a.retail`));
+}
+
+export async function getMTBLY(client: string, cod_local: string, retail: string, today: string, initialMonth: string): Promise<any[]> {
+    return B2B[client].then((conn) =>
+        conn.query(`
+    SELECT
+        SUM(a.venta_valor) AS venta_valor
+    FROM
+        movimiento_historia_2019 AS a
+    WHERE
+        a.cod_local = "${cod_local}" AND
+        a.retail = "${retail}" AND 
+        a.fecha BETWEEN "${initialMonth}" AND "${today}"
+        GROUP BY
+            a.cod_local,
+            a.retail`));
+}
+
+export async function getTarget(client: string, cod_local: string, retail: string, initial: string, finish: string): Promise<any[]> {
+    return B2B[client].then((conn) =>
+        conn.query(`
+    SELECT
+        a.target AS target
+    FROM
+        Target AS a
+    WHERE
+        a.cod_local = "${cod_local}" AND
+        a.retail = "${retail}" AND 
+        a.fecha BETWEEN "${initial}" AND "${finish}"`));
+}

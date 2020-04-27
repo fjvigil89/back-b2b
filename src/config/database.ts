@@ -176,6 +176,17 @@ export const B2B = {
         type: DIALECT,
         username: config.ANDINA_B2B.USER_DB,
     }).connect(),
+    abi: new ConnectionManager().create({
+        database: config.ABI_B2B.DB,
+        entities: [],
+        host: config.ABI_B2B.SERVER,
+        logging: false,
+        password: config.ABI_B2B.PASSWORD,
+        port: config.ABI_B2B.PORT_DB,
+        synchronize: false,
+        type: DIALECT,
+        username: config.ABI_B2B.USER_DB,
+    }).connect(),
 };
 
 export const SUPI = new ConnectionManager().create({

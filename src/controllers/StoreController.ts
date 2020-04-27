@@ -15,7 +15,7 @@ export class StoreController extends Controller {
         const { userId, client } = this.req.user as { userId: string, client: string };
         try {
             const Stores = await this.storeService.listStoreUser(client, userId);
-            return this.res.status(200).json(Stores).send();
+            return this.res.status(200).json(Stores);
         } catch (ex) {
             return this.res.status(500).send();
         }
