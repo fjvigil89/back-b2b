@@ -19,3 +19,7 @@
 
 ### Refactor
 - Se remueve .send en list() en StoreController
+
+### Feature
+- Se agregan dos nuevas funcionalidades para obtener venta valor
+  por categoria, mensual y anual.
