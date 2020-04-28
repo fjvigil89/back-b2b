@@ -3,7 +3,7 @@ import { ImageController } from "../controllers";
 import { Router } from "./Router";
 
 export class ImageRouter extends Router {
-    private uploader: multer.Instance;
+    private uploader = multer();
     constructor() {
         super(ImageController);
         this.uploader = multer({ dest: `${__dirname}/../../uploads/` });

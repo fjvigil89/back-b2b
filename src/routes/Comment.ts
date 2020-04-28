@@ -5,7 +5,7 @@ import { Router } from "./Router";
 import { validator } from "./SchemaValidator";
 
 export class CommentRouter extends Router {
-    private upload: multer.Instance;
+    private upload = multer();
     constructor() {
         super(CommentController);
         this.upload = multer({ dest: `${__dirname}/../../uploads/` });

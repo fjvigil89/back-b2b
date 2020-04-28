@@ -26,7 +26,7 @@ export class VentasService {
         client: string,
         cod_local: string,
         retail: string
-    ): Promise<any[]> {
+    ): Promise<{}> {
         const data = await Promise.all([
             B2B_SERVICE.getMTB(client, cod_local, retail, this.today, this.initialMonth),
             B2B_SERVICE.getMTBLY(client, cod_local, retail, this.todayLastYear, this.initialMonthLastYear),

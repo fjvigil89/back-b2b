@@ -11,7 +11,7 @@ import { Router } from "./Router";
 import { validator } from "./SchemaValidator";
 
 export class PostRouter extends Router {
-    private uploader: multer.Instance;
+    private uploader = multer();
     constructor() {
         super(PostController);
         this.uploader = multer({ dest: `${__dirname}/../../uploads/` });
