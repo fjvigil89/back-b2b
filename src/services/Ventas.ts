@@ -33,17 +33,33 @@ export class VentasService {
             B2B_SERVICE.getTarget(client, cod_local, retail, this.initialMonth, this.finishMonth),
             B2B_SERVICE.getYTB(client, cod_local, retail, this.today, this.initialYear),
             B2B_SERVICE.getYTBLY(client, cod_local, retail, this.todayLastYear, this.initialYearLastYear),
-            B2B_SERVICE.getTargetYear(client, cod_local, retail, this.initialYear, this.finishMonth),
-        ])
-        
+            B2B_SERVICE.getMtbByCategory(client, cod_local, retail, this.today, this.initialMonth),
+            B2B_SERVICE.getYtbByCategory(client, cod_local, retail, this.initialYear, this.today),
+        ]);
+
+        const mtbByCategory = data[5] || [];
+        if (mtbByCategory.length) {
+            for (const item of mtbByCategory) {
+                item.venta_valor = parseInt(item.venta_valor);
+            }
+        }
+
+        const ytbByCategory = data[6] || [];
+        if (ytbByCategory.length) {
+            for (const value of ytbByCategory) {
+                value.venta_valor = parseInt(value.venta_valor);
+            }
+        }
+
         const retorno = {
             mtb: data[0].length ? parseInt(data[0][0].venta_valor) : 0,
             mtbly: data[1].length ? parseInt(data[1][0].venta_valor) : 0,
             target: data[2].length ? parseInt(data[2][0].target) : 0,
-            ytb: data[3].length ? parseInt(data[3][0].venta_valor) : 0,
-            ytbly: data[4].length ? parseInt(data[4][0].venta_valor) : 0,
-            targetYear: data[5].length ? parseInt(data[5][0].target) : 0,
-        }
+            mty: data[3].length ? parseInt(data[3][0].venta_valor) : 0,
+            targetYear: data[4].length ? parseInt(data[4][0].target) : 0,
+            mtbByCategory,
+            ytbByCategory,
+        };
 
         const cumplimiento_number = retorno.mtb - retorno.target
         const cumplimiento_porc = retorno.target === 0 ? retorno.mtb * 100 : Math.round(retorno.mtb * 100 / retorno.target)
