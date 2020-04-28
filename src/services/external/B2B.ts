@@ -222,3 +222,48 @@ export async function getTarget(client: string, cod_local: string, retail: strin
         a.retail = "${retail}" AND 
         a.fecha BETWEEN "${initial}" AND "${finish}"`));
 }
+
+export async function getYTB(client: string, cod_local: string, retail: string, today: string, initialYear: string): Promise<any[]> {
+    return B2B[client].then((conn) =>
+        conn.query(`
+    SELECT
+        SUM(a.venta_valor) AS venta_valor
+    FROM
+        movimiento AS a
+    WHERE
+        a.cod_local = "${cod_local}" AND
+        a.retail = "${retail}" AND 
+        a.fecha BETWEEN "${initialYear}" AND "${today}"
+        GROUP BY
+            a.cod_local,
+            a.retail`));
+}
+
+export async function getYTBLY(client: string, cod_local: string, retail: string, today: string, initialYearLastYear: string): Promise<any[]> {
+    return B2B[client].then((conn) =>
+        conn.query(`
+    SELECT
+        SUM(a.venta_valor) AS venta_valor
+    FROM
+        movimiento_historia_2019 AS a
+    WHERE
+        a.cod_local = "${cod_local}" AND
+        a.retail = "${retail}" AND 
+        a.fecha BETWEEN "${initialYearLastYear}" AND "${today}"
+        GROUP BY
+            a.cod_local,
+            a.retail`));
+}
+
+export async function getTargetYear(client: string, cod_local: string, retail: string, initial: string, finish: string): Promise<any[]> {
+    return B2B[client].then((conn) =>
+        conn.query(`
+    SELECT
+        SUM(a.target) AS target
+    FROM
+        Target AS a
+    WHERE
+        a.cod_local = "${cod_local}" AND
+        a.retail = "${retail}" AND 
+        a.fecha BETWEEN "${initial}" AND "${finish}"`));
+}
