@@ -39,14 +39,13 @@ export class VentasService {
             B2B_SERVICE.getYtdByCategory(client, cod_local, retail, this.today, this.initialYear),
             B2B_SERVICE.getYtdLyByCategory(client, cod_local, retail, this.todayLastYear, this.initialYearLastYear),
         ]);
-        let groupByCategory = [];
         let categorias = {};
 
         const mtdByCategory = data[6] || [];
         if (mtdByCategory.length) {
             for (const item of mtdByCategory) {
                 item.venta_valor = parseInt(item.venta_valor, 10);
-                const categoria = item.categoria;
+                const categoria = item.categoria.length ? item.categoria : "OTROS";
                 categorias = {
                     ...categorias,
                     [`${categoria}`]: { mtd: item.venta_valor},
@@ -56,7 +55,7 @@ export class VentasService {
         const mtdLytbByCategory = data[7] || [];
         if (mtdLytbByCategory.length) {
             for (const value of mtdLytbByCategory) {
-                const categoria = value.categoria;
+                const categoria = value.categoria.length ? value.categoria : "OTROS";
                 categorias = {...categorias,
                     [`${categoria}`]: {
                         ...categorias[`${categoria}`],
@@ -69,7 +68,7 @@ export class VentasService {
         const ytdByCategory = data[8] || [];
         if (ytdByCategory.length) {
             for (const item of ytdByCategory) {
-                const categoria = item.categoria;
+                const categoria = item.categoria.length ? item.categoria : "OTROS";
                 categorias = {...categorias,
                 [`${categoria}`]: {
                     ...categorias[`${categoria}`],
@@ -82,7 +81,7 @@ export class VentasService {
         const ytdLyByCategory = data[9] || [];
         if (ytdLyByCategory.length) {
             for (const item of ytdLyByCategory) {
-                const categoria = item.categoria;
+                const categoria = item.categoria.length ? item.categoria : "OTROS";
                 categorias = {...categorias,
                     [`${categoria}`]: {
                         ...categorias[`${categoria}`],
