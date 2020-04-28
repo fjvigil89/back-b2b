@@ -17,6 +17,7 @@ import { ReplyService } from "./Reply";
 import { StoreService } from "./Store";
 import { SummaryService } from "./Summary";
 import { UserService } from "./User";
+import { VentasService } from "./Ventas";
 
 export {
     CasesService,
@@ -37,6 +38,7 @@ export {
     SummaryService,
     UserService,
     QuestionService,
+    VentasService,
     chunk,
     mapKeys,
     sumBy,

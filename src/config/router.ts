@@ -19,6 +19,7 @@ import {
     StoreRouter,
     SummaryRouter,
     UserRouter,
+    VentasRouter,
 } from "../routes";
 import { config } from "./config";
 
@@ -40,6 +41,7 @@ const Summary = new SummaryRouter();
 const User = new UserRouter();
 const Image = new ImageRouter();
 const Question = new QuestionRouter();
+const Ventas = new VentasRouter();
 
 export const ROUTER: IRouter[] = [{
     handler: User.router,
@@ -113,4 +115,8 @@ export const ROUTER: IRouter[] = [{
     handler: Notification.router,
     middleware: [jwt({ secret: config.SECRET })],
     path: "/notification",
+}, {
+    handler: Ventas.router,
+    middleware: [jwt({ secret: config.SECRET })],
+    path: "/ventas",
 }];
