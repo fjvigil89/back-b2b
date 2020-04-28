@@ -3,6 +3,7 @@ import { getConnection } from "typeorm";
 import { Store } from "../entity";
 import { CasesRepository, ItemRepository, StoreRepository } from "../repository";
 import * as Util from "../utils/service";
+import * as B2B_SERVICE from "./external/B2B";
 
 export class StoreService {
 
@@ -33,13 +34,27 @@ export class StoreService {
 
     public async listStoreUser(client: string, user: string): Promise<Store[]> {
         const ListStore = await getConnection(client).getCustomRepository(StoreRepository).listStoreUser(user);
+        
         return ListStore.length ? getConnection(client).getCustomRepository(StoreRepository).dataStore(ListStore, user)
-            .then((List) => {
+            .then(async (List) => {
+                const codLocales = List.map((store) => { 
+                    return `"${store.cod_local}"`
+                });
+
+                const listVentaValor = await B2B_SERVICE.getVentaValor(client, codLocales);
+
                 return List.map((store) => {
                     store.latitud = parseFloat(store.latitud);
                     store.longitud = parseFloat(store.longitud);
                     store.visita_en_progreso = Number(store.visita_en_progreso);
                     store.hasPoll = Number(store.hasPoll);
+
+                    const temp = listVentaValor.find((venta) => {
+                        return venta.cod_local === store.cod_local && venta.retail === store.cadena;
+                    });
+
+                    store.venta_valor = temp === undefined ? -1 : parseInt(temp.venta_valor) 
+
                     return store;
                 });
             }) : [];

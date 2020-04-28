@@ -16,6 +16,7 @@ import { ReplyController } from "./ReplyController";
 import { StoreController } from "./StoreController";
 import { SummaryController } from "./SummaryController";
 import { UserController } from "./UserController";
+import { VentasController } from "./VentasController";
 
 export {
     CasesController,
@@ -36,4 +37,5 @@ export {
     SummaryController,
     UserController,
     QuestionController,
+    VentasController,
 };
