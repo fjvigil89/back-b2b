@@ -40,15 +40,15 @@ export class VentasService {
             B2B_SERVICE.getYtdLyByCategory(client, cod_local, retail, this.todayLastYear, this.initialYearLastYear),
         ]);
         let groupByCategory = [];
-        let dataObj = {};
+        let categorias = {};
 
         const mtdByCategory = data[6] || [];
         if (mtdByCategory.length) {
             for (const item of mtdByCategory) {
                 item.venta_valor = parseInt(item.venta_valor, 10);
                 const categoria = item.categoria;
-                dataObj = {
-                    ...dataObj,
+                categorias = {
+                    ...categorias,
                     [`${categoria}`]: { mtd: item.venta_valor},
                 };
             }
@@ -57,9 +57,9 @@ export class VentasService {
         if (mtdLytbByCategory.length) {
             for (const value of mtdLytbByCategory) {
                 const categoria = value.categoria;
-                dataObj = {...dataObj,
+                categorias = {...categorias,
                     [`${categoria}`]: {
-                        ...dataObj[`${categoria}`],
+                        ...categorias[`${categoria}`],
                         ["mtdLy"]: parseInt(value.venta_valor, 10),
                         },
                     };
@@ -70,9 +70,9 @@ export class VentasService {
         if (ytdByCategory.length) {
             for (const item of ytdByCategory) {
                 const categoria = item.categoria;
-                dataObj = {...dataObj,
+                categorias = {...categorias,
                 [`${categoria}`]: {
-                    ...dataObj[`${categoria}`],
+                    ...categorias[`${categoria}`],
                     ["ytd"]: parseInt(item.venta_valor, 10),
                     },
                 };
@@ -83,16 +83,14 @@ export class VentasService {
         if (ytdLyByCategory.length) {
             for (const item of ytdLyByCategory) {
                 const categoria = item.categoria;
-                dataObj = {...dataObj,
+                categorias = {...categorias,
                     [`${categoria}`]: {
-                        ...dataObj[`${categoria}`],
+                        ...categorias[`${categoria}`],
                         ["ytdLy"]: parseInt(item.venta_valor, 10),
                         },
                     };
             }
         }
-
-        groupByCategory = [ ...groupByCategory, dataObj];
 
         const retorno = {
             mtb: data[0].length ? parseInt(data[0][0].venta_valor, 10) : 0,
@@ -101,7 +99,7 @@ export class VentasService {
             ytb: data[3].length ? parseInt(data[3][0].venta_valor, 10) : 0,
             ytbly: data[4].length ? parseInt(data[4][0].venta_valor, 10) : 0,
             targetYear: data[5].length ? parseInt(data[5][0].target, 10) : 0,
-            categorias: groupByCategory,
+            categorias,
         };
 
         const cumplimiento_number = retorno.mtb - retorno.target;
