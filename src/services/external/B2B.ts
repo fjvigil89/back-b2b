@@ -268,14 +268,13 @@ export async function getTargetYear(client: string, cod_local: string, retail: s
         a.fecha BETWEEN "${initial}" AND "${finish}"`));
 }
 
-export async function getMtbByCategory(client: string, cod_local: string, retail: string, today: string, initialMonth: string): Promise<any[]> {
+export async function getMtdByCategory(client: string, cod_local: string, retail: string, today: string, initialMonth: string): Promise<any[]> {
     try {
         return B2B[client].then((conn) =>
             conn.query(`
             SELECT
             distinct item.i_categoria as categoria,
-            SUM(mov.venta_valor) as venta_valor,
-            mov.fecha
+            SUM(mov.venta_valor) as venta_valor
             FROM movimiento mov
             LEFT JOIN item_master item on mov.ean = item.i_ean
             WHERE mov.cod_local="${cod_local}" and retail="${retail}" and item.i_categoria is not null
@@ -289,15 +288,14 @@ export async function getMtbByCategory(client: string, cod_local: string, retail
     }
 }
 
-export async function getYtbByCategory(client: string, cod_local: string, retail: string, initial: string, finish: string): Promise<any[]> {
+export async function getMtdLyByCategory(client: string, cod_local: string, retail: string, initial: string, finish: string): Promise<any[]> {
     try {
         return B2B[client].then((conn) =>
             conn.query(`
             SELECT
             distinct item.i_categoria as categoria,
-            SUM(mov.venta_valor) as venta_valor,
-            mov.fecha
-            FROM movimiento mov
+            SUM(mov.venta_valor) as venta_valor
+            FROM movimiento_historia_2019 mov
             LEFT JOIN item_master item on mov.ean = item.i_ean
             WHERE mov.fecha BETWEEN "${initial}" AND "${finish}"
             AND mov.cod_local="${cod_local}" AND
