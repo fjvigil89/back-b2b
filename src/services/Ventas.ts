@@ -36,20 +36,63 @@ export class VentasService {
             B2B_SERVICE.getTargetYear(client, cod_local, retail, this.initialYear, this.finishMonth),
             B2B_SERVICE.getMtdByCategory(client, cod_local, retail, this.today, this.initialMonth),
             B2B_SERVICE.getMtdLyByCategory(client, cod_local, retail, this.initialMonthLastYear, this.todayLastYear),
+            B2B_SERVICE.getYtdByCategory(client, cod_local, retail, this.today, this.initialYear),
+            B2B_SERVICE.getYtdLyByCategory(client, cod_local, retail, this.todayLastYear, this.initialYearLastYear),
         ]);
+        let groupByCategory = [];
+        let dataObj = {};
+
         const mtdByCategory = data[6] || [];
         if (mtdByCategory.length) {
             for (const item of mtdByCategory) {
                 item.venta_valor = parseInt(item.venta_valor, 10);
+                const categoria = item.categoria;
+                dataObj = {
+                    ...dataObj,
+                    [`${categoria}`]: { mtd: item.venta_valor},
+                };
             }
         }
-
         const mtdLytbByCategory = data[7] || [];
         if (mtdLytbByCategory.length) {
             for (const value of mtdLytbByCategory) {
-                value.venta_valor = parseInt(value.venta_valor, 10);
+                const categoria = value.categoria;
+                dataObj = {...dataObj,
+                    [`${categoria}`]: {
+                        ...dataObj[`${categoria}`],
+                        ["mtdLy"]: parseInt(value.venta_valor, 10),
+                        },
+                    };
             }
         }
+
+        const ytdByCategory = data[8] || [];
+        if (ytdByCategory.length) {
+            for (const item of ytdByCategory) {
+                const categoria = item.categoria;
+                dataObj = {...dataObj,
+                [`${categoria}`]: {
+                    ...dataObj[`${categoria}`],
+                    ["ytd"]: parseInt(item.venta_valor, 10),
+                    },
+                };
+            }
+        }
+
+        const ytdLyByCategory = data[9] || [];
+        if (ytdLyByCategory.length) {
+            for (const item of ytdLyByCategory) {
+                const categoria = item.categoria;
+                dataObj = {...dataObj,
+                    [`${categoria}`]: {
+                        ...dataObj[`${categoria}`],
+                        ["ytdLy"]: parseInt(item.venta_valor, 10),
+                        },
+                    };
+            }
+        }
+
+        groupByCategory = [ ...groupByCategory, dataObj];
 
         const retorno = {
             mtb: data[0].length ? parseInt(data[0][0].venta_valor, 10) : 0,
@@ -58,8 +101,7 @@ export class VentasService {
             ytb: data[3].length ? parseInt(data[3][0].venta_valor, 10) : 0,
             ytbly: data[4].length ? parseInt(data[4][0].venta_valor, 10) : 0,
             targetYear: data[5].length ? parseInt(data[5][0].target, 10) : 0,
-            mtdByCategory,
-            mtdLytbByCategory,
+            categorias: groupByCategory,
         };
 
         const cumplimiento_number = retorno.mtb - retorno.target;
