@@ -277,8 +277,11 @@ export async function getMtdByCategory(client: string, cod_local: string, retail
             SUM(mov.venta_valor) as venta_valor
             FROM movimiento mov
             LEFT JOIN item_master item on mov.ean = item.i_ean
-            WHERE mov.cod_local="${cod_local}" and retail="${retail}" and item.i_categoria is not null
+            WHERE mov.cod_local="${cod_local}"
+            AND mov.retail="${retail}"
+            AND item.i_categoria is not null
             AND mov.fecha BETWEEN "${initialMonth}" AND "${today}"
+            AND mov.ean > 0
             GROUP BY
                 item.i_categoria
             ORDER BY sum(mov.venta_valor) desc
@@ -297,9 +300,11 @@ export async function getMtdLyByCategory(client: string, cod_local: string, reta
             SUM(mov.venta_valor) as venta_valor
             FROM movimiento_historia_2019 mov
             LEFT JOIN item_master item on mov.ean = item.i_ean
-            WHERE mov.fecha BETWEEN "${initial}" AND "${finish}"
-            AND mov.cod_local="${cod_local}" AND
-            retail="${retail}" and item.i_categoria is not null
+            WHERE mov.fecha BETWEEN "${initial}"
+            AND "${finish}"
+            AND mov.cod_local="${cod_local}"
+            AND mov.retail="${retail}" and item.i_categoria is not null
+            AND mov.ean > 0
             GROUP BY
                 item.i_categoria
             ORDER BY sum(mov.venta_valor) desc
@@ -322,8 +327,11 @@ export async function getYtdByCategory(
         SUM(mov.venta_valor) as venta_valor
         FROM movimiento mov
         LEFT JOIN item_master item on mov.ean = item.i_ean
-        WHERE mov.cod_local="${cod_local}" and mov.retail="${retail}" and item.i_categoria is not null
-        AND mov.fecha BETWEEN "${initialYear}" AND "${today}"
+        WHERE mov.fecha BETWEEN "${initialYear}"
+        AND "${today}"
+        AND mov.cod_local="${cod_local}"
+        AND mov.retail="${retail}" and item.i_categoria is not null
+        AND mov.ean > 0
         GROUP BY
             item.i_categoria
         ORDER BY sum(mov.venta_valor) desc
@@ -343,8 +351,12 @@ export const getYtdLyByCategory = async (
         SUM(mov.venta_valor) as venta_valor
         FROM movimiento_historia_2019 mov
         LEFT JOIN item_master item on mov.ean = item.i_ean
-        WHERE mov.cod_local="${cod_local}" and mov.retail="${retail}" and item.i_categoria is not null
-        AND mov.fecha BETWEEN "${initialLastYear}" AND "${todayLastYear}"
+        WHERE mov.fecha BETWEEN "${initialLastYear}"
+        AND "${todayLastYear}"
+        AND mov.cod_local="${cod_local}"
+        AND mov.retail="${retail}"
+        AND item.i_categoria is not null
+        AND mov.ean > 0
         GROUP BY
             item.i_categoria
         ORDER BY sum(mov.venta_valor) desc
