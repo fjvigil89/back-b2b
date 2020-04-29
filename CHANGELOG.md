@@ -4,7 +4,15 @@
 ### Feature
 - Se agregan dos nuevas funcionalidades para obtener venta valor
   por categoria, mensual y anual.
-  
+- Se agregan además de las dos funcionalidades anterios, otras dos
+  para la descarga de venta valor del mes y anual del año pasado.
+- Se modifica la entrega de datos a objeto ordenados por su categoria
+  y dentro la info obtenida por la funcionalidades anteriores.
+
+### FIX
+- Se modifica la query para eliminar el ean cero por ende categoria
+  espacios vacios
+
 ## [2.0.3] - 2020-04-28
 ### Feature
 - Se agrega venta valor.
