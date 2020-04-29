@@ -1,5 +1,10 @@
 # Changelog
 
+## [2.0.4] - 2020-04-28
+### Feature
+- Se agregan dos nuevas funcionalidades para obtener venta valor
+  por categoria, mensual y anual.
+  
 ## [2.0.3] - 2020-04-28
 ### Feature
 - Se agrega venta valor.

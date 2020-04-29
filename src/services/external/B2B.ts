@@ -187,7 +187,7 @@ export async function getMTB(client: string, cod_local: string, retail: string, 
         movimiento AS a
     WHERE
         a.cod_local = "${cod_local}" AND
-        a.retail = "${retail}" AND 
+        a.retail = "${retail}" AND
         a.fecha BETWEEN "${initialMonth}" AND "${today}"
         GROUP BY
             a.cod_local,
@@ -203,7 +203,7 @@ export async function getMTBLY(client: string, cod_local: string, retail: string
         movimiento_historia_2019 AS a
     WHERE
         a.cod_local = "${cod_local}" AND
-        a.retail = "${retail}" AND 
+        a.retail = "${retail}" AND
         a.fecha BETWEEN "${initialMonth}" AND "${today}"
         GROUP BY
             a.cod_local,
@@ -219,7 +219,7 @@ export async function getTarget(client: string, cod_local: string, retail: strin
         Target AS a
     WHERE
         a.cod_local = "${cod_local}" AND
-        a.retail = "${retail}" AND 
+        a.retail = "${retail}" AND
         a.fecha BETWEEN "${initial}" AND "${finish}"`));
 }
 
@@ -232,7 +232,7 @@ export async function getYTB(client: string, cod_local: string, retail: string, 
         movimiento AS a
     WHERE
         a.cod_local = "${cod_local}" AND
-        a.retail = "${retail}" AND 
+        a.retail = "${retail}" AND
         a.fecha BETWEEN "${initialYear}" AND "${today}"
         GROUP BY
             a.cod_local,
@@ -248,7 +248,7 @@ export async function getYTBLY(client: string, cod_local: string, retail: string
         movimiento_historia_2019 AS a
     WHERE
         a.cod_local = "${cod_local}" AND
-        a.retail = "${retail}" AND 
+        a.retail = "${retail}" AND
         a.fecha BETWEEN "${initialYearLastYear}" AND "${today}"
         GROUP BY
             a.cod_local,
@@ -264,6 +264,89 @@ export async function getTargetYear(client: string, cod_local: string, retail: s
         Target AS a
     WHERE
         a.cod_local = "${cod_local}" AND
-        a.retail = "${retail}" AND 
+        a.retail = "${retail}" AND
         a.fecha BETWEEN "${initial}" AND "${finish}"`));
 }
+
+export async function getMtdByCategory(client: string, cod_local: string, retail: string, today: string, initialMonth: string): Promise<any[]> {
+    try {
+        return B2B[client].then((conn) =>
+            conn.query(`
+            SELECT
+            distinct item.i_categoria as categoria,
+            SUM(mov.venta_valor) as venta_valor
+            FROM movimiento mov
+            LEFT JOIN item_master item on mov.ean = item.i_ean
+            WHERE mov.cod_local="${cod_local}" and retail="${retail}" and item.i_categoria is not null
+            AND mov.fecha BETWEEN "${initialMonth}" AND "${today}"
+            GROUP BY
+                item.i_categoria
+            ORDER BY sum(mov.venta_valor) desc
+        `));
+    } catch (err) {
+        console.log("err", err);
+    }
+}
+
+export async function getMtdLyByCategory(client: string, cod_local: string, retail: string, initial: string, finish: string): Promise<any[]> {
+    try {
+        return B2B[client].then((conn) =>
+            conn.query(`
+            SELECT
+            distinct item.i_categoria as categoria,
+            SUM(mov.venta_valor) as venta_valor
+            FROM movimiento_historia_2019 mov
+            LEFT JOIN item_master item on mov.ean = item.i_ean
+            WHERE mov.fecha BETWEEN "${initial}" AND "${finish}"
+            AND mov.cod_local="${cod_local}" AND
+            retail="${retail}" and item.i_categoria is not null
+            GROUP BY
+                item.i_categoria
+            ORDER BY sum(mov.venta_valor) desc
+        `));
+    } catch (err) {
+        console.log("err", err);
+    }
+}
+
+export async function getYtdByCategory(
+    client: string,
+    cod_local: string,
+    retail: string,
+    today: string,
+    initialYear: string): Promise<any> {
+    return B2B[client].then((conn) =>
+        conn.query(`
+        SELECT
+        distinct item.i_categoria as categoria,
+        SUM(mov.venta_valor) as venta_valor
+        FROM movimiento mov
+        LEFT JOIN item_master item on mov.ean = item.i_ean
+        WHERE mov.cod_local="${cod_local}" and mov.retail="${retail}" and item.i_categoria is not null
+        AND mov.fecha BETWEEN "${initialYear}" AND "${today}"
+        GROUP BY
+            item.i_categoria
+        ORDER BY sum(mov.venta_valor) desc
+    `));
+}
+
+export const getYtdLyByCategory = async (
+    client: string,
+    cod_local: string,
+    retail: string,
+    todayLastYear: string,
+    initialLastYear: string): Promise<any> => {
+    return B2B[client].then((conn) =>
+        conn.query(`
+        SELECT
+        distinct item.i_categoria as categoria,
+        SUM(mov.venta_valor) as venta_valor
+        FROM movimiento_historia_2019 mov
+        LEFT JOIN item_master item on mov.ean = item.i_ean
+        WHERE mov.cod_local="${cod_local}" and mov.retail="${retail}" and item.i_categoria is not null
+        AND mov.fecha BETWEEN "${initialLastYear}" AND "${todayLastYear}"
+        GROUP BY
+            item.i_categoria
+        ORDER BY sum(mov.venta_valor) desc
+    `));
+};
