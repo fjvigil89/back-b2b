@@ -36,11 +36,11 @@ export class IndicadorController extends Controller {
         folio: number;
       };
       console.log("folio", folio);
-      const res = await this.indicadorService.getIndicatorByFolioTest();
-      const data = Object.keys(res[0]).map((indicador) => {
-        console.log("data", res);
-        return res[0][indicador];
-      });
+      const data = await this.indicadorService.getIndicatorByFolioTest();
+      // const data = Object.keys(res[0]).map((indicador) => {
+      //   console.log("data", res);
+      //   return res[0][indicador];
+      // });
 
       return this.res.status(200).send({ data });
     } catch (err) {
