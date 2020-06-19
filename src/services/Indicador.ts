@@ -74,7 +74,6 @@ export class Indicator {
     return data;
   }
   public async getIndicatorByFolioTest(): Promise<any> {
-    const indicatorsArr = [];
     let obj = {};
     let lastScores = {};
     for (const item of DUMMY_DATA) {
@@ -102,10 +101,10 @@ export class Indicator {
         obj[indicatorKey].diff = diff.toFixed(2);
       }
     }
-    const totalScore = { value: { totalScore: null } };
-    obj = { ...obj, ...totalScore };
-    indicatorsArr.push(obj);
-    return indicatorsArr;
+    const totalScore = { totalScore: null };
+    const indicators = Object.keys(obj).map((key) => obj[key]);
+    const data = { ...totalScore, indicadores: [...indicators] };
+    return data;
   }
 
   public async getIndicatorByFolio(
@@ -129,11 +128,11 @@ export class Indicator {
         obj = {
           ...obj,
           [indicatorKey]: {
-            lastIndicators: [],
-            diff: 0,
             name: indicatorKey,
-            inScore: false,
             score: nota,
+            inScore: false,
+            diff: 0,
+            lastIndicators: [],
           },
         };
       } else {
@@ -142,14 +141,14 @@ export class Indicator {
           [indicatorKey]: [...lastScores[indicatorKey], nota],
         };
         const diff = obj[indicatorKey].score - lastScores[indicatorKey][0];
-        const totalScore = { value: { totalScore: null } };
-        obj = { ...obj, ...totalScore };
         obj[indicatorKey].lastIndicators = lastScores[indicatorKey];
         obj[indicatorKey].diff = diff.toFixed(2);
       }
     }
-    indicatorsArr.push(obj);
-    return indicatorsArr;
+    const totalScore = { totalScore: null };
+    const indicadores = Object.keys(obj).map((key) => obj[key]);
+    const data = { ...totalScore, indicadores };
+    return data;
   }
 
   public async getIndicator(client: string, folio: number, indicador: string) {}
