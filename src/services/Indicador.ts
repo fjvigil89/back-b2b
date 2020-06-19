@@ -84,11 +84,11 @@ export class Indicator {
         obj = {
           ...obj,
           [indicatorKey]: {
-            lastIndicators: [],
-            diff: 0,
             name: indicatorKey,
-            inScore: false,
             score: nota,
+            inScore: false,
+            diff: 0,
+            lastIndicators: [],
           },
         };
       } else {
