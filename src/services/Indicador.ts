@@ -87,7 +87,7 @@ export class Indicator {
             name: indicatorKey,
             score: nota,
             inScore: false,
-            diff: 0,
+            diff: null,
             lastIndicators: [],
           },
         };
@@ -96,9 +96,11 @@ export class Indicator {
           ...lastScores,
           [indicatorKey]: [...lastScores[indicatorKey], nota],
         };
-        const diff = obj[indicatorKey].score - lastScores[indicatorKey][0];
+        const diff = lastScores[indicatorKey].length
+          ? obj[indicatorKey].score - lastScores[indicatorKey][0]
+          : null;
         obj[indicatorKey].lastIndicators = lastScores[indicatorKey];
-        obj[indicatorKey].diff = diff.toFixed(2);
+        obj[indicatorKey].diff = diff && diff.toFixed(2);
       }
     }
     const totalScore = { totalScore: null };
@@ -131,7 +133,7 @@ export class Indicator {
             name: indicatorKey,
             score: nota,
             inScore: false,
-            diff: 0,
+            diff: null,
             lastIndicators: [],
           },
         };
@@ -140,9 +142,11 @@ export class Indicator {
           ...lastScores,
           [indicatorKey]: [...lastScores[indicatorKey], nota],
         };
-        const diff = obj[indicatorKey].score - lastScores[indicatorKey][0];
+        const diff = lastScores[indicatorKey].length
+          ? obj[indicatorKey].score - lastScores[indicatorKey][0]
+          : null;
         obj[indicatorKey].lastIndicators = lastScores[indicatorKey];
-        obj[indicatorKey].diff = diff.toFixed(2);
+        obj[indicatorKey].diff = diff && diff.toFixed(2);
       }
     }
     const totalScore = { totalScore: null };
