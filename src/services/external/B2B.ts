@@ -32,10 +32,8 @@ export async function getIndicators(
 ): Promise<any> {
   return dbB2b(client.toUpperCase()).then((conn) => {
     return conn.query(`
-      select distinct indicador, fecha, folio, nota from pre_calculoxIndicador
+      select distinct indicador from pre_calculoxIndicador
       where folio=${folio}
-      order by fecha desc
-      limit 30
     `);
   });
 }
@@ -44,12 +42,19 @@ export async function getIndicator(
   client: string,
   folio: number,
   indicador: string,
-): Promise<{}> {
+): Promise<
+  [
+    {
+      nota: number;
+      indicador: string;
+    },
+  ]
+> {
   return dbB2b(client.toUpperCase()).then((conn) =>
     conn.query(
       `select * from pre_calculoxIndicador
     where folio=${folio} and indicador='${indicador}'
-    order by fecha desc LIMIT 5`,
+    order by fecha desc LIMIT 6`,
     ),
   );
 }

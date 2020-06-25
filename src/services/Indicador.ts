@@ -118,37 +118,42 @@ export class Indicator {
     let obj = {};
     let lastScores = {};
     for (const item of indicators) {
+      console.time("for");
       const indicador = await B2B_SERVICE.getIndicator(
         client,
         folio,
         item.indicador,
       );
-      const nota = indicador[0].nota;
-      const indicatorKey = indicador[0].indicador;
-      if (!Object.keys(obj).includes(indicatorKey)) {
-        lastScores = { ...lastScores, [indicatorKey]: [] };
-        obj = {
-          ...obj,
-          [indicatorKey]: {
-            name: indicatorKey,
-            score: nota,
-            inScore: false,
-            diff: null,
-            lastIndicators: [],
-          },
-        };
-      } else {
-        lastScores = {
-          ...lastScores,
-          [indicatorKey]: [...lastScores[indicatorKey], nota],
-        };
-        const diff = lastScores[indicatorKey].length
-          ? obj[indicatorKey].score - lastScores[indicatorKey][0]
-          : null;
-        obj[indicatorKey].lastIndicators = lastScores[indicatorKey];
-        obj[indicatorKey].diff = diff && diff.toFixed(2);
+      for (const ind of indicador) {
+        console.log("ind", ind);
+        const indicatorKey = ind.indicador;
+        const nota = ind.nota;
+        if (!Object.keys(obj).includes(indicatorKey)) {
+          lastScores = { ...lastScores, [indicatorKey]: [] };
+          obj = {
+            ...obj,
+            [indicatorKey]: {
+              name: indicatorKey,
+              score: nota,
+              inScore: false,
+              diff: null,
+              lastIndicators: [],
+            },
+          };
+        } else {
+          lastScores = {
+            ...lastScores,
+            [indicatorKey]: [...lastScores[indicatorKey], nota],
+          };
+          const diff = lastScores[indicatorKey].length
+            ? obj[indicatorKey].score - lastScores[indicatorKey][0]
+            : null;
+          obj[indicatorKey].lastIndicators = lastScores[indicatorKey];
+          obj[indicatorKey].diff = diff && diff.toFixed(4);
+        }
       }
     }
+    console.timeEnd("for");
     const totalScore = { totalScore: null };
     const indicadores = Object.keys(obj).map((key) => obj[key]);
     const data = { ...totalScore, indicadores };
