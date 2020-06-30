@@ -3,9 +3,8 @@ import { Poll } from "../entity";
 
 @EntityRepository(Poll)
 export class PollRepository extends Repository<Poll> {
-
-    public listPoll(folio?: number): Promise<IListPoll[]> {
-        return this.query(`
+  public listPoll(folio?: number): Promise<IListPoll[]> {
+    return this.query(`
         SELECT
             a.id
             , a.nombre_encuesta
@@ -41,10 +40,10 @@ export class PollRepository extends Repository<Poll> {
             AND b.estado = 1
         ${folio ? `AND c.folio = ${folio}` : ``}
         GROUP BY b.id_sala_encuesta`);
-    }
+  }
 
-    public findBySalaPoll(idSalaEncuesta: number): Promise<IDetailPoll[]> {
-        return this.query(`
+  public findBySalaPoll(idSalaEncuesta: number): Promise<IDetailPoll[]> {
+    return this.query(`
         SELECT
             c.id
             , d.descripcion AS item
@@ -59,24 +58,24 @@ export class PollRepository extends Repository<Poll> {
             c.id_item = d.id
         INNER JOIN tipo_dato e ON
             c.id_tipo = e.id
-        WHERE b.id_sala_encuesta = ${idSalaEncuesta}`);
-    }
+        WHERE b.id_sala_encuesta = ${idSalaEncuesta}
+        ORDE BY d.id ASC`);
+  }
 
-    public async answerPoll(id: number, response: string): Promise<void> {
-        await Promise.all([
-            this.query(`
+  public async answerPoll(id: number, response: string): Promise<void> {
+    await Promise.all([
+      this.query(`
                 UPDATE plano_encuesta
                 SET respuesta = "${response}"
                 WHERE id = ${id}
             `),
-            this.query(`
+      this.query(`
                 UPDATE sala_encuesta a
                 INNER JOIN plano_encuesta b
                     ON a.id_sala_encuesta = b.id_sala_encuesta
                 SET a.estado = 0
                 WHERE b.id = ${id}
             `),
-        ]);
-    }
-
+    ]);
+  }
 }
