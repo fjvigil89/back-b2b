@@ -59,7 +59,7 @@ export class PollRepository extends Repository<Poll> {
         INNER JOIN tipo_dato e ON
             c.id_tipo = e.id
         WHERE b.id_sala_encuesta = ${idSalaEncuesta}
-        ORDE BY d.id ASC`);
+        ORDER BY c.id ASC`);
   }
 
   public async answerPoll(id: number, response: string): Promise<void> {
