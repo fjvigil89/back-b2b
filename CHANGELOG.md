@@ -1,7 +1,8 @@
 # Changelog
 
-## [2.0.6] - 2020-07-01
-### Refactor
+## [2.0.6] - 2020-07-01
+
+### Refactor
 
 - Se modifica dentro del repositorio Poll (archivo PollRepository) la query
   para obtener la encuesta por usuario.
