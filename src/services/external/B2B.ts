@@ -54,7 +54,7 @@ export async function getIndicator(
     conn.query(
       `select * from pre_calculoxIndicador
     where folio=${folio} and indicador='${indicador}'
-    order by fecha desc LIMIT 6`,
+    order by fecha desc LIMIT 5`,
     ),
   );
 }

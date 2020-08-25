@@ -3,7 +3,7 @@ import { Poll } from "../entity";
 
 @EntityRepository(Poll)
 export class PollRepository extends Repository<Poll> {
-  public listPoll(folio?: number): Promise<IListPoll[]> {
+  public listPoll(folio?: number, userId?: string): Promise<IListPoll[]> {
     return this.query(`
         SELECT
             a.id
@@ -34,11 +34,14 @@ export class PollRepository extends Repository<Poll> {
             a.id = b.id_encuesta
         INNER JOIN store c ON
             b.folio = c.folio
+        INNER JOIN user_store u ON
+            b.folio = u.folio
         INNER JOIN plano_encuesta d ON
             d.id_sala_encuesta = b.id_sala_encuesta
         WHERE a.estado = 1
             AND b.estado = 1
         ${folio ? `AND c.folio = ${folio}` : ``}
+        ${userId ? `AND u.user_id =  '${userId}'` : ``}
         GROUP BY b.id_sala_encuesta`);
   }
 
@@ -59,7 +62,7 @@ export class PollRepository extends Repository<Poll> {
         INNER JOIN tipo_dato e ON
             c.id_tipo = e.id
         WHERE b.id_sala_encuesta = ${idSalaEncuesta}
-        ORDE BY d.id ASC`);
+        ORDER BY c.id ASC`);
   }
 
   public async answerPoll(id: number, response: string): Promise<void> {
