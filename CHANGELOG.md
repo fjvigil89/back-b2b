@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.0.7] - 2020-08-25
+### Added
+- Se agrega date y user a poll y se actualiza query en PullRepository
+
 ## [2.0.6] - 2020-07-01
 
 ### Refactor
