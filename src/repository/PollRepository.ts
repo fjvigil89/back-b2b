@@ -65,19 +65,21 @@ export class PollRepository extends Repository<Poll> {
         ORDER BY c.id ASC`);
   }
 
-  public async answerPoll(id: number, response: string): Promise<void> {
+  public async answerPoll(id: number, response: string, date: string, user: string): Promise<void> {
     await Promise.all([
       this.query(`
                 UPDATE plano_encuesta
-                SET respuesta = "${response}"
+                SET respuesta = "${response}" 
                 WHERE id = ${id}
             `),
       this.query(`
                 UPDATE sala_encuesta a
-                INNER JOIN plano_encuesta b
-                    ON a.id_sala_encuesta = b.id_sala_encuesta
-                SET a.estado = 0
-                WHERE b.id = ${id}
+                SET 
+                    a.estado = 0
+                    , a.fecha_real = "${date}"
+                    , a.usuario = "${user}" 
+                WHERE
+                    a.id_sala_encuesta = (SELECT id_sala_encuesta FROM plano_encuesta WHERE id = ${id})
             `),
     ]);
   }

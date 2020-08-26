@@ -6,12 +6,14 @@ export class PollService {
   public async answerPoll(
     client: string,
     aryResponse: [{ id: number; respuesta: string }],
+    date: string,
+    user: string
   ): Promise<void> {
     await Promise.all(
       aryResponse.map((row) => {
         return getConnection(client)
           .getCustomRepository(PollRepository)
-          .answerPoll(row.id, row.respuesta);
+          .answerPoll(row.id, row.respuesta, date, user);
       }),
     );
   }
