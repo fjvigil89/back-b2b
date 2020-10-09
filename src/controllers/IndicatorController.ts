@@ -28,23 +28,4 @@ export class IndicadorController extends Controller {
       return this.res.status(500).send();
     }
   }
-
-  public async test(): Promise<Response> {
-    try {
-      const { client } = this.req.user;
-      const { folio } = this.req.body as {
-        folio: number;
-      };
-      console.log("folio", folio);
-      const data = await this.indicadorService.getIndicatorByFolioTest();
-      // const data = Object.keys(res[0]).map((indicador) => {
-      //   console.log("data", res);
-      //   return res[0][indicador];
-      // });
-
-      return this.res.status(200).send({ data });
-    } catch (err) {
-      return this.res.status(500).send();
-    }
-  }
 }
