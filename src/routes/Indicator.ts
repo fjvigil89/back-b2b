@@ -12,5 +12,10 @@ export class IndicadorRouter extends Router {
       [validator(list)],
       this.handler(IndicadorController.prototype.list),
     );
+    this.router.post(
+      "/test",
+      [],
+      this.handler(IndicadorController.prototype.test),
+    );
   }
 }
