@@ -4,6 +4,7 @@ import { CommentRouter } from "./Comment";
 import { DownloadRouter } from "./Download";
 import { HashtagRouter } from "./Hashtag";
 import { ImageRouter } from "./Image";
+import { IndicadorRouter } from "./Indicator";
 import { ItemRouter } from "./Item";
 import { LikeCommentRouter } from "./LikeComment";
 import { LikePostRouter } from "./LikePost";
@@ -19,23 +20,24 @@ import { UserRouter } from "./User";
 import { VentasRouter } from "./Ventas";
 
 export {
-    CasesRouter,
-    CheckRouter,
-    CommentRouter,
-    DownloadRouter,
-    HashtagRouter,
-    ImageRouter,
-    ItemRouter,
-    LikeCommentRouter,
-    LikePostRouter,
-    LikeReplyRouter,
-    NotificationRouter,
-    PollRouter,
-    PostRouter,
-    ReplyRouter,
-    StoreRouter,
-    SummaryRouter,
-    UserRouter,
-    QuestionRouter,
-    VentasRouter,
+  CasesRouter,
+  CheckRouter,
+  CommentRouter,
+  DownloadRouter,
+  HashtagRouter,
+  ImageRouter,
+  ItemRouter,
+  LikeCommentRouter,
+  LikePostRouter,
+  LikeReplyRouter,
+  NotificationRouter,
+  PollRouter,
+  PostRouter,
+  ReplyRouter,
+  StoreRouter,
+  SummaryRouter,
+  UserRouter,
+  QuestionRouter,
+  IndicadorRouter,
+  VentasRouter,
 };

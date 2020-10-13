@@ -1,6 +1,7 @@
-import * as multer from "multer";
 import { ImageController } from "../controllers";
 import { Router } from "./Router";
+
+var multer = require('multer');
 
 export class ImageRouter extends Router {
     private uploader = multer();

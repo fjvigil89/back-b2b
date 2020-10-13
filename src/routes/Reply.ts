@@ -1,8 +1,9 @@
-import * as multer from "multer";
 import { ReplyController } from "../controllers";
 import { createSchema, findSchema, listSchema, updateSchema } from "../schemas/Reply";
 import { Router } from "./Router";
 import { validator } from "./SchemaValidator";
+
+var multer = require('multer');
 
 export class ReplyRouter extends Router {
     private uploader = multer();
