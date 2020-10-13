@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.0.8] - 2020-08-25
+### Refactor
+- Se agrega el nuevo cliente DEMO para poder presentar productos a posibles clientes.
+
 ## [2.0.7] - 2020-08-25
 ### Added
 - Se agrega date y user a poll y se actualiza query en PullRepository
