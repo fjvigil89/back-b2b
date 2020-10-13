@@ -38,10 +38,10 @@ export const getOsaResume = async (idVisita: number): Promise<any> =>
 
 export const getBreaksDetail = async (idVisita: number): Promise<any> =>
   CADEM_ABI_BI.then((conn) =>
-    conn.query(`SELECT t.ean, i.i_categoria categoria, i.i_item descripcion
-  FROM TBL_TOMA_OSA t
-  LEFT JOIN item_master i ON i.i_ean = t.EAN
-  WHERE t.ID_VARIABLE = 1 AND t.RESPUESTA = '0' and ID_VISITA_SUPI = ${idVisita} AND t.EAN LIKE '%9999PROM%'`),
+    conn.query(`SELECT t.ean, null as categoria, i.item descripcion
+    FROM TBL_TOMA_OSA t
+    LEFT JOIN TBL_ITEM i ON i.ean = t.ean
+    WHERE t.ID_VARIABLE = 1 AND t.RESPUESTA = '0' and ID_VISITA_SUPI = ${idVisita} AND t.EAN LIKE '%9999PROM%'`),
   );
 
 export const getResume = async (idVisita: number): Promise<any> =>
