@@ -1,6 +1,6 @@
 # Changelog
 
-## [2.0.8] - 2020-08-25
+## [2.0.9] - 2020-10-14
 ### Refactor
 - Se agrega el nuevo cliente DEMO para poder presentar productos a posibles clientes.
 

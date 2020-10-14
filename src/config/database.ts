@@ -85,7 +85,38 @@ export const Connection = createConnections([
     connectTimeout: 120000,
     type: DIALECT,
     username: config.ABI_DB.USER_DB,
-  },
+  }, 
+  {
+    name: "demo",
+    database: config.DEMO_DB.DB,
+    entities: [
+        Case,
+        CaseFeedback,
+        Check,
+        Comment,
+        Hashtag,
+        Image,
+        Item,
+        LikeComment,
+        LikePost,
+        LikeReply,
+        Poll,
+        Post,
+        PostHashtag,
+        Question,
+        Reply,
+        Store,
+        Summary,
+        User,
+    ],
+    host: config.DEMO_DB.SERVER,
+    logging: false,
+    password: config.DEMO_DB.PASSWORD,
+    port: config.DEMO_DB.PORT_DB,
+    synchronize: false,
+    type: DIALECT,
+    username: config.DEMO_DB.USER_DB,
+}
 ]);
 
 export const B2B = {
@@ -146,6 +177,17 @@ export const B2B = {
       username: config.ABI_B2B.USER_DB,
     })
     .connect(),
+    demo: new ConnectionManager().create({ 
+      database: config.DEMO_B2B.DB,
+      entities: [],
+      host: config.DEMO_B2B.SERVER,
+      logging: false,
+      password: config.DEMO_B2B.PASSWORD,
+      port: config.DEMO_B2B.PORT_DB,
+      synchronize: false,
+      type: DIALECT,
+      username: config.DEMO_B2B.USER_DB,
+  }).connect(),
 };
 
 export const CADEM_ABI_BI = new ConnectionManager()
