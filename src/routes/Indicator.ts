@@ -9,13 +9,8 @@ export class IndicadorRouter extends Router {
     super(IndicadorController);
     this.router.post(
       "/all",
-      [],
+      [validator(list)],
       this.handler(IndicadorController.prototype.list),
-    );
-    this.router.post(
-      "/test",
-      [],
-      this.handler(IndicadorController.prototype.test),
     );
   }
 }
