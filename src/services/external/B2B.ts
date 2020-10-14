@@ -26,17 +26,31 @@ export async function dbB2b(client: string): Promise<any> {
   });
 }
 
-export async function getIndicators(
+export const getIndicators = async (
   client: string,
   folio: number,
-): Promise<any> {
-  return dbB2b(client.toUpperCase()).then((conn) => {
-    return conn.query(`
-      select distinct indicador from pre_calculoxIndicador
-      where folio=${folio}
-    `);
-  });
-}
+): Promise<any> =>
+  dbB2b(client.toUpperCase())
+    .then((conn) =>
+      conn.query(`
+      SELECT DISTINCT indicador FROM pre_calculoxIndicador
+      WHERE folio=${folio}
+    `),
+    )
+    .catch((err) => err);
+
+export const getLastVisitByIndicators = async (
+  client: string,
+  folio: number,
+): Promise<any> =>
+  dbB2b(client)
+    .then((conn) =>
+      conn.query(`
+    SELECT fecha, visita as idVisita FROM pre_calculoxIndicador
+    WHERE folio=${folio}
+    ORDER BY fecha desc LIMIT 1`),
+    )
+    .then((res) => (res.length ? res[0].idVisita : null));
 
 export async function getIndicator(
   client: string,
@@ -557,3 +571,14 @@ export const getYtdLyByCategory = async (
     `),
   );
 };
+
+export const unknownNameFunc = async (idVisita: number): Promise<any> =>
+  PRINCIPAL.then((conn) =>
+    conn.query(
+      `
+    SELECT t.ean, i.i_categoria, i.i_item descripcion, t.id_variable
+    FROM TBL_TOMA_OSA t
+    LEFT JOIN ITEM_MASTER i ON i.i_ean = t.ean
+    WHERE id_visita_supi=${idVisita}`,
+    ),
+  ).then((res) => (res.length ? res : null));
