@@ -42,6 +42,14 @@ const ABI_PRODUCTION = {
   USER_DB: env.B2B_ABI_USERNAME,
 };
 
+const DEMO_PRODUCTION = { 
+  DB: "b2b-app",
+  PASSWORD: env.B2B_DEMO_PASSWORD,
+  PORT_DB: Number(env.B2B_DEMO_PORT),
+  SERVER: env.B2B_DEMO_SERVER,
+  USER_DB: env.B2B_DEMO_USERNAME,
+};
+
 const CADEM_ABI_BI_PRODUCTION = {
   DB: "cadem_abi_bi",
   PASSWORD: env.CADEM_ABI_BI_PASSWORD,
@@ -51,6 +59,7 @@ const CADEM_ABI_BI_PRODUCTION = {
 };
 
 export const config = {
+  DEMO_DB: DEMO_PRODUCTION,
   ABI_DB: ABI_PRODUCTION,
   ANDINA_DB: ANDINA_PRODUCTION,
   CADEM_ABI_BI_DB: CADEM_ABI_BI_PRODUCTION,
@@ -58,6 +67,10 @@ export const config = {
   ICB_DB: ICB_PRODUCTION,
   PORT_APP: 1344,
   SECRET: "C4d3m#Sm4rt_#!",
+  DEMO_B2B: {
+    ...DEMO_PRODUCTION,
+    DB: "b2b-data",
+},
   PERNOD_B2B: {
     ...PERNOD_PRODUCTION,
     DB: "b2b-pernod",
