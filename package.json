@@ -1,6 +1,6 @@
 {
   "name": "back-b2b",
-  "version": "2.0.9",
+  "version": "2.1.0",
   "description": "Backend b2b",
   "main": "src/index.ts",
   "scripts": {
@@ -17,6 +17,10 @@
     "url": "git+https://gitlab.com/b2b-apps/back-b2b.git"
   },
   "contributors": [
+    {
+      "name": "Nicolás Carreño H",
+      "email": "nicolas.carreno@cademsmart.cl"
+    },
     {
       "name": "Hector Riquelme"
     },
