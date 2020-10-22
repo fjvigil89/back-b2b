@@ -3,6 +3,7 @@ import { CheckController } from "./CheckController";
 import { CommentController } from "./CommentController";
 import { DownloadController } from "./DownloadController";
 import { HashtagController } from "./HashtagController";
+import { HotNewsController } from "./HotNewsController";
 import { ImageController } from "./ImageController";
 import { ItemController } from "./ItemController";
 import { LikeCommentController } from "./LikeCommentController";
@@ -19,23 +20,24 @@ import { UserController } from "./UserController";
 import { VentasController } from "./VentasController";
 
 export {
-    CasesController,
-    CheckController,
-    CommentController,
-    DownloadController,
-    HashtagController,
-    ImageController,
-    ItemController,
-    LikeCommentController,
-    LikePostController,
-    LikeReplyController,
-    NotificationController,
-    PollController,
-    PostController,
-    ReplyController,
-    StoreController,
-    SummaryController,
-    UserController,
-    QuestionController,
-    VentasController,
+  CasesController,
+  CheckController,
+  CommentController,
+  DownloadController,
+  HashtagController,
+  HotNewsController,
+  ImageController,
+  ItemController,
+  LikeCommentController,
+  LikePostController,
+  LikeReplyController,
+  NotificationController,
+  PollController,
+  PostController,
+  ReplyController,
+  StoreController,
+  SummaryController,
+  UserController,
+  QuestionController,
+  VentasController,
 };

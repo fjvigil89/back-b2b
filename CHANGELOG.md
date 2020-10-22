@@ -1,7 +1,23 @@
 # Changelog
 
-## [2.0.7] - 2020-08-25
+## [2.1.0] - 2020-10-22
+
 ### Added
+
+- Se crea nuevo servicio para hotnews.
+- Para este nuevo servicio se crean las rutas, controladores, schemas.
+- Se crea nueva conexión para las siguientes bd andina-app y abi-app.
+
+## [2.0.9] - 2020-10-14
+
+### Refactor
+
+- Se agrega el nuevo cliente DEMO para poder presentar productos a posibles clientes.
+
+## [2.0.7] - 2020-08-25
+
+### Added
+
 - Se agrega date y user a poll y se actualiza query en PullRepository
 
 ## [2.0.6] - 2020-07-01

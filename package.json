@@ -1,6 +1,6 @@
 {
   "name": "back-b2b",
-  "version": "2.0.8",
+  "version": "2.1.0",
   "description": "Backend b2b",
   "main": "src/index.ts",
   "scripts": {
@@ -18,11 +18,19 @@
   },
   "contributors": [
     {
+      "name": "Nicolás Carreño H",
+      "email": "nicolas.carreno@cademsmart.cl"
+    },
+    {
       "name": "Hector Riquelme"
     },
     {
       "name": "Francisco Sanchez",
       "email": "francisco.sanchez@cademsmart.cl"
+    },
+    {
+      "name": "Jorge Molina",
+      "email": "jorge.molina@cademsmart.cl"
     }
   ],
   "license": "MIT",

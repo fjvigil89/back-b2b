@@ -5,6 +5,7 @@ import { CheckService } from "./Check";
 import { CommentService } from "./Comment";
 import { DownloadService } from "./Download";
 import { HashtagService } from "./Hashtag";
+import HotNewsService from "./HotNews";
 import { ImageService } from "./Image";
 import { Indicator as IndicadorService } from "./Indicador";
 import { ItemService } from "./Item";
@@ -19,6 +20,7 @@ import { StoreService } from "./Store";
 import { SummaryService } from "./Summary";
 import { UserService } from "./User";
 import { VentasService } from "./Ventas";
+
 export {
   CasesService,
   CaseFeedbackService,
@@ -44,4 +46,5 @@ export {
   sumBy,
   uniqBy,
   IndicadorService,
+  HotNewsService,
 };
