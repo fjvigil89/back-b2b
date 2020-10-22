@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.1.1] - 2020-10-22
+
+### Fix
+
+- Se mueven dependencias de desarrollo a devDependencies por error en build.
+
 ## [2.1.0] - 2020-10-22
 
 ### Added
