@@ -6,6 +6,8 @@ import {
   CommentRouter,
   DownloadRouter,
   HashtagRouter,
+  HealthRouter,
+  HotNewsRouter,
   ImageRouter,
   IndicadorRouter,
   ItemRouter,
@@ -44,12 +46,24 @@ const Image = new ImageRouter();
 const Question = new QuestionRouter();
 const Ventas = new VentasRouter();
 const Indicador = new IndicadorRouter();
+const HotNews = new HotNewsRouter();
+const Health = new HealthRouter();
 
 export const ROUTER: IRouter[] = [
   {
     handler: User.router,
     middleware: [],
     path: "/auth",
+  },
+  {
+    handler: Health.router,
+    middleware: [],
+    path: "/health",
+  },
+  {
+    handler: HotNews.router,
+    middleware: [jwt({ secret: config.SECRET })],
+    path: "/hotnews",
   },
   {
     handler: Indicador.router,
