@@ -103,6 +103,41 @@ export async function lastStoreByDate(
   );
 }
 
+export const getAcuerdosComerciales = async (
+  client: string,
+  retail: string,
+  codLocal: string,
+): Promise<void> => {
+  return B2B[`${client}_app`].then((conn) =>
+    conn.query(`
+      SELECT
+        marca, calibre, mueble, cantidad,
+        fechaInicio, fechaFin, cubicaje
+      FROM AcuerdosComerciales
+      WHERE retail='${retail.toUpperCase()}'
+      AND cod_sala='${codLocal.toUpperCase()}'
+      ORDER BY fechaInicio DESC
+  `),
+  );
+};
+
+export const getCatalogos = async (
+  client: string,
+  retail: string,
+  bandera: string,
+): Promise<void> => {
+  return B2B[`${client}_app`].then((conn) =>
+    conn.query(`
+    SELECT
+      marca, descripcion, ean, plu, fechaInicio, fechaFin
+    FROM Catalogos
+    WHERE retail = '${retail.toUpperCase()}'
+    AND bandera = '${bandera.toUpperCase()}'
+    ORDER BY fechaInicio DESC
+  `),
+  );
+};
+
 export async function clearLastDays(client: string, date): Promise<void> {
   return B2B[client].then((conn) =>
     conn.query(`DELETE FROM movimiento_last_days WHERE fecha = '${date}'`),

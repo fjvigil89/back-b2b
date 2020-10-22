@@ -135,6 +135,4 @@ export class Indicator {
     const data = { ...totalScore, indicadores };
     return data;
   }
-
-  public async getIndicator(client: string, folio: number, indicador: string) {}
 }

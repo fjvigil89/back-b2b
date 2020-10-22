@@ -3,6 +3,8 @@ import { CheckRouter } from "./Check";
 import { CommentRouter } from "./Comment";
 import { DownloadRouter } from "./Download";
 import { HashtagRouter } from "./Hashtag";
+import { HealthRouter } from "./Health";
+import { HotNewsRouter } from "./HotNews";
 import { ImageRouter } from "./Image";
 import { IndicadorRouter } from "./Indicator";
 import { ItemRouter } from "./Item";
@@ -25,6 +27,8 @@ export {
   CommentRouter,
   DownloadRouter,
   HashtagRouter,
+  HealthRouter,
+  HotNewsRouter,
   ImageRouter,
   ItemRouter,
   LikeCommentRouter,

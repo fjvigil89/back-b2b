@@ -85,29 +85,29 @@ export const Connection = createConnections([
     connectTimeout: 120000,
     type: DIALECT,
     username: config.ABI_DB.USER_DB,
-  }, 
+  },
   {
     name: "demo",
     database: config.DEMO_DB.DB,
     entities: [
-        Case,
-        CaseFeedback,
-        Check,
-        Comment,
-        Hashtag,
-        Image,
-        Item,
-        LikeComment,
-        LikePost,
-        LikeReply,
-        Poll,
-        Post,
-        PostHashtag,
-        Question,
-        Reply,
-        Store,
-        Summary,
-        User,
+      Case,
+      CaseFeedback,
+      Check,
+      Comment,
+      Hashtag,
+      Image,
+      Item,
+      LikeComment,
+      LikePost,
+      LikeReply,
+      Poll,
+      Post,
+      PostHashtag,
+      Question,
+      Reply,
+      Store,
+      Summary,
+      User,
     ],
     host: config.DEMO_DB.SERVER,
     logging: false,
@@ -116,38 +116,38 @@ export const Connection = createConnections([
     synchronize: false,
     type: DIALECT,
     username: config.DEMO_DB.USER_DB,
-}
+  },
 ]);
 
 export const B2B = {
-  // icb: new ConnectionManager()
-  //   .create({
-  //     database: config.ICB_B2B.DB,
-  //     entities: [],
-  //     host: config.ICB_B2B.SERVER,
-  //     logging: false,
-  //     password: config.ICB_B2B.PASSWORD,
-  //     port: config.ICB_B2B.PORT_DB,
-  //     synchronize: false,
-  //     type: DIALECT,
-  //     connectTimeout: 120000,
-  //     username: config.ICB_B2B.USER_DB,
-  //   })
-  //   .connect(),
-  // pernod: new ConnectionManager()
-  //   .create({
-  //     database: config.PERNOD_B2B.DB,
-  //     entities: [],
-  //     host: config.PERNOD_B2B.SERVER,
-  //     logging: false,
-  //     password: config.PERNOD_B2B.PASSWORD,
-  //     port: config.PERNOD_B2B.PORT_DB,
-  //     synchronize: false,
-  //     type: DIALECT,
-  //     connectTimeout: 120000,
-  //     username: config.PERNOD_B2B.USER_DB,
-  //   })
-  //   .connect(),
+  andina_app: new ConnectionManager()
+    .create({
+      database: config.ANDINA_DB.BD,
+      entities: [],
+      host: config.ANDINA_DB.SERVER,
+      logging: false,
+      password: config.ANDINA_DB.PASSWORD,
+      port: config.ANDINA_DB.PORT_DB,
+      synchronize: false,
+      type: DIALECT,
+      connectTimeout: 120000,
+      username: config.ANDINA_DB.USER_DB,
+    })
+    .connect(),
+  abi_app: new ConnectionManager()
+    .create({
+      database: config.ABI_DB.DB,
+      entities: [],
+      host: config.ABI_DB.SERVER,
+      logging: false,
+      password: config.ABI_DB.PASSWORD,
+      port: config.ABI_DB.PORT_DB,
+      synchronize: false,
+      type: DIALECT,
+      connectTimeout: 120000,
+      username: config.ABI_DB.USER_DB,
+    })
+    .connect(),
   andina: new ConnectionManager()
     .create({
       database: config.ANDINA_B2B.DB,
@@ -177,7 +177,8 @@ export const B2B = {
       username: config.ABI_B2B.USER_DB,
     })
     .connect(),
-    demo: new ConnectionManager().create({ 
+  demo: new ConnectionManager()
+    .create({
       database: config.DEMO_B2B.DB,
       entities: [],
       host: config.DEMO_B2B.SERVER,
@@ -187,7 +188,8 @@ export const B2B = {
       synchronize: false,
       type: DIALECT,
       username: config.DEMO_B2B.USER_DB,
-  }).connect(),
+    })
+    .connect(),
 };
 
 export const CADEM_ABI_BI = new ConnectionManager()
