@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.1.3] - 2020-10-23
+
+## Fix
+
+- Se agrega timeout a la conexión demo.
+
+## [2.1.2] - 2020-10-22
+
+### Fix
+
+- Se corrige error en conexión a base de datos.
+
 ## [2.1.1] - 2020-10-22
 
 ### Fix
