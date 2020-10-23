@@ -122,7 +122,7 @@ export const Connection = createConnections([
 export const B2B = {
   andina_app: new ConnectionManager()
     .create({
-      database: config.ANDINA_DB.BD,
+      database: config.ANDINA_DB.DB,
       entities: [],
       host: config.ANDINA_DB.SERVER,
       logging: false,
