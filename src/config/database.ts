@@ -187,6 +187,7 @@ export const B2B = {
       port: config.DEMO_B2B.PORT_DB,
       synchronize: false,
       type: DIALECT,
+      connectTimeout: 120000,
       username: config.DEMO_B2B.USER_DB,
     })
     .connect(),
