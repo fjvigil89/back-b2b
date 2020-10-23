@@ -1,8 +1,5 @@
 image: node:8.12.0
 
-variables:
-  NODE_ENV: development
-
 before_script:
   - npm install
 
