@@ -3,7 +3,7 @@ apt install -y build-essential libssl-dev libffi-dev libxml2-dev libxslt1-dev zl
 apt install -y python2.7 python-dev libpython-dev
 
 # Download install file pip
-curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+curl https://bootstrap.pypa.io/2.7/get-pip.py -o get-pip.py
 
 # Install pip
 python2 get-pip.py
