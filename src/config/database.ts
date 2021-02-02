@@ -87,6 +87,38 @@ export const Connection = createConnections([
     username: config.ABI_DB.USER_DB,
   },
   {
+    name: "cial",
+    database: config.CIAL_DB.DB,
+    entities: [
+      Case,
+      CaseFeedback,
+      Check,
+      Comment,
+      Hashtag,
+      Image,
+      Item,
+      LikeComment,
+      LikePost,
+      LikeReply,
+      Poll,
+      Post,
+      PostHashtag,
+      Question,
+      Reply,
+      Store,
+      Summary,
+      User,
+    ],
+    host: config.CIAL_DB.SERVER,
+    logging: false,
+    password: config.CIAL_DB.PASSWORD,
+    port: config.CIAL_DB.PORT_DB,
+    synchronize: false,
+    connectTimeout: 120000,
+    type: DIALECT,
+    username: config.CIAL_DB.USER_DB,
+  },
+  {
     name: "demo",
     database: config.DEMO_DB.DB,
     entities: [
@@ -148,6 +180,20 @@ export const B2B = {
       username: config.ABI_DB.USER_DB,
     })
     .connect(),
+  cial_app: new ConnectionManager()
+    .create({
+      database: config.CIAL_DB.DB,
+      entities: [],
+      host: config.CIAL_DB.SERVER,
+      logging: false,
+      password: config.CIAL_DB.PASSWORD,
+      port: config.CIAL_DB.PORT_DB,
+      synchronize: false,
+      type: DIALECT,
+      connectTimeout: 120000,
+      username: config.CIAL_DB.USER_DB,
+    })
+    .connect(),
   andina: new ConnectionManager()
     .create({
       database: config.ANDINA_B2B.DB,
@@ -175,6 +221,21 @@ export const B2B = {
       // requesTimeout: 120000,
       type: DIALECT,
       username: config.ABI_B2B.USER_DB,
+    })
+    .connect(),
+  cial: new ConnectionManager()
+    .create({
+      database: config.CIAL_B2B.DB,
+      entities: [],
+      host: config.CIAL_B2B.SERVER,
+      logging: false,
+      password: config.CIAL_B2B.PASSWORD,
+      port: config.CIAL_B2B.PORT_DB,
+      synchronize: false,
+      connectTimeout: 120000,
+      // requesTimeout: 120000,
+      type: DIALECT,
+      username: config.CIAL_B2B.USER_DB,
     })
     .connect(),
   demo: new ConnectionManager()
