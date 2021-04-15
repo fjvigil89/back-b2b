@@ -1,13 +1,12 @@
-
 interface IItemsAction {
   flag: boolean;
   data: Array<{
-      ean: number,
-      descripcion: string,
-      stock_transito?: number,
-      sventa: number,
-      cadem: number,
-      gestionado: number,
+    ean: number;
+    descripcion: string;
+    stock_transito?: number;
+    sventa: number;
+    cadem: number;
+    gestionado: number;
   }>;
 }
 
@@ -30,6 +29,10 @@ interface IItemCase {
   stock_pedido_tienda: number;
   dias_sin_venta: number;
   gestionado: number;
+  venta_unidades: number;
+  uqc: string;
+  qc: string;
+  plu: number;
 }
 
 interface IDetailItem {
