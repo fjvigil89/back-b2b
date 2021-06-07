@@ -19,6 +19,7 @@ export class StoreService {
   public async groupStore(
     client: string,
     folio: number,
+    version: number,
   ): Promise<IDetailStore | null> {
     const [detailItems, detailStore, gestionado] = await Promise.all([
       getConnection(client)
@@ -34,7 +35,7 @@ export class StoreService {
     if (detailStore) {
       const groupDetail = {
         cademsmart_porcentaje: detailStore.osa,
-        detail: this.groupDetailItem(detailItems),
+        detail: this.groupDetailItem(detailItems, version),
         venta_perdida: detailStore.ventaPerdida,
         gestionado,
       };
@@ -91,7 +92,10 @@ export class StoreService {
     }
   }
 
-  private groupDetailItem(detailItems: IItemCase[]): IDetailItems[] {
+  private groupDetailItem(
+    detailItems: IItemCase[],
+    version: Number,
+  ): IDetailItems[] {
     return Util.uniqBy(detailItems, "category")
       .map((category) => {
         const detailByCategory = detailItems.filter(
@@ -107,7 +111,12 @@ export class StoreService {
               (d) => d.accion === accion,
             );
             return {
-              accion,
+              accion:
+                version == 2
+                  ? accion
+                  : accion == "Revisar"
+                  ? "Reponer"
+                  : accion,
               gestionado: Util.sumBy(acciones, "gestionado"),
               casos_gestionados: acciones.filter((item) => item.gestionado > 0)
                 .length,

@@ -28,7 +28,19 @@ export class StoreController extends Controller {
     const folio: string = this.req.params.folio;
     const { client } = this.req.user;
     try {
-      const Stores = await this.storeService.groupStore(client, Number(folio));
+      const version: string = this.req.params.version;
+
+      let envioVersion = 1;
+      if (version) {
+        envioVersion = parseInt(version);
+      }
+
+      const Stores = await this.storeService.groupStore(
+        client,
+        Number(folio),
+        envioVersion,
+      );
+
       if (Stores) {
         return this.res.status(200).send(Stores);
       } else {
