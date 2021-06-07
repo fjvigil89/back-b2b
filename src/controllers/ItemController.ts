@@ -22,7 +22,9 @@ export class ItemController extends Controller {
     try {
       let accionTemp = action;
       if (!version) {
-        accionTemp = "Revisar";
+        if (accionTemp == "Reponer") {
+          accionTemp = "Revisar";
+        }
       }
 
       const detail = await this.itemService.detailItemsAction(
