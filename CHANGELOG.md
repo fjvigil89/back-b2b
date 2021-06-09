@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.1.4] - 2021-06-09
+
+## Fix
+
+- Se agrega un nuevo enpoint para darle soporte a flar revisar
+
 ## [2.1.3] - 2020-10-23
 
 ## Fix
