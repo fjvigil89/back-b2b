@@ -4,12 +4,19 @@ import { Router } from "./Router";
 import { validator } from "./SchemaValidator";
 
 export class StoreRouter extends Router {
-    constructor() {
-        super(StoreController);
-        this.router
-            .get("", [], this.handler(StoreController.prototype.list))
-            .get("/:folio", [
-                validator(findSchema),
-            ], this.handler(StoreController.prototype.find));
-    }
+  constructor() {
+    super(StoreController);
+    this.router
+      .get("", [], this.handler(StoreController.prototype.list))
+      .get(
+        "/:folio",
+        [validator(findSchema)],
+        this.handler(StoreController.prototype.find),
+      )
+      .get(
+        "/:folio/:version",
+        [validator(findSchema)],
+        this.handler(StoreController.prototype.find),
+      );
+  }
 }
