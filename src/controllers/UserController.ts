@@ -23,8 +23,13 @@ export class UserController extends Controller {
                 km: Number(config.KM),
             }).send();
         } catch (err) {
-            console.error(err);
-            return this.res.status(404).json({ message: "No existe el usuario" }).send();
+            let error = ""
+            if(err.message == 'Connection "null" was not found.') {
+                error = 'El usuario ingresado no existe'
+            } else {
+                error = 'La contraseña es incorrecta'
+            }
+            return this.res.status(404).json({ message: error }).send();
         }
     }
 
