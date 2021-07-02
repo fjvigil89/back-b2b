@@ -12,7 +12,7 @@ python2 get-pip.py
 pip2 --version
 
 # pip3 install awsebcli
-pip2 install awsebcli
+pip2 install awsebcli==3.19.4
 
 # Configure credentias into enviroment
 mkdir ~/.aws/
