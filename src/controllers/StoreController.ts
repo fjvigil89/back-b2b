@@ -1,14 +1,16 @@
 import { Request, Response } from "express";
-import { StoreService } from "../services";
+import { StoreService, ItemService } from "../services";
 import { Controller } from "./Controller";
 
 export class StoreController extends Controller {
 
     private storeService: StoreService;
+    private itemService: ItemService
 
     constructor(req: Request, res: Response) {
         super(req, res);
         this.storeService = new StoreService();
+        this.itemService = new ItemService();
     }
 
     public async list(): Promise<Response> {
@@ -27,6 +29,39 @@ export class StoreController extends Controller {
         try {
             const Stores = await this.storeService.groupStore(client, Number(folio));
             if (Stores) {
+                return this.res.status(200).send(Stores);
+            } else {
+                return this.res.status(404).send();
+            }
+        } catch (ex) {
+            console.error(ex);
+            return this.res.status(500).send();
+        }
+    }
+
+    public async findOffline(): Promise<Response> {
+        const folio: string = this.req.params.folio;
+        const { client } = this.req.user;
+        try {
+            const Stores = await this.storeService.groupStore(client, Number(folio));
+            if (Stores) {
+                for await (let detail of Stores.detail) {
+                    let category = detail.categoria
+                    let arrAcciones = []
+                    for await (let acciones of detail.acciones) {
+                        let action = acciones.accion
+                        const productos = await this.itemService.detailItemsAction(client, Number(folio), category, action);
+                        arrAcciones.push({
+                            accion: acciones["accion"],
+                            gestionado: acciones["gestionado"],
+                            casos_gestionados: acciones["casos_gestionados"],
+                            cantidad: acciones["cantidad"],
+                            monto: acciones["monto"],
+                            productos: productos.data
+                        })
+                        detail.acciones = arrAcciones
+                    }
+                }
                 return this.res.status(200).send(Stores);
             } else {
                 return this.res.status(404).send();
