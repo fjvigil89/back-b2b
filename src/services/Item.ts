@@ -8,106 +8,127 @@ import * as MASTER_SERVICE from "./external/Master";
 import * as ITEM_SERVICE from "./external/Item";
 
 export class ItemService {
-    private today: string;
+  private today: string;
 
-    constructor() {
-        this.today = moment().format("YYYY-MM-DD");
-    }
+  constructor() {
+    this.today = moment().format("YYYY-MM-DD");
+  }
 
-    public async listItems(
-        client: string,
-        storeId: string,
-        retail: string,
-        folio: number,
-        date: string,
-    ): Promise<Item[]> {
-        const detail = await B2B_SERVICE.detailItems(client, storeId, retail, date);
-        const detailItems: Item[] = [];
-        await Promise.all(detail.map(async (item) => {
-            const detailMaster = await ITEM_SERVICE.detailItem(client, item.ean);
-            const newItem = new Item();
-            newItem.folio = folio;
-            newItem.ean = item.ean;
-            newItem.stock = item.stock;
-            newItem.stockPedidoTienda = item.stockPedidoTienda;
-            newItem.diasSinVenta = ++item.diasSinVenta;
-            if (item.stock === 0) {
-                newItem.accion = "Chequear pedidos";
-            } else if (item.stock < 0) {
-                newItem.accion = "Ajustar";
-            } else {
-                const dateStaticStock = moment(date).subtract(7, "days").format("YYYY-MM-DD");
-                const staticStock = await B2B_SERVICE.staticStock(client, storeId, item.itemId, dateStaticStock);
-                if (staticStock) {
-                    newItem.accion = "Ajustar";
-                } else {
-                    newItem.accion = "Reponer";
-                }
-            }
-            newItem.ventaPerdida = item.promedioVentas;
-            if (detailMaster) {
-                newItem.description = detailMaster.description;
-                newItem.category = detailMaster.category;
-            } else {
-                newItem.description = "OTROS";
-                newItem.category = "OTROS";
-            }
-            detailItems.push(newItem);
-        }));
-        return detailItems;
-    }
+  public async listItems(
+    client: string,
+    storeId: string,
+    retail: string,
+    folio: number,
+    date: string,
+  ): Promise<Item[]> {
+    const detail = await B2B_SERVICE.detailItems(client, storeId, retail, date);
+    const detailItems: Item[] = [];
+    await Promise.all(
+      detail.map(async (item) => {
+        const detailMaster = await ITEM_SERVICE.detailItem(client, item.ean);
+        const newItem = new Item();
+        newItem.folio = folio;
+        newItem.ean = item.ean;
+        newItem.stock = item.stock;
+        newItem.stockPedidoTienda = item.stockPedidoTienda;
+        newItem.diasSinVenta = ++item.diasSinVenta;
+        if (item.stock === 0) {
+          newItem.accion = "Chequear pedidos";
+        } else if (item.stock < 0) {
+          newItem.accion = "Ajustar";
+        } else {
+          const dateStaticStock = moment(date)
+            .subtract(7, "days")
+            .format("YYYY-MM-DD");
+          const staticStock = await B2B_SERVICE.staticStock(
+            client,
+            storeId,
+            item.itemId,
+            dateStaticStock,
+          );
+          if (staticStock) {
+            newItem.accion = "Ajustar";
+          } else {
+            newItem.accion = "Reponer";
+          }
+        }
+        newItem.ventaPerdida = item.promedioVentas;
+        if (detailMaster) {
+          newItem.description = detailMaster.description;
+          newItem.category = detailMaster.category;
+        } else {
+          newItem.description = "OTROS";
+          newItem.category = "OTROS";
+        }
+        detailItems.push(newItem);
+      }),
+    );
+    return detailItems;
+  }
 
-    public setPresenciaCadem(items: Item[], toma: IToma[]): Item[] {
-        return items.map((item) => {
-            const tomaItem = toma.find((row) => Number(row.ean) === item.ean);
-            if (tomaItem) {
-                item.cadem = Number(tomaItem.valor);
-            }
-            return item;
-        });
-    }
+  public setPresenciaCadem(items: Item[], toma: IToma[]): Item[] {
+    return items.map((item) => {
+      const tomaItem = toma.find((row) => Number(row.ean) === item.ean);
+      if (tomaItem) {
+        item.cadem = Number(tomaItem.valor);
+      }
+      return item;
+    });
+  }
 
-    public totalVentaPerdida(items: Item[]): number {
-        return Util.sumBy(items, "ventaPerdida");
-    }
+  public totalVentaPerdida(items: Item[]): number {
+    return Util.sumBy(items, "ventaPerdida");
+  }
 
-    public async detailItemsAction(
-        client: string, folio: number, category: string, action: string): Promise<IItemsAction> {
-        return getConnection(client)
-            .getCustomRepository(ItemRepository)
-            .findByAction(folio, category, action, this.today).then((Items) => {
-                if (action === "Chequear pedidos") {
-                    return {
-                        data: Items.map((item) => {
-                            return {
-                                cadem: item.cadem,
-                                descripcion: item.description,
-                                ean: item.ean,
-                                stock_transito: item.stock_pedido_tienda,
-                                sventa: Number(item.dias_sin_venta),
-                                venta_perdida: item.venta_perdida,
-                                gestionado: Number(item.gestionado),
-                            };
-                        }),
-                        flag: true,
-                    };
-                } else {
-                    return {
-                        data: Items.map((item) => {
-                            return {
-                                cadem: item.cadem,
-                                descripcion: item.description,
-                                ean: item.ean,
-                                stock: item.stock,
-                                sventa: Number(item.dias_sin_venta),
-                                venta_perdida: item.venta_perdida,
-                                gestionado: Number(item.gestionado),
-                            };
-                        }),
-                        flag: false,
-                    };
-                }
-            });
-    }
-
+  public async detailItemsAction(
+    client: string,
+    folio: number,
+    category: string,
+    action: string,
+  ): Promise<IItemsAction> {
+    return getConnection(client)
+      .getCustomRepository(ItemRepository)
+      .findByAction(folio, category, action, this.today)
+      .then((Items) => {
+        if (action === "Chequear pedidos") {
+          return {
+            data: Items.map((item) => {
+              return {
+                cadem: item.cadem,
+                descripcion: item.description,
+                ean: item.ean,
+                stock_transito: item.stock_pedido_tienda,
+                sventa: Number(item.dias_sin_venta),
+                venta_perdida: item.venta_perdida,
+                gestionado: Number(item.gestionado),
+                venta_unidades: Number(item.venta_unidades),
+                uqc: item.uqc,
+                qc: item.qc,
+                plu: Number(item.plu),
+              };
+            }),
+            flag: true,
+          };
+        } else {
+          return {
+            data: Items.map((item) => {
+              return {
+                cadem: item.cadem,
+                descripcion: item.description,
+                ean: item.ean,
+                stock: item.stock,
+                sventa: Number(item.dias_sin_venta),
+                venta_perdida: item.venta_perdida,
+                gestionado: Number(item.gestionado),
+                venta_unidades: Number(item.venta_unidades),
+                uqc: item.uqc,
+                qc: item.qc,
+                plu: Number(item.plu),
+              };
+            }),
+            flag: false,
+          };
+        }
+      });
+  }
 }

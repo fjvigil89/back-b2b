@@ -392,12 +392,14 @@ export async function getMTBLY(
   today: string,
   initialMonth: string,
 ): Promise<any[]> {
+  const anio: string = moment().subtract(1, "years").format("YYYY");
+
   return B2B[client].then((conn) =>
     conn.query(`
     SELECT
         SUM(a.venta_valor) AS venta_valor
     FROM
-        movimiento_historia_2019 AS a
+        movimiento_historia_${anio} AS a
     WHERE
         a.cod_local = "${cod_local}" AND
         a.retail = "${retail}" AND
@@ -458,12 +460,14 @@ export async function getYTBLY(
   today: string,
   initialYearLastYear: string,
 ): Promise<any[]> {
+  const anio: string = moment().subtract(1, "years").format("YYYY");
+
   return B2B[client].then((conn) =>
     conn.query(`
     SELECT
         SUM(a.venta_valor) AS venta_valor
     FROM
-        movimiento_historia_2019 AS a
+        movimiento_historia_${anio} AS a
     WHERE
         a.cod_local = "${cod_local}" AND
         a.retail = "${retail}" AND
@@ -532,12 +536,14 @@ export async function getMtdLyByCategory(
   finish: string,
 ): Promise<any[]> {
   try {
+    const anio: string = moment().subtract(1, "years").format("YYYY");
+
     return B2B[client].then((conn) =>
       conn.query(`
             SELECT
             distinct item.i_categoria as categoria,
             SUM(mov.venta_valor) as venta_valor
-            FROM movimiento_historia_2019 mov
+            FROM movimiento_historia_${anio} mov
             LEFT JOIN item_master item on mov.ean = item.i_ean
             WHERE mov.fecha BETWEEN "${initial}"
             AND "${finish}"
@@ -587,12 +593,14 @@ export const getYtdLyByCategory = async (
   todayLastYear: string,
   initialLastYear: string,
 ): Promise<any> => {
+  const anio: string = moment().subtract(1, "years").format("YYYY");
+
   return B2B[client].then((conn) =>
     conn.query(`
         SELECT
         distinct item.i_categoria as categoria,
         SUM(mov.venta_valor) as venta_valor
-        FROM movimiento_historia_2019 mov
+        FROM movimiento_historia_${anio} mov
         LEFT JOIN item_master item on mov.ean = item.i_ean
         WHERE mov.fecha BETWEEN "${initialLastYear}"
         AND "${todayLastYear}"

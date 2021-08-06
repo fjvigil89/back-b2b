@@ -314,3 +314,48 @@ export const PRINCIPAL = new ConnectionManager()
     username: config.SOURCE_PRINCIPAL.USER_DB,
   })
   .connect();
+
+export const SMARTWEB = {
+  cial: new ConnectionManager()
+    .create({
+      database: config.SMARTWEB.CIAL.DB,
+      entities: [],
+      host: config.SMARTWEB.CIAL.SERVER,
+      logging: false,
+      password: config.SMARTWEB.CIAL.PASSWORD,
+      port: config.SMARTWEB.CIAL.PORT_DB,
+      synchronize: false,
+      type: DIALECT,
+      username: config.SMARTWEB.CIAL.USER_DB,
+      connectTimeout: 25000,
+    })
+    .connect(),
+  andina: new ConnectionManager()
+    .create({
+      database: config.SMARTWEB.ANDINA.DB,
+      entities: [],
+      host: config.SMARTWEB.ANDINA.SERVER,
+      logging: false,
+      password: config.SMARTWEB.ANDINA.PASSWORD,
+      port: config.SMARTWEB.ANDINA.PORT_DB,
+      synchronize: false,
+      type: DIALECT,
+      username: config.SMARTWEB.ANDINA.USER_DB,
+      connectTimeout: 25000,
+    })
+    .connect(),
+  abi: new ConnectionManager()
+    .create({
+      database: config.SMARTWEB.ABI.DB,
+      entities: [],
+      host: config.SMARTWEB.ABI.SERVER,
+      logging: false,
+      password: config.SMARTWEB.ABI.PASSWORD,
+      port: config.SMARTWEB.ABI.PORT_DB,
+      synchronize: false,
+      type: DIALECT,
+      username: config.SMARTWEB.ABI.USER_DB,
+      connectTimeout: 25000,
+    })
+    .connect(),
+};

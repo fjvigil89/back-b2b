@@ -1,5 +1,5 @@
 import * as B2B_SERVICE from "./external/B2B";
-import * as CADEM_ABI_SERVICE from "./external/CademAbiBi";
+import * as SMARTWEB_SERVICE from "./external/SmartWeb";
 
 export class Indicator {
   public async getIndicators(
@@ -34,23 +34,32 @@ export class Indicator {
     }
   }
 
-  public getBreaksDetail = async (idVisita: number): Promise<any> =>
-    CADEM_ABI_SERVICE.getBreaksDetail(idVisita)
+  public getBreaksDetail = async (
+    client: string,
+    idVisita: number,
+  ): Promise<any> =>
+    SMARTWEB_SERVICE.getBreaksDetail(client, idVisita)
       .then((res) => res)
       .catch((err) => err);
 
-  public getResume = async (idVisita: number): Promise<any> =>
-    CADEM_ABI_SERVICE.getResume(idVisita)
+  public getResume = async (client: string, idVisita: number): Promise<any> =>
+    SMARTWEB_SERVICE.getResume(client, idVisita)
       .then((res) => res)
       .catch((err) => err);
 
-  public getOsaBreaksDetail = async (idVisita: number): Promise<any> =>
-    CADEM_ABI_SERVICE.getOsaBreaksDetail(idVisita)
+  public getOsaBreaksDetail = async (
+    client: string,
+    idVisita: number,
+  ): Promise<any> =>
+    SMARTWEB_SERVICE.getOsaBreaksDetail(client, idVisita)
       .then((res) => res)
       .catch((err) => err);
 
-  public getOsaResume = async (idVisita: number): Promise<any> =>
-    CADEM_ABI_SERVICE.getOsaResume(idVisita)
+  public getOsaResume = async (
+    client: string,
+    idVisita: number,
+  ): Promise<any> =>
+    SMARTWEB_SERVICE.getOsaResume(client, idVisita)
       .then((res) => res)
       .catch((err) => err);
 
@@ -60,10 +69,10 @@ export class Indicator {
   ): Promise<any> {
     const indicators = await this.getIndicators(client, folio);
     const idVisit = await this.getLastVisit(client, folio);
-    const breaksDetail = await this.getBreaksDetail(Number(idVisit));
-    const resume = await this.getResume(Number(idVisit));
-    const osaResume = await this.getOsaResume(Number(idVisit));
-    const osaBreaks = await this.getOsaBreaksDetail(Number(idVisit));
+    const breaksDetail = await this.getBreaksDetail(client, Number(idVisit));
+    const resume = await this.getResume(client, Number(idVisit));
+    const osaResume = await this.getOsaResume(client, Number(idVisit));
+    const osaBreaks = await this.getOsaBreaksDetail(client, Number(idVisit));
 
     const indicatorsArr = [];
     let obj = {};
