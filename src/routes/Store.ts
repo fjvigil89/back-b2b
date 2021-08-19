@@ -17,6 +17,8 @@ export class StoreRouter extends Router {
         "/:folio/:version",
         [validator(findSchema)],
         this.handler(StoreController.prototype.find),
-      );
+      )
+      .get("/offline/:folio/:version",
+      [], this.handler(StoreController.prototype.findOffline));
   }
 }
