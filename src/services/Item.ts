@@ -10,7 +10,7 @@ import { QuestionService } from "./Question";
 
 export class ItemService {
   private today: string;
-  private questionService : QuestionService;
+  private questionService: QuestionService;
   constructor() {
     this.today = moment().format("YYYY-MM-DD");
     this.questionService = new QuestionService();
@@ -106,7 +106,7 @@ export class ItemService {
                 venta_unidades: Number(item.venta_unidades),
                 uqc: item.uqc,
                 qc: item.qc,
-                plu: Number(item.plu)
+                plu: Number(item.plu),
               };
             }),
             flag: true,
@@ -125,7 +125,7 @@ export class ItemService {
                 venta_unidades: Number(item.venta_unidades),
                 uqc: item.uqc,
                 qc: item.qc,
-                plu: Number(item.plu)
+                plu: Number(item.plu),
               };
             }),
             flag: false,
@@ -140,7 +140,6 @@ export class ItemService {
     category: string,
     action: string,
   ): Promise<IItemsAction> {
-    // const preguntas = await this.questionService.getQuestions(client)
     return getConnection(client)
       .getCustomRepository(ItemRepository)
       .findByAction(folio, category, action, this.today)
@@ -162,7 +161,7 @@ export class ItemService {
                 plu: Number(item.plu),
                 cambio: 0,
                 preguntas: [],
-                imagen: ''
+                imagen: "",
               };
             }),
             flag: true,
@@ -184,7 +183,7 @@ export class ItemService {
                 plu: Number(item.plu),
                 cambio: 0,
                 preguntas: [],
-                imagen: ''
+                imagen: "",
               };
             }),
             flag: false,
