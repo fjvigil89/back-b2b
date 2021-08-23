@@ -6,12 +6,14 @@ import * as Util from "../utils/service";
 import * as B2B_SERVICE from "./external/B2B";
 import * as MASTER_SERVICE from "./external/Master";
 import * as ITEM_SERVICE from "./external/Item";
+import { QuestionService } from "./Question";
 
 export class ItemService {
   private today: string;
-
+  private questionService: QuestionService;
   constructor() {
     this.today = moment().format("YYYY-MM-DD");
+    this.questionService = new QuestionService();
   }
 
   public async listItems(
@@ -124,6 +126,64 @@ export class ItemService {
                 uqc: item.uqc,
                 qc: item.qc,
                 plu: Number(item.plu),
+              };
+            }),
+            flag: false,
+          };
+        }
+      });
+  }
+
+  public async detailItemsActionOffline(
+    client: string,
+    folio: number,
+    category: string,
+    action: string,
+  ): Promise<IItemsAction> {
+    return getConnection(client)
+      .getCustomRepository(ItemRepository)
+      .findByAction(folio, category, action, this.today)
+      .then((Items) => {
+        if (action === "Chequear pedidos") {
+          return {
+            data: Items.map((item) => {
+              return {
+                cadem: item.cadem,
+                descripcion: item.description,
+                ean: item.ean,
+                stock_transito: item.stock_pedido_tienda,
+                sventa: Number(item.dias_sin_venta),
+                venta_perdida: item.venta_perdida,
+                gestionado: Number(item.gestionado),
+                venta_unidades: Number(item.venta_unidades),
+                uqc: item.uqc,
+                qc: item.qc,
+                plu: Number(item.plu),
+                cambio: 0,
+                preguntas: [],
+                imagen: "",
+              };
+            }),
+            flag: true,
+          };
+        } else {
+          return {
+            data: Items.map((item) => {
+              return {
+                cadem: item.cadem,
+                descripcion: item.description,
+                ean: item.ean,
+                stock: item.stock,
+                sventa: Number(item.dias_sin_venta),
+                venta_perdida: item.venta_perdida,
+                gestionado: Number(item.gestionado),
+                venta_unidades: Number(item.venta_unidades),
+                uqc: item.uqc,
+                qc: item.qc,
+                plu: Number(item.plu),
+                cambio: 0,
+                preguntas: [],
+                imagen: "",
               };
             }),
             flag: false,
