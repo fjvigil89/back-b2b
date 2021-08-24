@@ -55,7 +55,7 @@ export class StoreController extends Controller {
   }
 
   public async findOffline(): Promise<Response> {
-    console.log('entro al controlador')
+    console.log("entro al controlador");
     const folio: string = this.req.params.folio;
     const { client } = this.req.user;
     try {
@@ -72,13 +72,18 @@ export class StoreController extends Controller {
         envioVersion,
       );
       if (Stores) {
-        for await (let detail of Stores.detail) {
-          let category = detail.categoria
-          let arrAcciones = []
-          
-          for await (let acciones of detail.acciones) {
-            let action = acciones.accion
-            const productos = await this.itemService.detailItemsActionOffline(client, Number(folio), category, action);
+        for (let detail of Stores.detail) {
+          let category = detail.categoria;
+          let arrAcciones = [];
+
+          for (let acciones of detail.acciones) {
+            let action = acciones.accion;
+            const productos = await this.itemService.detailItemsActionOffline(
+              client,
+              Number(folio),
+              category,
+              action,
+            );
             arrAcciones.push({
               accion: acciones["accion"],
               gestionado: acciones["gestionado"],
@@ -86,11 +91,12 @@ export class StoreController extends Controller {
               cantidad: acciones["cantidad"],
               monto: acciones["monto"],
               productos: productos.data,
-              cambio: 0
-            })
-            detail.acciones = arrAcciones
+              cambio: 0,
+            });
+            detail.acciones = arrAcciones;
           }
         }
+
         return this.res.status(200).send(Stores);
       } else {
         return this.res.status(404).send();
