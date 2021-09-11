@@ -8,6 +8,7 @@ import {
   CheckSchedulerICB,
   CheckSchedulerPERNOD,
   CheckSchedulerCIAL,
+  CheckSchedulerEMBONOR,
   StoreSchedulerANDINA,
   StoreSchedulerICB,
   StoreSchedulerPERNOD,
@@ -34,6 +35,7 @@ if (env.NODE_ENV === "PRODUCTION") {
   CheckSchedulerICB.start();
   CheckSchedulerPERNOD.start();
   CheckSchedulerCIAL.start();
+  CheckSchedulerEMBONOR.start();
 }
 
 const port: number = Number(env.PORT) || config.PORT_APP || 3000;
