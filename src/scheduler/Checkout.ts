@@ -49,3 +49,15 @@ export const CheckSchedulerCIAL = new CronJob(
   null,
   "America/Santiago",
 );
+
+export const CheckSchedulerEMBONOR = new CronJob(
+  "02 00 * * *",
+  async () => {
+    await getConnection("embonor")
+      .getCustomRepository(CheckRepository)
+      .closeChecks();
+  },
+  null,
+  null,
+  "America/Santiago",
+);
