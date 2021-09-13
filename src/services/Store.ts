@@ -86,6 +86,9 @@ export class StoreService {
 
             return store;
           });
+        })
+        .catch((error) => {
+          console.log(error);
         });
     } else {
       return [];

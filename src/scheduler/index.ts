@@ -3,6 +3,7 @@ import {
   CheckSchedulerICB,
   CheckSchedulerPERNOD,
   CheckSchedulerCIAL,
+  CheckSchedulerEMBONOR,
 } from "./Checkout";
 import {
   StoreSchedulerANDINA,
@@ -18,4 +19,5 @@ export {
   StoreSchedulerANDINA,
   StoreSchedulerICB,
   StoreSchedulerPERNOD,
+  CheckSchedulerEMBONOR,
 };

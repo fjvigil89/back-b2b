@@ -119,6 +119,38 @@ export const Connection = createConnections([
     username: config.CIAL_DB.USER_DB,
   },
   {
+    name: "embonor",
+    database: config.EMBONOR_DB.DB,
+    entities: [
+      Case,
+      CaseFeedback,
+      Check,
+      Comment,
+      Hashtag,
+      Image,
+      Item,
+      LikeComment,
+      LikePost,
+      LikeReply,
+      Poll,
+      Post,
+      PostHashtag,
+      Question,
+      Reply,
+      Store,
+      Summary,
+      User,
+    ],
+    host: config.EMBONOR_DB.SERVER,
+    logging: false,
+    password: config.EMBONOR_DB.PASSWORD,
+    port: config.EMBONOR_DB.PORT_DB,
+    synchronize: false,
+    connectTimeout: 120000,
+    type: DIALECT,
+    username: config.EMBONOR_DB.USER_DB,
+  },
+  {
     name: "demo",
     database: config.DEMO_DB.DB,
     entities: [
@@ -194,6 +226,20 @@ export const B2B = {
       username: config.CIAL_DB.USER_DB,
     })
     .connect(),
+  embonor_app: new ConnectionManager()
+    .create({
+      database: config.EMBONOR_DB.DB,
+      entities: [],
+      host: config.EMBONOR_DB.SERVER,
+      logging: false,
+      password: config.EMBONOR_DB.PASSWORD,
+      port: config.EMBONOR_DB.PORT_DB,
+      synchronize: false,
+      type: DIALECT,
+      connectTimeout: 120000,
+      username: config.EMBONOR_DB.USER_DB,
+    })
+    .connect(),
   andina: new ConnectionManager()
     .create({
       database: config.ANDINA_B2B.DB,
@@ -236,6 +282,21 @@ export const B2B = {
       // requesTimeout: 120000,
       type: DIALECT,
       username: config.CIAL_B2B.USER_DB,
+    })
+    .connect(),
+  embonor: new ConnectionManager()
+    .create({
+      database: config.EMBONOR_B2B.DB,
+      entities: [],
+      host: config.EMBONOR_B2B.SERVER,
+      logging: false,
+      password: config.EMBONOR_B2B.PASSWORD,
+      port: config.EMBONOR_B2B.PORT_DB,
+      synchronize: false,
+      connectTimeout: 120000,
+      // requesTimeout: 120000,
+      type: DIALECT,
+      username: config.EMBONOR_B2B.USER_DB,
     })
     .connect(),
   demo: new ConnectionManager()
@@ -327,6 +388,20 @@ export const SMARTWEB = {
       synchronize: false,
       type: DIALECT,
       username: config.SMARTWEB.CIAL.USER_DB,
+      connectTimeout: 25000,
+    })
+    .connect(),
+  embonor: new ConnectionManager()
+    .create({
+      database: config.SMARTWEB.EMBONOR.DB,
+      entities: [],
+      host: config.SMARTWEB.EMBONOR.SERVER,
+      logging: false,
+      password: config.SMARTWEB.EMBONOR.PASSWORD,
+      port: config.SMARTWEB.EMBONOR.PORT_DB,
+      synchronize: false,
+      type: DIALECT,
+      username: config.SMARTWEB.EMBONOR.USER_DB,
       connectTimeout: 25000,
     })
     .connect(),
