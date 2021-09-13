@@ -7,6 +7,9 @@ export class CheckRouter extends Router {
     constructor() {
         super(CheckController);
         this.router
-            .post("", validator(createSchema), this.handler(CheckController.prototype.create));
+            .post("", validator(createSchema), this.handler(CheckController.prototype.create))
+            .post("/validateCheckIn"
+                /* , validator(createFeedbackSchema) */,
+                this.handler(CheckController.prototype.validateCheckIn));
     }
 }
