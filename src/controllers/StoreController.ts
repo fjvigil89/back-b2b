@@ -72,11 +72,11 @@ export class StoreController extends Controller {
         envioVersion,
       );
       if (Stores) {
-        for await (let detail of Stores.detail) {
+        for (let detail of Stores.detail) {
           let category = detail.categoria;
           let arrAcciones = [];
 
-          for await (let acciones of detail.acciones) {
+          for (let acciones of detail.acciones) {
             let action = acciones.accion;
             const productos = await this.itemService.detailItemsActionOffline(
               client,
@@ -96,6 +96,7 @@ export class StoreController extends Controller {
             detail.acciones = arrAcciones;
           }
         }
+
         return this.res.status(200).send(Stores);
       } else {
         return this.res.status(404).send();
