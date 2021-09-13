@@ -24,4 +24,19 @@ export class CheckController extends Controller {
         }
     }
 
+    public async validateCheckIn(): Promise<Response> {
+        const { folio } = this.req.body;
+        const { userId, client } = this.req.user;
+        console.log("cliet: ", client);
+        try {
+            let response = await this.checkService.validateCheckIn(client, folio, userId);
+
+            return this.res.status(200).json({ check: response }).send();
+
+        } catch (ex) {
+            console.error("/check: ", ex);
+            return this.res.status(500).json({ message: ex.message });
+        }
+    }
+
 }

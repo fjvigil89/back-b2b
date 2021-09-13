@@ -50,4 +50,19 @@ export class CheckService {
         await getConnection(client).getRepository(Check).save(this.check);
     }
 
+    public async validateCheckIn(client: string, folio: number, userId: string){
+        const store = await getConnection(client).getCustomRepository(StoreRepository).findByStoreId(folio);
+        if (store) {
+            const prevCheck = await getConnection(client).getCustomRepository(CheckRepository).findLastCheck(userId);
+            console.log('prevCheck: ', prevCheck);
+            if(prevCheck.dateCheckOut === null) {
+                return true
+            } else {
+                return false
+            }
+        } else {
+            throw new Error(`No existe el folio`);
+        }
+    }
+
 }
