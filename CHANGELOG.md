@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.2.4] - 2021-10-07
+
+## Fix
+
+- Se modifica de donde se obtiene venta_valor en endpoint de listado de salas.
+
 ## [2.1.4] - 2021-06-09
 
 ## Fix

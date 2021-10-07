@@ -1,6 +1,6 @@
 {
   "name": "back-b2b",
-  "version": "2.1.4",
+  "version": "2.2.4",
   "description": "Backend b2b",
   "main": "src/index.ts",
   "scripts": {
