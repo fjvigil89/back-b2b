@@ -55,34 +55,16 @@ export class StoreService {
         .getCustomRepository(StoreRepository)
         .dataStore(ListStore, user)
         .then(async (List) => {
-          const codLocales = List.map((store) => {
-            return `"${store.cod_local}"`;
-          });
-
-          console.time("listVentaValor");
-
-          const listVentaValor = await B2B_SERVICE.getVentaValor(
-            client,
-            codLocales,
-          );
-
-          console.timeEnd("listVentaValor");
-
           return List.map((store) => {
             store.latitud = parseFloat(store.latitud);
             store.longitud = parseFloat(store.longitud);
             store.visita_en_progreso = Number(store.visita_en_progreso);
             store.hasPoll = Number(store.hasPoll);
 
-            const temp = listVentaValor.find((venta) => {
-              return (
-                venta.cod_local === store.cod_local &&
-                venta.retail === store.cadena
-              );
-            });
-
             store.venta_valor =
-              temp === undefined ? -1 : parseInt(temp.venta_valor);
+              store.venta_valor === undefined || store.venta_valor === null
+                ? -1
+                : parseInt(store.venta_valor);
 
             return store;
           });
