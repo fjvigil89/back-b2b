@@ -81,7 +81,8 @@ export class StoreService {
               );
             });
 
-            temp === undefined ? -1 : parseInt(temp.venta_valor);
+            store.venta_valor =
+              temp === undefined ? -1 : parseInt(temp.venta_valor);
 
             // store.venta_valor =
             //   store.venta_valor === undefined || store.venta_valor === null
