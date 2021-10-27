@@ -100,6 +100,38 @@ export class StoreService {
     }
   }
 
+  public async listStoreUserV2(client: string, user: string): Promise<any> {
+    const ListStore = await getConnection(client)
+      .getCustomRepository(StoreRepository)
+      .listStoreUser(user);
+
+    if (ListStore.length) {
+      return getConnection(client)
+        .getCustomRepository(StoreRepository)
+        .dataStore(ListStore, user)
+        .then(async (List) => {
+          return List.map((store) => {
+            store.latitud = parseFloat(store.latitud);
+            store.longitud = parseFloat(store.longitud);
+            store.visita_en_progreso = Number(store.visita_en_progreso);
+            store.hasPoll = Number(store.hasPoll);
+
+            store.venta_valor =
+              store.venta_valor === undefined || store.venta_valor === null
+                ? undefined
+                : parseInt(store.venta_valor);
+
+            return store;
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      return [];
+    }
+  }
+
   private groupDetailItem(
     detailItems: IItemCase[],
     version: Number,

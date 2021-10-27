@@ -22,6 +22,7 @@ export class StoreRouter extends Router {
         "/offline/:folio/:version",
         [],
         this.handler(StoreController.prototype.findOffline),
-      );
+      )
+      .get("/list/v2", [], this.handler(StoreController.prototype.listV2));
   }
 }
