@@ -118,7 +118,7 @@ export class StoreService {
 
             store.venta_valor =
               store.venta_valor === undefined || store.venta_valor === null
-                ? undefined
+                ? null
                 : parseInt(store.venta_valor);
 
             return store;
