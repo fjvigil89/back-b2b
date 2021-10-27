@@ -26,6 +26,20 @@ export class StoreController extends Controller {
     }
   }
 
+  public async listV2(): Promise<Response> {
+    const { userId, client } = this.req.user as {
+      userId: string;
+      client: string;
+    };
+
+    try {
+      const Stores = await this.storeService.listStoreUserV2(client, userId);
+      return this.res.status(200).json(Stores);
+    } catch (ex) {
+      return this.res.status(500).send();
+    }
+  }
+
   public async find(): Promise<Response> {
     const folio: string = this.req.params.folio;
     const { client } = this.req.user;

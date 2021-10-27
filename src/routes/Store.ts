@@ -8,6 +8,7 @@ export class StoreRouter extends Router {
     super(StoreController);
     this.router
       .get("", [], this.handler(StoreController.prototype.list))
+      .get("/list/v2", [], this.handler(StoreController.prototype.listV2))
       .get(
         "/:folio",
         [validator(findSchema)],
