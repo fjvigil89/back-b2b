@@ -8,6 +8,7 @@ import { LikeCommentRepository } from "./LikeCommentRepository";
 import { LikePostRepository } from "./LikePostRepository";
 import { LikeReplyRepository } from "./LikeReplyRepository";
 import { PollRepository } from "./PollRepository";
+import { PollLiteRepository } from "./PollLiteRepository";
 import { PostHashtagRepository } from "./PostHashtagRepository";
 import { PostRepository } from "./PostRepository";
 import { QuestionRepository } from "./QuestionRepository";
@@ -26,6 +27,7 @@ export {
     LikePostRepository,
     LikeReplyRepository,
     PollRepository,
+    PollLiteRepository,
     PostRepository,
     PostHashtagRepository,
     ReplyRepository,

@@ -50,6 +50,18 @@ export const CheckSchedulerCIAL = new CronJob(
   "America/Santiago",
 );
 
+export const CheckSchedulerYOGENLITE = new CronJob(
+  "52 00 * * *",
+  async () => {
+    await getConnection("yogen_lite")
+      .getCustomRepository(CheckRepository)
+      .closeChecks();
+  },
+  null,
+  null,
+  "America/Santiago",
+);
+
 export const CheckSchedulerEMBONOR = new CronJob(
   "02 00 * * *",
   async () => {

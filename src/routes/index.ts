@@ -13,6 +13,7 @@ import { LikePostRouter } from "./LikePost";
 import { LikeReplyRouter } from "./LikeReply";
 import { NotificationRouter } from "./Notifications";
 import { PollRouter } from "./Poll";
+import { PollLiteRouter } from "./PollLite";
 import { PostRouter } from "./Post";
 import { QuestionRouter } from "./Question";
 import { ReplyRouter } from "./Reply";
@@ -36,6 +37,7 @@ export {
   LikeReplyRouter,
   NotificationRouter,
   PollRouter,
+  PollLiteRouter,
   PostRouter,
   ReplyRouter,
   StoreRouter,
