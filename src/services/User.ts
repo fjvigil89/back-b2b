@@ -8,7 +8,6 @@ export class UserService {
 
     public async validUser(userId: string, password: string): Promise<{ token: string, user: string }> {
         const client = await getUser(userId);
-
         const user = await getConnection(client).getRepository(User).findOne({ where: { name: userId } });
 
         if (!user) {

@@ -4,6 +4,7 @@ import {
   CheckSchedulerPERNOD,
   CheckSchedulerCIAL,
   CheckSchedulerEMBONOR,
+  CheckSchedulerYOGENLITE
 } from "./Checkout";
 import {
   StoreSchedulerANDINA,
@@ -16,6 +17,7 @@ export {
   CheckSchedulerICB,
   CheckSchedulerPERNOD,
   CheckSchedulerCIAL,
+  CheckSchedulerYOGENLITE,
   StoreSchedulerANDINA,
   StoreSchedulerICB,
   StoreSchedulerPERNOD,

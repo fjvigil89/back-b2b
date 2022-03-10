@@ -119,6 +119,38 @@ export const Connection = createConnections([
     username: config.CIAL_DB.USER_DB,
   },
   {
+    name: "yogen_lite",
+    database: config.YOGEN_LITE_DB.DB,
+    entities: [
+      Case,
+      CaseFeedback,
+      Check,
+      Comment,
+      Hashtag,
+      Image,
+      Item,
+      LikeComment,
+      LikePost,
+      LikeReply,
+      Poll,
+      Post,
+      PostHashtag,
+      Question,
+      Reply,
+      Store,
+      Summary,
+      User,
+    ],
+    host: config.YOGEN_LITE_DB.SERVER,
+    logging: false,
+    password: config.YOGEN_LITE_DB.PASSWORD,
+    port: config.YOGEN_LITE_DB.PORT_DB,
+    synchronize: false,
+    connectTimeout: 120000,
+    type: DIALECT,
+    username: config.YOGEN_LITE_DB.USER_DB,
+  },
+  {
     name: "embonor",
     database: config.EMBONOR_DB.DB,
     entities: [
@@ -226,6 +258,20 @@ export const B2B = {
       username: config.CIAL_DB.USER_DB,
     })
     .connect(),
+    yogen_lite_app: new ConnectionManager()
+    .create({
+      database: config.YOGEN_LITE_DB.DB,
+      entities: [],
+      host: config.YOGEN_LITE_DB.SERVER,
+      logging: false,
+      password: config.YOGEN_LITE_DB.PASSWORD,
+      port: config.YOGEN_LITE_DB.PORT_DB,
+      synchronize: false,
+      type: DIALECT,
+      connectTimeout: 120000,
+      username: config.YOGEN_LITE_DB.USER_DB,
+    })
+    .connect(),
   embonor_app: new ConnectionManager()
     .create({
       database: config.EMBONOR_DB.DB,
@@ -282,6 +328,21 @@ export const B2B = {
       // requesTimeout: 120000,
       type: DIALECT,
       username: config.CIAL_B2B.USER_DB,
+    })
+    .connect(),
+  yogen_lite: new ConnectionManager()
+    .create({
+      database: config.YOGEN_LITE_B2B.DB,
+      entities: [],
+      host: config.YOGEN_LITE_B2B.SERVER,
+      logging: false,
+      password: config.YOGEN_LITE_B2B.PASSWORD,
+      port: config.YOGEN_LITE_B2B.PORT_DB,
+      synchronize: false,
+      connectTimeout: 120000,
+      // requesTimeout: 120000,
+      type: DIALECT,
+      username: config.YOGEN_LITE_B2B.USER_DB,
     })
     .connect(),
   embonor: new ConnectionManager()
@@ -391,6 +452,20 @@ export const SMARTWEB = {
       connectTimeout: 25000,
     })
     .connect(),
+  yogen_lite: new ConnectionManager()
+    .create({
+      database: config.SMARTWEB.CIAL.DB,
+      entities: [],
+      host: config.SMARTWEB.CIAL.SERVER,
+      logging: false,
+      password: config.SMARTWEB.CIAL.PASSWORD,
+      port: config.SMARTWEB.CIAL.PORT_DB,
+      synchronize: false,
+      type: DIALECT,
+      username: config.SMARTWEB.CIAL.USER_DB,
+      connectTimeout: 25000,
+    })
+  .connect(),
   embonor: new ConnectionManager()
     .create({
       database: config.SMARTWEB.EMBONOR.DB,

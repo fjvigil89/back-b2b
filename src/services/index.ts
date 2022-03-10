@@ -13,6 +13,7 @@ import { LikeCommentService } from "./LikeComment";
 import { LikePostService } from "./LikePost";
 import { LikeReplyService } from "./LikeReply";
 import { PollService } from "./Poll";
+import { PollLiteService } from "./PollLite";
 import { PostService } from "./Post";
 import { QuestionService } from "./Question";
 import { ReplyService } from "./Reply";
@@ -34,6 +35,7 @@ export {
   LikePostService,
   LikeReplyService,
   PollService,
+  PollLiteService,
   PostService,
   ReplyService,
   StoreService,
