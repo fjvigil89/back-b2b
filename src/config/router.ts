@@ -16,6 +16,7 @@ import {
   LikeReplyRouter,
   NotificationRouter,
   PollRouter,
+  PollLiteRouter,
   PostRouter,
   QuestionRouter,
   ReplyRouter,
@@ -37,6 +38,7 @@ const LikePost = new LikePostRouter();
 const LikeReply = new LikeReplyRouter();
 const Notification = new NotificationRouter();
 const Poll = new PollRouter();
+const PollList = new PollLiteRouter();
 const Post = new PostRouter();
 const Reply = new ReplyRouter();
 const Store = new StoreRouter();
@@ -114,6 +116,11 @@ export const ROUTER: IRouter[] = [
     handler: Poll.router,
     middleware: [jwt({ secret: config.SECRET })],
     path: "/encuesta",
+  },
+  {
+    handler: PollList.router,
+    middleware: [jwt({ secret: config.SECRET })],
+    path: "/encuesta-lite",
   },
   {
     handler: Hashtag.router,

@@ -11,6 +11,7 @@ import { LikePostController } from "./LikePostController";
 import { LikeReplyController } from "./LikeReplyController";
 import { NotificationController } from "./NotificationController";
 import { PollController } from "./PollController";
+import { PollLiteController } from "./PollLiteController";
 import { PostController } from "./PostController";
 import { QuestionController } from "./QuestionController";
 import { ReplyController } from "./ReplyController";
@@ -33,6 +34,7 @@ export {
   LikeReplyController,
   NotificationController,
   PollController,
+  PollLiteController,
   PostController,
   ReplyController,
   StoreController,

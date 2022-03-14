@@ -9,6 +9,7 @@ import {
   CheckSchedulerPERNOD,
   CheckSchedulerCIAL,
   CheckSchedulerEMBONOR,
+  CheckSchedulerYOGENLITE,
   StoreSchedulerANDINA,
   StoreSchedulerICB,
   StoreSchedulerPERNOD,
@@ -35,6 +36,7 @@ if (env.NODE_ENV === "PRODUCTION") {
   CheckSchedulerICB.start();
   CheckSchedulerPERNOD.start();
   CheckSchedulerCIAL.start();
+  // CheckSchedulerYOGENLITE.start();
   CheckSchedulerEMBONOR.start();
 }
 
